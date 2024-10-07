@@ -1,0 +1,153 @@
+// src/components/SignUpForm.js
+import React from 'react';
+import UserInput from '../input/UserInput';
+import { UserInfoElement } from '../../types/signup';
+
+interface SignUpUserElement extends UserInfoElement {
+  verificationCode: string;
+  passwordConfirm: string;
+}
+
+type ErrMsg = Omit<SignUpUserElement, 'nickName'>;
+
+interface IsValid {
+  email: boolean;
+  verificationCode: boolean;
+  memberId: boolean;
+  password: boolean;
+  passwordConfirm: boolean;
+}
+
+interface Props {
+  signUpData: SignUpUserElement;
+  handleChange?: (field: string) => (value: string) => void;
+  sendEmail(email: string): void;
+  confirmVerificationCode(value: string): void;
+  isVisible: boolean;
+  timeLeft: number;
+  formatTimeLeft(seconds: number): string;
+  errMsg: ErrMsg;
+  isValid: IsValid;
+  idDuplicatedCheck(): void;
+  signUpHandler(): void;
+}
+
+const SignUpForm = ({
+  signUpData,
+  handleChange,
+  sendEmail,
+  confirmVerificationCode,
+  isVisible,
+  timeLeft,
+  formatTimeLeft,
+  errMsg,
+  isValid,
+  idDuplicatedCheck,
+  signUpHandler,
+}: Props) => {
+  return (
+    <form onSubmit={signUpHandler}>
+      {/* 이메일 입력 */}
+      <div className="m-10">
+        <div className="flex items-end">
+          <UserInput
+            label="이메일"
+            type="email"
+            value={signUpData.email}
+            onChange={handleChange?.('email')}
+            placeholder="이메일을 입력해주세요."
+            box_width="input1"
+          />
+          <button
+            type="button"
+            onClick={() => sendEmail(signUpData.email)}
+            disabled={!isValid.email}
+            className={`border rounded-[10px] ml-5 w-[80px] h-[40px] ${
+              !isValid.email ? 'bg-[#d9d9d9] cursor-not-allowed' : 'bg-button-basic hover:bg-button-hover'
+            }`}
+          >
+            인증
+          </button>
+        </div>
+        {errMsg.email && <p className="text-red-500 text-xs">{errMsg.email}</p>}
+      </div>
+
+      {/* 인증 코드 입력 */}
+      {isVisible && (
+        <div className="m-10">
+          <div className="flex items-end">
+            <UserInput
+              label="이메일 인증 코드"
+              value={signUpData.verificationCode}
+              onChange={handleChange?.('verificationCode')}
+              placeholder="인증코드 입력"
+              box_width="input1"
+            />
+            <button
+              type="button"
+              onClick={() => confirmVerificationCode(signUpData.verificationCode)}
+              disabled={timeLeft <= 0}
+              className={`border w-[80px] h-[40px] rounded-[10px] ml-5 ${
+                timeLeft <= 0 ? 'bg-[#d9d9d9] cursor-not-allowed' : 'bg-button-basic hover:bg-button-hover'
+              }`}
+            >
+              확인
+            </button>
+          </div>
+          <p className="text-red-400">남은 시간: {formatTimeLeft(timeLeft)}</p>
+          {errMsg.verificationCode && <p className="text-red-500 text-xs">{errMsg.verificationCode}</p>}
+        </div>
+      )}
+
+      {/* 아이디 입력 */}
+      <div className="m-10">
+        <div className="flex items-end">
+          <UserInput
+            label="아이디"
+            value={signUpData.memberId}
+            onChange={handleChange?.('memberId')}
+            placeholder="아이디 입력(영문자 또는 숫자 6~20자)"
+            box_width="input1"
+          />
+          <button
+            type="button"
+            disabled={!isValid.memberId}
+            onClick={idDuplicatedCheck}
+            className={`border rounded-[10px] ml-5 w-[80px] h-[40px] ${
+              !isValid.memberId ? 'bg-[#d9d9d9] cursor-not-allowed' : 'bg-button-basic hover:bg-button-hover'
+            }`}
+          >
+            확인
+          </button>
+        </div>
+        {errMsg.memberId && <p className="text-red-500 text-xs">{errMsg.memberId}</p>}
+      </div>
+
+      {/* 비밀번호 입력 */}
+      <div className="m-10">
+        <UserInput
+          label="비밀번호"
+          type="password"
+          value={signUpData.password}
+          onChange={handleChange?.('password')}
+          placeholder="비밀번호 입력"
+          box_width="input2"
+        />
+        {errMsg.password && <p className="text-red-500 text-xs">{errMsg.password}</p>}
+      </div>
+      <div className="m-10">
+        <UserInput
+          label="비밀번호 확인"
+          type="password"
+          value={signUpData.passwordConfirm}
+          onChange={handleChange?.('passwordConfirm')}
+          placeholder="비밀번호 확인"
+          box_width="input2"
+        />
+        {errMsg.passwordConfirm && <p className="text-red-500 text-xs">{errMsg.passwordConfirm}</p>}
+      </div>
+    </form>
+  );
+};
+
+export default SignUpForm;
