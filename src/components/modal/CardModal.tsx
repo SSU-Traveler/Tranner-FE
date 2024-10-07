@@ -1,3 +1,67 @@
-export default function CardModal() {
-  return <div>메인/지역 조회/맞춤 여행지 페이지에서 오버레이 하면 나오는 카드 모달 컴포넌트</div>;
+import { useState } from 'react';
+
+const buttonStyle =
+  'w-[200px] h-[50px] p-[10px] rounded-[5px] font-bold bg-button-basic text-white hover:bg-button-hover';
+
+// CardModal 컴포넌트가 받게 될 props
+// 1. 이미지 경로       예) "/images/성산일출봉.jpeg"
+// 2. 장소 국문 이름    예) "성산일출봉"
+// 3. 장소 영문 이름    예) "Seongsan Ilchulbong Tuff Cone Natural Reserve"
+// 4. 장소 주소(선택사항: 만약 장소가 특정 명소가 아닌 지역이라면, 주소는 없음)
+// 5. 장소 설명
+
+interface CardModalProps {
+  imgPath: string;
+  placeKorName: string;
+  placeEngName: string;
+  placeAddress?: string;
+  placeDescription: string;
+}
+
+export default function CardModal({
+  imgPath,
+  placeKorName,
+  placeEngName,
+  placeAddress,
+  placeDescription,
+}: CardModalProps) {
+  const [isSaved, setIsSaved] = useState<boolean>(false);
+
+  return (
+    <div className="w-[920px] h-[520px] rounded-[16px] flex gap-[20px] bg-white p-[20px]">
+      <img src={imgPath} alt={placeKorName} className="w-[450px] h-[480px]" />
+      <div className="flex flex-col justify-between">
+        <section>
+          <section className="mb-[10px]">
+            <section className="flex justify-between">
+              <p className="text-[20px] font-bold">{placeKorName}</p>
+              {placeAddress &&
+                (isSaved ? (
+                  <img
+                    src="/full-heart.svg"
+                    alt="찜한 후"
+                    className="hover:cursor-pointer"
+                    onClick={() => setIsSaved((prev) => !prev)}
+                  />
+                ) : (
+                  <img
+                    src="/empty-heart.svg"
+                    alt="찜하기 전"
+                    className="hover:cursor-pointer"
+                    onClick={() => setIsSaved((prev) => !prev)}
+                  />
+                ))}
+            </section>
+            <p className="text-[12px] text-[#B2B9C0] mb-[4px]">{placeEngName}</p>
+            {placeAddress && <p className="text-[13px] text-[#495057]">{placeAddress}</p>}
+          </section>
+          <p>{placeDescription}</p>
+        </section>
+        <section className="flex gap-[10px]">
+          <button className={buttonStyle}>장바구니에 담기</button>
+          <button className={buttonStyle}>기존 여행에 추가하기</button>
+        </section>
+      </div>
+    </div>
+  );
 }
