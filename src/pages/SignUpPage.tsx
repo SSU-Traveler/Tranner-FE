@@ -1,18 +1,20 @@
 import router from '../routes/Router';
 import UserInput from '../components/input/UserInput';
 import React, { useState, useEffect } from 'react';
+import SignUpForm from '../components/user/SignUpForm';
+import { SignUpApi, SendEmailApi, IdDuplicatedCheckApi } from '../api/SignUpApi';
 
 export default function SignUpPage() {
   //유효성 검사 정규식
   const REGEX_EMAIL = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-  const REGEX_MBRID = /^[a-z]+[a-z0-9]{5,19}$/g;
+  const REGEX_MEMBERID = /^[a-z]+[a-z0-9]{5,19}$/g;
   const REGEX_PASSWORD = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
 
   //회원가입 정보
   const [signUpData, setSignUpData] = useState({
     email: '',
     verificationCode: '',
-    mbrId: '',
+    memberId: '',
     nickName: '',
     password: '',
     passwordConfirm: '',
@@ -22,7 +24,7 @@ export default function SignUpPage() {
   const [isValid, setIsValid] = useState({
     email: false,
     verificationCode: false,
-    mbrId: false,
+    memberId: false,
     password: false,
     passwordConfirm: false,
   });
@@ -31,7 +33,7 @@ export default function SignUpPage() {
   const [errMsg, setErrMsg] = useState({
     email: '',
     verificationCode: '',
-    mbrId: '',
+    memberId: '',
     password: '',
     passwordConfirm: '',
   });
@@ -81,8 +83,8 @@ export default function SignUpPage() {
     if (field === 'email') {
       result = REGEX_EMAIL.test(value);
       message = result ? '' : '이메일 형식이 올바르지 않습니다.';
-    } else if (field === 'mbrId') {
-      result = REGEX_MBRID.test(value);
+    } else if (field === 'memberId') {
+      result = REGEX_MEMBERID.test(value);
       message = result ? '' : '아이디는 영문자 또는 숫자 6~20자여야 합니다.';
     } else if (field === 'password') {
       result = REGEX_PASSWORD.test(value);
@@ -113,8 +115,6 @@ export default function SignUpPage() {
 
     //이메일 인증번호 div display
     setIsVisible(true);
-    //인증 버튼 클릭 못 하게 막음
-    //이메일 인증번호 보내기.
 
     // 타이머 초기화
     setTimeLeft(300); // 5분으로 초기화
@@ -131,10 +131,14 @@ export default function SignUpPage() {
       });
     }, 1000);
     setTimer(newTimer);
+
+    //이메일 인증번호 보내기.
+    SendEmailApi(email);
+    console.log('sendEmail 끝부분')
   };
 
   //인증코드 확인 함수
-  const confirmVertificationCode = (value: string) => {
+  const confirmVerificationCode = (value: string) => async () => {
     //1. 인증번호 맞는지 틀린지 확인 - 서버에 email, 인증번호 보내고 코드 검증.
     //
     //2-1. 맞으면
@@ -157,133 +161,36 @@ export default function SignUpPage() {
   };
 
   //아이디 중복 체크 함수
-  const idDuplicatedCheck = () => {};
-
-  //회원가입 함수
-  //이건 api에 있어야 함.
-  const signUpHandler = () => {};
+  const idDuplicatedCheck = async () => {
+    try {
+      const response = await IdDuplicatedCheckApi(signUpData.memberId);
+      console.log(response);
+      //아이디 중복일 경우
+      //아이디 사용 가능할 경우
+    } catch (error) {
+      console.error('아이디 중복 체크 오류', error);
+    }
+  };
 
   return (
     <div className="flex">
       <div className="container w-[100%] h-[100vh]">
         <h2>회원가입</h2>
         <h4>회원가입을 위한 정보를 입력해주세요.</h4>
-        <form onSubmit={signUpHandler}>
-          <div className="m-10">
-            <div className="flex items-end">
-              <UserInput
-                label="이메일"
-                type="email"
-                value={signUpData.email}
-                onChange={handleChange('email')}
-                placeholder="이메일을 입력해주세요."
-                box_width="input1"
-              />
-              <button
-                type="button"
-                onClick={() => sendEmail(signUpData.email)}
-                disabled={!isValid.email}
-                className={`border rounded-[10px] ml-5 w-[80px] h-[40px] ${
-                  !isValid.email ? 'bg-[#d9d9d9] cursor-not-allowed' : 'bg-button-basic hover:bg-button-hover'
-                }`}
-              >
-                인증
-              </button>
-            </div>
-            {errMsg.email && <p className="text-red-500 text-xs">{errMsg.email}</p>}
-          </div>
-          {isVisible && (
-            <div className="m-10">
-              <div className="flex items-end">
-                <UserInput
-                  label="이메일 인증 코드"
-                  type="text"
-                  value={signUpData.verificationCode}
-                  onChange={handleChange('verificationCode')}
-                  placeholder="인증코드 입력"
-                  box_width="input1"
-                />
-                <button
-                  type="button"
-                  onClick={() => confirmVertificationCode(signUpData.verificationCode)}
-                  disabled={timeLeft <= 0}
-                  className={`border w-[80px] h-[40px] rounded-[10px] ml-5 ${
-                    timeLeft <= 0 ? 'bg-[#d9d9d9] cursor-not-allowed' : 'bg-button-basic hover:bg-button-hover'
-                  }`}
-                >
-                  확인
-                </button>
-              </div>
-              <p className="text-red-400">남은 시간: {formatTimeLeft(timeLeft)}</p> {/* 남은 시간 표시 */}
-              {errMsg.verificationCode && <p className="text-red-500 text-xs">{errMsg.verificationCode}</p>}
-              <p className="text-xs">
-                이메일을 받지 못 하셨나요?{' '}
-                <span
-                  className="text-xs text-blue-500 cursor-pointer hover:underline"
-                  onClick={() => sendEmail(signUpData.email)}
-                >
-                  이메일 재전송
-                </span>
-              </p>
-            </div>
-          )}
-          <div className="m-10">
-            <div className="flex items-end">
-              <UserInput
-                label="아이디"
-                type="text"
-                value={signUpData.mbrId}
-                onChange={handleChange('mbrId')}
-                placeholder="아이디 입력(영문자 또는 숫자 6~20자)"
-                box_width="input1"
-              />
-              <button
-                type="button"
-                disabled={!isValid.mbrId}
-                onClick={idDuplicatedCheck}
-                className={`border rounded-[10px] ml-5 w-[80px] h-[40px] ${
-                  !isValid.mbrId ? 'bg-[#d9d9d9] cursor-not-allowed' : 'bg-button-basic hover:bg-button-hover'
-                }`}
-              >
-                확인
-              </button>
-            </div>
-            {errMsg.mbrId && <p className="text-red-500 text-xs">{errMsg.mbrId}</p>}
-          </div>
-          <div className="m-10">
-            <UserInput
-              label="닉네임"
-              type="text"
-              value={signUpData.nickName}
-              onChange={handleChange('nickName')}
-              placeholder="닉네임 입력"
-              box_width="input2"
-            />
-          </div>
-          <div className="m-10">
-            <UserInput
-              label="비밀번호"
-              type="password"
-              value={signUpData.password}
-              onChange={handleChange('password')}
-              placeholder="비밀번호 입력"
-              box_width="input2"
-            />
-            {errMsg.password && <p className="text-red-500 text-xs">{errMsg.password}</p>}
-          </div>
-          <div className="m-10">
-            <UserInput
-              label="비밀번호 확인"
-              type="password"
-              value={signUpData.passwordConfirm}
-              onChange={handleChange('passwordConfirm')}
-              placeholder="비밀번호 확인"
-              box_width="input2"
-            />
-            {errMsg.passwordConfirm && <p className="text-red-500 text-xs">{errMsg.passwordConfirm}</p>}
-          </div>
-          <button type="submit">회원가입</button>
-        </form>
+        <SignUpForm
+          signUpData={signUpData}
+          handleChange={handleChange}
+          sendEmail={sendEmail}
+          confirmVerificationCode={confirmVerificationCode}
+          isVisible={isVisible}
+          timeLeft={timeLeft}
+          formatTimeLeft={formatTimeLeft}
+          errMsg={errMsg}
+          isValid={isValid}
+          idDuplicatedCheck={idDuplicatedCheck}
+          signUpHandler={SignUpApi(signUpData)}
+        />
+        <button type="submit">회원가입</button>
       </div>
     </div>
   );
