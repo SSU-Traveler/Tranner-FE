@@ -2,18 +2,19 @@ interface CProps {
   label: string;
   value: string;
   onChange?(value: string): void;
-  type: string;
+  type?: string;
   placeholder: string;
   box_width: string;
 }
 
-const UserInput = ({ label, value, onChange, type, placeholder, box_width }: CProps) => {
+const UserInput = ({ label, value, onChange, type = 'text', placeholder, box_width }: CProps) => {
   const widthClass = box_width === 'input1' ? 'w-[300px]' : box_width === 'input2' ? 'w-[400px]' : '';
 
   return (
     <div className={`${widthClass}`}>
-      <label>{label}</label>
+      <label htmlFor={label}>{label}</label>
       <input
+        id={label}
         type={type}
         value={value}
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
