@@ -26,6 +26,9 @@ export default {
           day14: '#C592E5',
         },
       },
+      boxShadow: {
+        custom: '0px 4px 5px rgba(0, 0, 0, 0.25)',
+      },
     },
   },
   plugins: [],
