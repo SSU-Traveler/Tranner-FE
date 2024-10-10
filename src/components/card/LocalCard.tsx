@@ -15,7 +15,8 @@ export default function LocalCard({ imgPath, localName }: LocalCardProps) {
 
   return (
     <div
-      className={`w-[250px] h-[300px] rounded-[16px] bg-[url("${imgPath}")] bg-cover bg-center hover:cursor-pointer flex items-end`}
+      style={{ backgroundImage: `url(${imgPath})` }}
+      className={`w-[250px] h-[300px] rounded-[16px] bg-cover bg-center hover:cursor-pointer flex items-end`}
       onClick={openCardModal}
     >
       <p className="text-white font-bold text-[24px] pl-[10px] pb-[10px]">{localName}</p>

@@ -39,7 +39,7 @@ export default function LocalViewPage() {
           placeDescription="설명 부분"
         />
         <DetailCardModal />
-        <OrderModifyCardModal />
+        <OrderModifyCardModal tripStartDate={new Date('2024-09-17')} tripEndDate={new Date('2024-09-20')} />
       </div>
     </section>
   );
