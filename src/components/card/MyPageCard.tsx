@@ -22,9 +22,9 @@ export default function MyPageCard({
   tripEndDate,
   numberOfPeople,
 }: MyPageCardProps) {
-  const dayDiff = (tripEndDate.getTime() - tripStartDate.getTime()) / (1000 * 60 * 60 * 24);
-  const formattedTripStartDate = changeDateFormat(tripStartDate);
-  const formattedTripEndDate = changeDateFormat(tripEndDate);
+  const dayDiff: number = (tripEndDate.getTime() - tripStartDate.getTime()) / (1000 * 60 * 60 * 24);
+  const formattedTripStartDate: string = changeDateFormat(tripStartDate);
+  const formattedTripEndDate: string = changeDateFormat(tripEndDate);
 
   return (
     <div className="w-[1000px] h-[200px] bg-white rounded-[16px] border border-[#B2B9C0] flex gap-[30px] hover:cursor-pointer">
