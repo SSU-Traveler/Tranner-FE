@@ -1,7 +1,7 @@
 // src/components/SignUpForm.js
-import React from 'react';
 import UserInput from '../input/UserInput';
 import { UserInfoElement } from '../../types/signup';
+import { isEmpty } from '../../utils/checkObjectEmpty';
 
 interface SignUpUserElement extends UserInfoElement {
   verificationCode: string;
@@ -21,9 +21,11 @@ interface IsValid {
 interface Props {
   signUpData: SignUpUserElement;
   handleChange?: (field: string) => (value: string) => void;
-  sendEmail(email: string): void;
-  confirmVerificationCode(value: string): void;
+  sendEmail(): void;
+  confirmVerificationCode(email: string, verificationCode: string): void;
   isVisible: boolean;
+  emailChecked: boolean;
+  idChecked: boolean;
   timeLeft: number;
   formatTimeLeft(seconds: number): string;
   errMsg: ErrMsg;
@@ -38,6 +40,8 @@ const SignUpForm = ({
   sendEmail,
   confirmVerificationCode,
   isVisible,
+  emailChecked,
+  idChecked,
   timeLeft,
   formatTimeLeft,
   errMsg,
@@ -60,13 +64,16 @@ const SignUpForm = ({
           />
           <button
             type="button"
-            onClick={() => sendEmail(signUpData.email)}
-            disabled={!isValid.email}
+            onClick={() => sendEmail()}
+            disabled={!isValid.email || emailChecked}
             className={`border rounded-[10px] ml-5 w-[80px] h-[40px] ${
-              !isValid.email ? 'bg-[#d9d9d9] cursor-not-allowed' : 'bg-button-basic hover:bg-button-hover'
+              !isValid.email ? 'bg-[#d9d9d9]' : emailChecked ? 'bg-[#c3e1b3]' : 'bg-button-basic hover:bg-button-hover'
+              //!isValid.email || emailChecked
+              //</div>? 'bg-[#d9d9d9]'
+              //: 'bg-button-basic hover:bg-button-hover'
             }`}
           >
-            인증
+            {emailChecked ? '인증 완료' : '인증'}
           </button>
         </div>
         {errMsg.email && <p className="text-red-500 text-xs">{errMsg.email}</p>}
@@ -85,10 +92,10 @@ const SignUpForm = ({
             />
             <button
               type="button"
-              onClick={() => confirmVerificationCode(signUpData.verificationCode)}
+              onClick={() => confirmVerificationCode(signUpData.email, signUpData.verificationCode)}
               disabled={timeLeft <= 0}
               className={`border w-[80px] h-[40px] rounded-[10px] ml-5 ${
-                timeLeft <= 0 ? 'bg-[#d9d9d9] cursor-not-allowed' : 'bg-button-basic hover:bg-button-hover'
+                timeLeft <= 0 ? 'bg-[#d9d9d9]' : 'bg-button-basic hover:bg-button-hover'
               }`}
             >
               확인
@@ -111,10 +118,10 @@ const SignUpForm = ({
           />
           <button
             type="button"
-            disabled={!isValid.memberId}
+            disabled={!isValid.memberId || idChecked}
             onClick={idDuplicatedCheck}
             className={`border rounded-[10px] ml-5 w-[80px] h-[40px] ${
-              !isValid.memberId ? 'bg-[#d9d9d9] cursor-not-allowed' : 'bg-button-basic hover:bg-button-hover'
+              !isValid.memberId || idChecked ? 'bg-[#d9d9d9]' : 'bg-button-basic hover:bg-button-hover'
             }`}
           >
             확인
@@ -146,6 +153,15 @@ const SignUpForm = ({
         />
         {errMsg.passwordConfirm && <p className="text-red-500 text-xs">{errMsg.passwordConfirm}</p>}
       </div>
+      <button
+        type="submit"
+        disabled={!isEmpty(signUpData) || emailChecked || idChecked}
+        className={`border rounded-[10px] w-[400px] h-[40px] ${
+          !isEmpty(signUpData) && emailChecked && idChecked ? 'bg-button-basic hover:bg-button-hover' : 'bg-[#d9d9d9]'
+        }`}
+      >
+        회원가입
+      </button>
     </form>
   );
 };

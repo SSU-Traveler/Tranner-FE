@@ -10,6 +10,7 @@ import SignUpPage from '../pages/SignUpPage';
 import TripPlanPage from '../pages/TripPlanPage';
 import WeatherViewPage from '../pages/WeatherViewPage';
 import WelcomePage from '../pages/WelcomePage';
+import KakaoAuth from '../components/user/KakaoAuth';
 import Layout from '../shared/Layout';
 
 const router = createBrowserRouter([
@@ -64,6 +65,12 @@ const router = createBrowserRouter([
       {
         path: '/my/:memberId',
         element: <MyPage />,
+      },
+
+      //kakao 로그인 callback URI
+      {
+        path: 'oauth/callback/kakao',
+        element: <KakaoAuth />,
       },
     ],
   },
