@@ -17,12 +17,12 @@ export default function MainPage() {
     if (sliderRef.current) sliderRef.current.slickPause();
   };
 
-  function SampleNextArrow(props) {
+  function SampleNextArrow(props: any) {
     const { className, style, onClick } = props;
     return <div className={className} style={{ ...style, display: 'block', background: 'red' }} onClick={onClick} />;
   }
 
-  function SamplePrevArrow(props) {
+  function SamplePrevArrow(props: any) {
     const { className, style, onClick } = props;
     return <div className={className} style={{ ...style, display: 'block', background: 'green' }} onClick={onClick} />;
   }

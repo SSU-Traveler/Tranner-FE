@@ -1,8 +1,7 @@
-import router from '../routes/Router';
-import UserInput from '../components/input/UserInput';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import SignUpForm from '../components/user/SignUpForm';
-import { SignUpApi, SendEmailApi, IdDuplicatedCheckApi } from '../api/SignUpApi';
+import { SignUpApi, SendEmailApi, IdDuplicatedCheckApi, ConfirmVerificationCodeApi } from '../api/SignUpApi';
+import { isEmpty } from '../utils/checkObjectEmpty';
 
 export default function SignUpPage() {
   //유효성 검사 정규식
@@ -40,6 +39,8 @@ export default function SignUpPage() {
 
   //인증코드 div show?
   const [isVisible, setIsVisible] = useState(false);
+  const [emailChecked, setEmailChecked] = useState(false);
+  const [idChecked, setIdChecked] = useState(false);
 
   const [timer, setTimer] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState<number>(300); // 5분 (300초)
@@ -106,7 +107,7 @@ export default function SignUpPage() {
   };
 
   //이메일 전송 함수
-  const sendEmail = (email: string) => {
+  const sendEmail = async () => {
     //인증코드 입력 부분 초기화
     setSignUpData((prevData) => ({
       ...prevData,
@@ -133,24 +134,35 @@ export default function SignUpPage() {
     setTimer(newTimer);
 
     //이메일 인증번호 보내기.
-    SendEmailApi(email);
-    console.log('sendEmail 끝부분')
+    const response = await SendEmailApi(signUpData.email);
+    console.log(response);
   };
 
   //인증코드 확인 함수
-  const confirmVerificationCode = (value: string) => async () => {
+  const confirmVerificationCode = (email: string, verificationCode: string) => async () => {
     //1. 인증번호 맞는지 틀린지 확인 - 서버에 email, 인증번호 보내고 코드 검증.
-    //
+    const response = await ConfirmVerificationCodeApi(email, verificationCode);
     //2-1. 맞으면
-    //readonly 속성으로 바꾸고
-    //이메일 readonly
-    //인증 버튼 없애고 ok 표시.
-    //인증번호 div 없애기
-    //isValid 값 변경.
-    //
-    //2-2.틀리면
-    //인증번호가 잘못됐습니다 경고글 출력,
-    //인증번호 clear
+    if (response) {
+      setIsValid((prevData) => ({
+        ...prevData,
+        verificationCode: true,
+      }));
+
+      setEmailChecked(true);
+
+      setIsVisible(false);
+    } else {
+      //2-2.틀리면
+      setErrMsg((prevData) => ({
+        ...prevData,
+        verificationCode: '인증번호가 잘못되었습니다',
+      }));
+      setSignUpData((prevData) => ({
+        ...prevData,
+        verificationCode: '',
+      }));
+    }
   };
 
   //타이머 포멧 함수
@@ -166,15 +178,30 @@ export default function SignUpPage() {
       const response = await IdDuplicatedCheckApi(signUpData.memberId);
       console.log(response);
       //아이디 중복일 경우
+      if (!response) {
+        setErrMsg((prevData) => ({
+          ...prevData,
+          memberId: '중복된 아이디가 존재합니다.',
+        }));
+      } else {
+        //아이디가 중복이 아닐 경우
+        setIdChecked(true);
+      }
       //아이디 사용 가능할 경우
     } catch (error) {
       console.error('아이디 중복 체크 오류', error);
     }
   };
+  //회원가입 함수
+  const signUpHandler = async () => {
+    const result = await SignUpApi(signUpData);
+    //result가 true일 경우 회원가입이 완료되었습니다 모달 띄우기.
+    console.log(result);
+  };
 
   return (
     <div className="flex">
-      <div className="container w-[100%] h-[100vh]">
+      <div className="container w-full flex flex-col justify-center items-center">
         <h2>회원가입</h2>
         <h4>회원가입을 위한 정보를 입력해주세요.</h4>
         <SignUpForm
@@ -183,14 +210,16 @@ export default function SignUpPage() {
           sendEmail={sendEmail}
           confirmVerificationCode={confirmVerificationCode}
           isVisible={isVisible}
+          emailChecked={emailChecked}
+          idChecked={idChecked}
           timeLeft={timeLeft}
           formatTimeLeft={formatTimeLeft}
           errMsg={errMsg}
           isValid={isValid}
           idDuplicatedCheck={idDuplicatedCheck}
-          signUpHandler={SignUpApi(signUpData)}
+          signUpHandler={signUpHandler}
         />
-        <button type="submit">회원가입</button>
+        
       </div>
     </div>
   );
