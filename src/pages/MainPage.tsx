@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import Slider from 'react-slick';
+import { CustomNextArrow, CustomPrevArrow } from '../components/arrow/CustomArrow';
 import SpotCard from '../components/card/SpotCard';
 import FilterButton from '../components/common/FilterButton';
 import PlaceInput from '../components/input/PlaceInput';
@@ -17,16 +18,6 @@ export default function MainPage() {
     if (sliderRef.current) sliderRef.current.slickPause();
   };
 
-  function SampleNextArrow(props: any) {
-    const { className, style, onClick } = props;
-    return <div className={className} style={{ ...style, display: 'block', background: 'red' }} onClick={onClick} />;
-  }
-
-  function SamplePrevArrow(props: any) {
-    const { className, style, onClick } = props;
-    return <div className={className} style={{ ...style, display: 'block', background: 'green' }} onClick={onClick} />;
-  }
-
   const settings = {
     dots: true,
     infinite: true,
@@ -36,8 +27,8 @@ export default function MainPage() {
     slidesToScroll: 4,
     autoplay: true,
     autoplaySpeed: 6000,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
+    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow />,
   };
 
   return (
@@ -55,16 +46,20 @@ export default function MainPage() {
             <SpotCard imgPath="/images/example-gwanghwamun.jpg" spotName="광화문" />
             <SpotCard imgPath="/images/example-lotteworld.jpg" spotName="롯데월드" />
           </Slider>
-          <div>
-            <button onClick={playSlider}>play</button>
-            <button onClick={pauseSlider}>pause</button>
+          <div className="mt-[30px] flex gap-[5px] justify-center">
+            <button onClick={playSlider}>
+              <img src="/play-button.svg" alt="play" />
+            </button>
+            <button onClick={pauseSlider}>
+              <img src="/pause-button.svg" alt="pause" />
+            </button>
           </div>
         </div>
       </section>
       <section className={sectionStyle}>
         <h1 className={h1Style}>여행지 찾기</h1>
         <div className="flex justify-center">
-          <PlaceInput />
+          <PlaceInput searchObj="여행지" />
         </div>
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px]">
           <nav className="flex flex-wrap gap-[8px] mb-[20px]">
