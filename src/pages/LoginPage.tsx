@@ -4,7 +4,7 @@ import { LoginApi } from '../api/LoginApi';
 import { Link } from 'react-router-dom';
 import HorizonLine from '../components/common/HorizonLine';
 import { KAKAO_AUTH_URL } from '../api/ApiUrls';
-import kakao_login_medium_wide from '../../public/images/login/kakao_login_medium_wide.png';
+import kakao_login_medium_wide from '/images/login/kakao_login_medium_wide.png';
 
 export default function LoginPage() {
   //로그인 정보
@@ -33,6 +33,9 @@ export default function LoginPage() {
 
   return (
     <div className="container w-full flex flex-col items-center justify-center">
+      <Link to="/calendar">
+        <p>달력 보기</p>
+      </Link>
       <h2>로그인</h2>
       <LoginForm loginData={loginData} handleChange={handleChange} loginHandler={loginHandler} />
 

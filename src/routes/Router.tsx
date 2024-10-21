@@ -13,6 +13,9 @@ import WelcomePage from '../pages/WelcomePage';
 import KakaoAuth from '../components/user/KakaoAuth';
 import Layout from '../shared/Layout';
 
+//************test */
+import CalendarModal from '../components/modal/CalendarModal';
+
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -71,6 +74,12 @@ const router = createBrowserRouter([
       {
         path: 'oauth/callback/kakao',
         element: <KakaoAuth />,
+      },
+
+      //*************test달력 *****************/
+      {
+        path: '/calendar',
+        element: <CalendarModal />,
       },
     ],
   },
