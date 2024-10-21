@@ -1,8 +1,8 @@
 // src/components/SignUpForm.js
-import UserInput from '../input/UserInput';
-import { UserInfoElement } from '../../types/signup';
 import { Link } from 'react-router-dom';
+import { UserInfoElement } from '../../types/signup.type';
 import { isEmpty } from '../../utils/checkObjectEmpty';
+import UserInput from '../input/UserInput';
 
 type LoginInfoElement = Omit<UserInfoElement, 'email' | 'nickName'>;
 
