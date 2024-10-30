@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
+import KakaoAuth from '../components/user/KakaoAuth';
 import CustomTripPage from '../pages/CustomTripPage';
 import FindIdPage from '../pages/FindIdPage';
 import FindPwPage from '../pages/FindPwPage';
@@ -10,7 +11,6 @@ import SignUpPage from '../pages/SignUpPage';
 import TripPlanPage from '../pages/TripPlanPage';
 import WeatherViewPage from '../pages/WeatherViewPage';
 import WelcomePage from '../pages/WelcomePage';
-import KakaoAuth from '../components/user/KakaoAuth';
 import Layout from '../shared/Layout';
 
 //************test */
