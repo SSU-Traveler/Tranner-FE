@@ -9,6 +9,7 @@ const buttonStyle =
 // 3. 장소 영문 이름    예) "Seongsan Ilchulbong Tuff Cone Natural Reserve"
 // 4. 장소 주소(선택사항: 만약 장소가 특정 명소가 아닌 지역이라면, 주소는 없음)
 // 5. 장소 설명
+// 6. 로그인이 필요하다는 알림(함수)
 
 interface CardModalProps {
   imgPath: string;
@@ -16,6 +17,7 @@ interface CardModalProps {
   placeEngName: string;
   placeAddress?: string;
   placeDescription: string;
+  needToLoginAlarm: () => void;
 }
 
 export default function CardModal({
@@ -24,11 +26,29 @@ export default function CardModal({
   placeEngName,
   placeAddress,
   placeDescription,
+  needToLoginAlarm,
 }: CardModalProps) {
   const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(false); // notiflix 테스트용
+
+  const handleAddToCart = () => {
+    if (!isLogin) {
+      needToLoginAlarm();
+    } else {
+      console.log('TODO: 장바구니에 추가하는 기능 구현');
+    }
+  };
+
+  const handleAddToTripCard = () => {
+    if (!isLogin) {
+      needToLoginAlarm();
+    } else {
+      console.log('TODO: 기존 여행 계획에 추가하는 기능 구현');
+    }
+  };
 
   return (
-    <div className="w-[920px] h-[520px] rounded-[16px] flex gap-[20px] bg-white p-[20px]">
+    <div className="w-[920px] h-[520px] rounded-[16px] flex gap-[20px] bg-white p-[20px]" id="modal-content">
       <img src={imgPath} alt={placeKorName} className="w-[450px] h-[480px]" />
       <div className="flex flex-col justify-between">
         <section>
@@ -52,14 +72,18 @@ export default function CardModal({
                   />
                 ))}
             </section>
-            <p className="text-[12px] text-[#B2B9C0] mb-[4px]">{placeEngName}</p>
+            <p className="text-[14px] text-[#B2B9C0] mb-[4px]">{placeEngName}</p>
             {placeAddress && <p className="text-[13px] text-[#495057]">{placeAddress}</p>}
           </section>
           <p>{placeDescription}</p>
         </section>
         <section className="flex gap-[10px]">
-          <button className={buttonStyle}>장바구니에 담기</button>
-          <button className={buttonStyle}>기존 여행에 추가하기</button>
+          <button className={buttonStyle} onClick={handleAddToCart}>
+            장바구니에 담기
+          </button>
+          <button className={buttonStyle} onClick={handleAddToTripCard}>
+            기존 여행에 추가하기
+          </button>
         </section>
       </div>
     </div>
