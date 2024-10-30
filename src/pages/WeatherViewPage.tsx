@@ -1,5 +1,5 @@
 import getWeatherApi from '../api/weather.api';
-import FilterButton from '../components/common/FilterButton';
+import FilterButtonFormat from '../components/format/FilterButtonFormat';
 import PlaceInput from '../components/input/PlaceInput';
 
 export default function WeatherViewPage() {
@@ -21,12 +21,7 @@ export default function WeatherViewPage() {
       </section>
       <section className="absolute mt-[420px]">
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] ">
-          <nav className="flex flex-wrap gap-[8px] mb-[20px]">
-            <FilterButton buttonName="서울" />
-            <FilterButton buttonName="경기" />
-            <FilterButton buttonName="인천" />
-            <FilterButton buttonName="서대문구" />
-          </nav>
+          <FilterButtonFormat />
         </div>
       </section>
     </>
