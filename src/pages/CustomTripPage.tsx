@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import FilterButton from '../components/common/FilterButton';
 import { FirstQuestion } from '../components/modal/SurveyModal';
-import { hideOverlay, showOverlay } from '../utils/toggleOverlay';
+import { THEME_OPTIONS } from '../constants/options';
+import { useAlarm } from '../hooks/useAlarm';
+import { useModal } from '../hooks/useModal';
+import { useOption } from '../hooks/useOption';
 
 export default function CustomTripPage() {
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(true); // notiflix 테스트용
+  const { openModal } = useModal();
+  const { needToLoginAlarm } = useAlarm();
+  const { selectedOption, handleChangeOption } = useOption(THEME_OPTIONS);
 
   const handleOpenModal = () => {
-    showOverlay();
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    hideOverlay();
-    setOpenModal(false);
+    if (!isLogin) needToLoginAlarm();
+    else openModal(<FirstQuestion />);
   };
 
   return (
@@ -38,22 +39,17 @@ export default function CustomTripPage() {
       <section className="absolute mt-[420px]">
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] ">
           <nav className="flex flex-wrap gap-[8px] mb-[20px]">
-            <FilterButton buttonName="힐링, 휴식" />
-            <FilterButton buttonName="역사 공부, 문화 탐방" />
-            <FilterButton buttonName="자연/경치 관람" />
-            <FilterButton buttonName="액티비티, 모험" />
-            <FilterButton buttonName="미식 여행, 맛집 탐방" />
-            <FilterButton buttonName="사진 촬영, 인생샷" />
-            <FilterButton buttonName="쇼핑, 도심 탐방" />
-            <FilterButton buttonName="호캉스" />
+            {THEME_OPTIONS.map((option) => (
+              <FilterButton
+                key={option}
+                buttonName={option}
+                selectedOption={selectedOption}
+                onClick={handleChangeOption}
+              />
+            ))}
           </nav>
         </div>
       </section>
-      {openModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <FirstQuestion />
-        </div>
-      )}
     </>
   );
 }
