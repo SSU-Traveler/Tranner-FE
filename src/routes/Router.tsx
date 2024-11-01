@@ -13,9 +13,6 @@ import WeatherViewPage from '../pages/WeatherViewPage';
 import WelcomePage from '../pages/WelcomePage';
 import Layout from '../shared/Layout';
 
-//************test */
-import CalendarModal from '../components/modal/CalendarModal';
-
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -74,12 +71,6 @@ const router = createBrowserRouter([
       {
         path: 'oauth/callback/kakao',
         element: <KakaoAuth />,
-      },
-
-      //*************test달력 *****************/
-      {
-        path: '/calendar',
-        element: <CalendarModal />,
       },
     ],
   },

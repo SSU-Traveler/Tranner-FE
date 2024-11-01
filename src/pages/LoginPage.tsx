@@ -33,8 +33,8 @@ export default function LoginPage() {
 
   return (
     <div className="container w-full flex flex-col items-center justify-center">
-      <Link to="/calendar">
-        <p>달력 보기</p>
+      <Link to="/trip-plan">
+        <p>여행 계획</p>
       </Link>
       <h2>로그인</h2>
       <LoginForm loginData={loginData} handleChange={handleChange} loginHandler={loginHandler} />

@@ -1,12 +1,15 @@
 import axios from 'axios';
 import { UserInfoElement } from '../types/signup.type';
 const SIGNUP_API_BASE_URL = '/api/member';
-//const SIGNUP_API_BASE_URL = 'http://localhost:8080/member';
 
 //회원 가입
 export const SignUpApi = async (data: UserInfoElement) => {
   try {
-    const response = await axios.post(SIGNUP_API_BASE_URL + '/register', data);
+    const response = await axios.post(SIGNUP_API_BASE_URL + '/register', data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     console.log(response);
   } catch (error) {
     console.error('Error fetching boards:', error);
@@ -19,7 +22,8 @@ export const SignUpApi = async (data: UserInfoElement) => {
 export const SendEmailApi = async (email: string) => {
   try {
     const data = { email: email };
-    const response = await axios.post(SIGNUP_API_BASE_URL + '/emails/verification-requests', data, {
+    const url = `${SIGNUP_API_BASE_URL}/emails/verification-requests`;
+    const response = await axios.post(url, data, {
       headers: {
         'Content-Type': 'application/json',
       },
