@@ -1,5 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider } from 'react-router-dom';
+import '../src/styles/date-range-picker.css';
+import { ModalProvider } from './contexts/modal.context';
 import router from './routes/Router';
 
 const queryClient = new QueryClient();
@@ -7,8 +9,10 @@ const queryClient = new QueryClient();
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      {/* <ReactQueryDevtools /> */}
+      <ModalProvider>
+        <RouterProvider router={router} />
+        {/* <ReactQueryDevtools /> */}
+      </ModalProvider>
     </QueryClientProvider>
   );
 }

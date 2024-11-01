@@ -1,16 +1,45 @@
 // SpotCard 컴포넌트가 받게 될 props
 // 1. 이미지 경로  예) "/images/example-gwanghwamun.jpg"
-// 2. 명소 이름    예) "광화문"
+// 2. 명소 국문 이름    예) "광화문"
+// (여기부터는 CardModal에 넘겨주기 위해서 받아야 하는 props임)
+// 3. 명소 영문 이름
+// 4. 명소 주소
+// 5. 명소 설명
+// 6. 로그인이 필요하다는 알림(함수)
+
+import { useModal } from '../../hooks/useModal';
+import CardModal from '../modal/CardModal';
 
 interface SpotCardProps {
   imgPath: string;
   spotName: string;
+  spotEngName: string;
+  spotDescription: string;
+  spotAddress: string;
+  needToLoginAlarm: () => void;
 }
 
-export default function SpotCard({ imgPath, spotName }: SpotCardProps) {
+export default function SpotCard({
+  imgPath,
+  spotName,
+  spotEngName,
+  spotDescription,
+  spotAddress,
+  needToLoginAlarm,
+}: SpotCardProps) {
+  const { openModal } = useModal();
+
   const openCardModal = () => {
-    console.log('명소 카드를 클릭하면 카드 모달이 뜨게 해야 함');
-    // 이 함수를 따로 빼는 게 좋을 듯? -> LocalCard 컴포넌트에서도 쓰이니까
+    openModal(
+      <CardModal
+        imgPath={imgPath}
+        placeKorName={spotName}
+        placeEngName={spotEngName}
+        placeAddress={spotAddress}
+        placeDescription={spotDescription}
+        needToLoginAlarm={needToLoginAlarm}
+      />
+    );
   };
 
   return (
