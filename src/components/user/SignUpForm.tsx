@@ -92,7 +92,10 @@ const SignUpForm = ({
             />
             <button
               type="button"
-              onClick={() => confirmVerificationCode(signUpData.email, signUpData.verificationCode)}
+              onClick={() => {
+                console.log('버튼 클릭됨');
+                confirmVerificationCode(signUpData.email, signUpData.verificationCode);
+              }}
               disabled={timeLeft <= 0}
               className={`border w-[80px] h-[40px] rounded-[10px] ml-5 ${
                 timeLeft <= 0 ? 'bg-[#d9d9d9]' : 'bg-button-basic hover:bg-button-hover'

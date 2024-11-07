@@ -4,7 +4,7 @@ interface Props {
   ref: React.Ref<HTMLDivElement>;
 }
 const Map = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  return <div ref={ref} className="flex-grow h-[400px]" />;
+  return <div ref={ref} className="flex-grow h-auto " />;
 });
 
 export default Map;

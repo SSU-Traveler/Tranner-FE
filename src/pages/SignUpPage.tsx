@@ -139,7 +139,7 @@ export default function SignUpPage() {
   };
 
   //인증코드 확인 함수
-  const confirmVerificationCode = (email: string, verificationCode: string) => async () => {
+  const confirmVerificationCode = async (email: string, verificationCode: string) => {
     //1. 인증번호 맞는지 틀린지 확인 - 서버에 email, 인증번호 보내고 코드 검증.
     const response = await ConfirmVerificationCodeApi(email, verificationCode);
     //2-1. 맞으면
@@ -219,7 +219,6 @@ export default function SignUpPage() {
           idDuplicatedCheck={idDuplicatedCheck}
           signUpHandler={signUpHandler}
         />
-        
       </div>
     </div>
   );

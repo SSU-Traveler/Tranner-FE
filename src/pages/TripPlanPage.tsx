@@ -15,7 +15,10 @@ const TripPlanPage = () => {
     tripEndDate: '0000-00-00',
   });
   const [isOpen, setIsOpen] = useState(true);
-  const [currentDate, setCurrentDate] = useState(1);
+  const [currentDateIndex, setCurrentDateIndex] = useState(1);
+
+  const [selectedSpots, setSelectedSpots] = useState(['길동', '고덕동', '경복궁']);
+  const [currSelectedSpot, setCurrSelectedSpot] = useState(selectedSpots[0]);
   const [elementObj, setElementObj] = useState([
     {
       daySequence: 1,
@@ -68,6 +71,24 @@ const TripPlanPage = () => {
     {
       daySequence: 3,
       locationSequence: 3,
+      placeName: '순풍해장국 길이 테스트용임', //name 장소 이름
+      addr: '대한민국 제주특별자치도 서귀포시 순풍해장국', //formattedAddress  주소
+    },
+  ]);
+
+  const [placeObjList, setPlaceObjList] = useState([
+    {
+      isInPlanList: true,
+      placeName: '성산 일출봉',
+      addr: '대한민국 서귀포시 성산 일출봉',
+    },
+    {
+      isInPlanList: true,
+      placeName: '우도', //name 장소 이름
+      addr: '대한민국 제주특별자치도 우도', //formattedAddress  주소
+    },
+    {
+      isInPlanList: true,
       placeName: '순풍해장국 길이 테스트용임', //name 장소 이름
       addr: '대한민국 제주특별자치도 서귀포시 순풍해장국', //formattedAddress  주소
     },
@@ -183,12 +204,19 @@ const TripPlanPage = () => {
   };
 
   //PlaceSearch 관련
-  const handleCurrentDate = (date: number) => {
-    setCurrentDate(date);
+  const handleCurrentDateIndex = (dateIndex: number) => {
+    setCurrentDateIndex(dateIndex);
   };
 
+  const handleSelectedSpots = () => {};
+  const handleCurrSelectedSpot = (index: number) => {
+    setCurrSelectedSpot(selectedSpots[index]);
+  };
+
+  const handlePlaceObjList = () => {};
+
   return (
-    <div className="flex">
+    <div className="flex h-auto">
       <TripPlanInfo
         planName={planName}
         handlePlanName={handlePlanName}
@@ -198,11 +226,21 @@ const TripPlanPage = () => {
         isOpen={isOpen}
         openModal={openModal}
         elementObj={elementObj}
-        deleteElement={deleteElement}
+        deleteElement={deleteElement} //하,,,이거 수정해서 재사용하도록. placeElement에서도 사용
         dateList={dateList}
       />
       {isOpen && <CalendarModal closeModal={closeModal} handleTripDate={setTripDate} />}
-      <PlaceSearch dateList={dateList} currentDate={currentDate} handleCurrentDate={handleCurrentDate} />
+      <PlaceSearch
+        dateList={dateList}
+        currentDateIndex={currentDateIndex}
+        handleCurrentDateIndex={handleCurrentDateIndex}
+        selectedSpots={selectedSpots}
+        handleSelectedSpots={handleSelectedSpots}
+        currSelectedSpot={currSelectedSpot}
+        handleCurrSelectedSpot={handleCurrSelectedSpot}
+        placeObjList={placeObjList}
+        handlePlaceObjList={handlePlaceObjList}
+      />
       <Map ref={mapRef} />
     </div>
   );
