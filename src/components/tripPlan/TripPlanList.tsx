@@ -22,7 +22,7 @@ const TripPlanList = ({ dateIndex, date, elementObj, deleteElement }: Props) => 
   const handleElementObj = () => {};
 
   return (
-    <div>
+    <div className="overflow-auto">
       <div className="flex w-full h-[35px] bg-button-selected border rounded-[15px] text-white px-2 py-1 my-3 justify-between items-center">
         <p className="font-bold">{dateIndex}일차 일정</p>
         <div className="flex flex-row items-center">
