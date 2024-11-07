@@ -12,7 +12,7 @@ export default function Layout() {
   return (
     <>
       <Header />
-      <main className={`min-h-[900px] ${isPaddingZero ? 'px-0' : 'px-[120px]'} relative`}>
+      <main className={`min-h-screen ${isPaddingZero ? 'px-0' : 'px-[120px]'} relative`}>
         <ScrollToTop />
         <Outlet />
         <div className="fixed inset-0 bg-black opacity-50 z-50 hidden" id="overlay"></div>
