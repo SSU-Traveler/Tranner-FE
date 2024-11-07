@@ -12,6 +12,19 @@ export default defineConfig({
         secure: false,
         ws: true,
       },
+      // 구글 맵 API
+      '/maps/api/place': {
+        target: 'https://maps.googleapis.com',
+        changeOrigin: true,
+        secure: true,
+      },
+      // 날씨 API
+      '/weather-api': {
+        target: 'https://apihub.kma.go.kr',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/weather-api/, ''), // '/weather-api' 경로를 제거
+        secure: true,
+      },
     },
   },
 });

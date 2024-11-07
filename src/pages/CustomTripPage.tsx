@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getHealingPlaces } from '../api/place.api';
+import SpotCard from '../components/card/SpotCard';
 import FilterButton from '../components/common/FilterButton';
 import { FirstQuestion } from '../components/modal/SurveyModal';
 import { THEME_OPTIONS } from '../constants/options';
@@ -8,7 +10,8 @@ import { useOption } from '../hooks/useOption';
 
 export default function CustomTripPage() {
   const [isLogin, setIsLogin] = useState<boolean>(true); // notiflix 테스트용
-  const { openModal } = useModal();
+  const [places, setPlaces] = useState([]);
+  const { isModalOpen, openModal, closeModal } = useModal();
   const { needToLoginAlarm } = useAlarm();
   const { selectedOption, handleChangeOption } = useOption(THEME_OPTIONS);
 
@@ -16,6 +19,33 @@ export default function CustomTripPage() {
     if (!isLogin) needToLoginAlarm();
     else openModal(<FirstQuestion />);
   };
+
+  useEffect(() => {
+    async function fetchHealingPlaces() {
+      const result = await getHealingPlaces();
+      setPlaces(result);
+    }
+    fetchHealingPlaces();
+  }, []);
+
+  console.log(places);
+
+  useEffect(() => {
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modal-content');
+
+    const handleOverlayClick = (e: MouseEvent) => {
+      if (modal && !modalContent?.contains(e.target as Node)) closeModal();
+    };
+
+    if (isModalOpen) {
+      modal?.addEventListener('click', handleOverlayClick);
+    }
+
+    return () => {
+      modal?.removeEventListener('click', handleOverlayClick);
+    };
+  }, [isModalOpen, closeModal]);
 
   return (
     <>
@@ -37,7 +67,7 @@ export default function CustomTripPage() {
         </div>
       </section>
       <section className="absolute mt-[420px]">
-        <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] ">
+        <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] bg-white">
           <nav className="flex flex-wrap gap-[8px] mb-[20px]">
             {THEME_OPTIONS.map((option) => (
               <FilterButton
@@ -48,6 +78,18 @@ export default function CustomTripPage() {
               />
             ))}
           </nav>
+          <div className="flex flex-wrap justify-between gap-[20px]">
+            {places.map((place, index) => (
+              <SpotCard
+                key={index}
+                imgPath={place?.photos[0]}
+                spotName={place?.name}
+                spotDescription="설명"
+                spotAddress={place?.formatted_address}
+                needToLoginAlarm={needToLoginAlarm}
+              />
+            ))}
+          </div>
         </div>
       </section>
     </>

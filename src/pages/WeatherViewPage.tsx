@@ -5,7 +5,7 @@ import PlaceInput from '../components/input/PlaceInput';
 export default function WeatherViewPage() {
   const WEATHER_AUTH_KEY = import.meta.env.VITE_WEATHER_AUTH_KEY;
 
-  const apiUrl = `https://apihub.kma.go.kr/api/json?authKey=${WEATHER_AUTH_KEY}`;
+  const apiUrl = `/weather-api/api/json?authKey=${WEATHER_AUTH_KEY}`;
   // const apiUrl =
   //   'https://apihub.kma.go.kr/api/typ01/url/kma_sfctm2.php?tm=202211300900&stn=0&help=1&authKey=npCE1PlXSUCQhNT5VylA7w';
   // const savePath = "/path/to/save/file.json";

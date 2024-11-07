@@ -1,19 +1,20 @@
 import axios from 'axios';
+import { LOCATION_OPTIONS } from '../constants/options';
 
-const GOGGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
+const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_PLACE_API;
 
 export async function getPopularPlaces() {
   const lat = 37.5665; // 서울 위도
   const lng = 126.978; // 서울 경도
   const radius = 50000; // 반경 50km
 
-  const nearbySearchUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&rankby=prominence&type=tourist_attraction&key=${GOGGLE_MAP_API_KEY}`;
+  const nearbySearchUrl = `/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&rankby=prominence&type=tourist_attraction&key=${GOOGLE_MAP_API_KEY}`;
 
   // Text Search
   const textSearchQuery = '대한민국 인기 명소';
-  const textSearchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
+  const textSearchUrl = `/maps/api/place/textsearch/json?query=${encodeURIComponent(
     textSearchQuery
-  )}&key=${GOGGLE_MAP_API_KEY}`;
+  )}&key=${GOOGLE_MAP_API_KEY}`;
 
   try {
     const nearbyResponse = await fetch(nearbySearchUrl);
@@ -29,37 +30,62 @@ export async function getPopularPlaces() {
 }
 
 export async function getHealingPlaces() {
+  // 매개변수 받기
+  // 위도, 경도 배열로 만들기
+  // 데이터 전체 불러오기
+  // 무한 스크롤
   const placeTheme = 'park';
+  const radius = 50000;
 
-  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?type=${placeTheme}&region=kr&key=${GOGGLE_MAP_API_KEY}`;
+  let allPlaces = [];
 
-  try {
-    const response = await axios.get(url);
-    const places = response.data.results;
-    return places;
-  } catch (error) {
-    console.error('Error fetching places: ', error);
-  }
+  // for (const location of LOCATION_OPTIONS) {
+  let nextPageToken = null;
+
+  do {
+    try {
+      const url = `/maps/api/place/nearbysearch/json?location=${LOCATION_OPTIONS[0].lat},${LOCATION_OPTIONS[0].lng}&radius=${radius}&type=${placeTheme}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
+
+      const response = await axios.get(nextPageToken ? `${url}&pagetoken=${nextPageToken}` : url);
+
+      const places = response.data.results;
+      allPlaces = allPlaces.concat(places);
+
+      nextPageToken = response.data.next_page_token;
+
+      if (nextPageToken) {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+    } catch (error) {
+      console.error('Error fetching places: ', error);
+      break;
+    }
+  } while (nextPageToken);
+  // }
+  const placesWithDetails = await Promise.all(allPlaces.map((place) => getPlaceDetails(place.place_id)));
+
+  console.log('Healing Places: ', placesWithDetails);
+  return placesWithDetails;
 }
 
-// async function findPlaces() {
-//   const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
+// 장소 상세 정보, 장소 사진 가져오는 함수
+async function getPlaceDetails(placeId) {
+  try {
+    const url = `/maps/api/place/details/json?place_id=${placeId}&fields=name,rating,formatted_address,photo,geometry&key=${GOOGLE_MAP_API_KEY}`;
+    const response = await axios.get(url);
+    const details = response.data.result;
 
-//   const request = {
-//       fields: ['displayName', 'location', 'businessStatus'],
-//       includedType: 'park', // 필요한 장소 유형으로 수정
-//       language: 'ko',
-//       maxResultCount: 7,
-//       minRating: 3.2,
-//       region: 'kr',
-//       useStrictTypeFiltering: false,
-//   };
+    // 사진 URL 생성
+    const photos = details.photos
+      ? details.photos.map(
+          (photo) =>
+            `/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${GOOGLE_MAP_API_KEY}`
+        )
+      : [];
 
-//   const { places } = await Place.searchByText(request);
-
-//   if (places.length) {
-//       console.log("Found places:", places);
-//   } else {
-//       console.log('No results found');
-//   }
-// }
+    return { ...details, photos };
+  } catch (error) {
+    console.error('Error fetching place details: ', error);
+    return null;
+  }
+}
