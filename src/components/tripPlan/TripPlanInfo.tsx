@@ -3,6 +3,7 @@ import TripPlanBox from './TripPlanBox';
 import changeDateFormat from '../../utils/changeDateFormat';
 import { userPlaceType } from '../../types/tripPlan.type';
 import dateWithDays from '../../utils/dateWithDay';
+import { isEmpty } from '../../utils/checkObjectEmpty';
 
 interface Props {
   planName: string;
@@ -61,8 +62,8 @@ const TripPlanInfo = ({
   }, [editable]);
 
   return (
-    <div className="w-[400px] p-4">
-      <div className="pb-2">
+    <div className="w-[400px] p-4 h-[100vh]">
+      <div className="pb-2 h-[100px]">
         <div ref={nameRef}>
           {editable ? (
             <input type="text" value={planName} onChange={(e) => handlePlanName(e)} onKeyDown={handleKeyDown} />
@@ -95,6 +96,17 @@ const TripPlanInfo = ({
         </div>
       </div>
       <TripPlanBox tripDate={tripDate} elementObj={elementObj} deleteElement={deleteElement} dateList={dateList} />
+      <button
+        type="button"
+        disabled={Array.isArray(elementObj) && elementObj.length === 0}
+        className={`text-white font-bold justify-center items-center flex w-[350px] h-[40px] rounded-[10px] ${
+          Array.isArray(elementObj) && elementObj.length !== 0
+            ? 'bg-button-basic hover:bg-button-hover'
+            : 'bg-[#d9d9d9]'
+        }`}
+      >
+        일정 생성
+      </button>
     </div>
   );
 };

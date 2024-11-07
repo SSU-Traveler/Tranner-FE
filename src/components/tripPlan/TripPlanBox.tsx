@@ -16,11 +16,11 @@ const TripPlanBox = ({ tripDate, elementObj, deleteElement, dateList }: Props) =
   const handleOrder = () => {};
 
   return (
-    <div>
-      <p onClick={handleOrder} className="text-xs button-basic">
+    <div className="h-[calc(100%-140px)]">
+      <p onClick={handleOrder} className="text-xs button-basic mb-[5px]">
         순서 수정
       </p>
-      <ul>
+      <ul className="overflow-auto h-[calc(100%-35px)]">
         {dateList.map((date, index) => {
           // 날짜를 YYYY-MM-DD 형식으로 출력
           // <li key={index}>
