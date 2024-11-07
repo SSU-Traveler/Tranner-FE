@@ -14,7 +14,7 @@ const buttonStyle =
 interface CardModalProps {
   imgPath: string;
   placeKorName: string;
-  placeEngName: string;
+  placeEngName?: string;
   placeAddress?: string;
   placeDescription: string;
   needToLoginAlarm: () => void;
