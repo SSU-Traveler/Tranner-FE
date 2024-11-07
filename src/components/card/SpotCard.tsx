@@ -13,7 +13,7 @@ import CardModal from '../modal/CardModal';
 interface SpotCardProps {
   imgPath: string;
   spotName: string;
-  spotEngName: string;
+  spotEngName?: string;
   spotDescription: string;
   spotAddress: string;
   needToLoginAlarm: () => void;
@@ -47,7 +47,7 @@ export default function SpotCard({
       className="w-[250px] h-[300px] bg-white rounded-[16px] border border-[#B2B9C0] hover:cursor-pointer flex flex-col gap-[5px] items-center p-[10px]"
       onClick={openCardModal}
     >
-      <img src={imgPath} alt={spotName} className="w-[230px] h-[260px] rounded-[16px]" />
+      <img src={imgPath} alt={spotName} className="w-[230px] h-[260px] rounded-[16px] object-cover" />
       <p className="text-[#495057] font-bold text-[18px] self-start">{spotName}</p>
     </div>
   );
