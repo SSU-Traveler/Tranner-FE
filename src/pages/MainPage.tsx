@@ -1,17 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
-import { getHealingPlaces, getPopularPlaces } from '../api/place.api';
+import { getPopularPlaces } from '../api/place.api';
 import { CustomNextArrow, CustomPrevArrow } from '../components/arrow/CustomArrow';
 import SpotCard from '../components/card/SpotCard';
 import FilterButtonFormat from '../components/format/FilterButtonFormat';
 import PlaceInput from '../components/input/PlaceInput';
 import { useAlarm } from '../hooks/useAlarm';
 import { useModal } from '../hooks/useModal';
-import { hideOverlay } from '../utils/toggleOverlay';
 
 const h1Style = 'font-bold text-[24px]';
 const sectionStyle = 'my-[20px] flex flex-col gap-[10px]';
-const GOGGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 
 export default function MainPage() {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -20,8 +18,7 @@ export default function MainPage() {
   const { isModalOpen, closeModal } = useModal();
 
   useEffect(() => {
-    getPopularPlaces(); // TODO: CORS 에러 해결하기
-    getHealingPlaces();
+    getPopularPlaces();
   }, []);
 
   const playSlider = () => {
@@ -46,17 +43,13 @@ export default function MainPage() {
     prevArrow: <CustomPrevArrow />,
   };
 
-  const closeCardModal = useCallback(() => {
-    closeModal();
-    hideOverlay();
-  }, [closeModal]);
-
+  // 이 부분 커스텀 훅으로 만들기!!
   useEffect(() => {
     const modal = document.getElementById('modal');
     const modalContent = document.getElementById('modal-content');
 
     const handleOverlayClick = (e: MouseEvent) => {
-      if (modal && !modalContent?.contains(e.target as Node)) closeCardModal();
+      if (modal && !modalContent?.contains(e.target as Node)) closeModal();
     };
 
     if (isModalOpen) {
@@ -66,7 +59,7 @@ export default function MainPage() {
     return () => {
       modal?.removeEventListener('click', handleOverlayClick);
     };
-  }, [isModalOpen, closeCardModal]);
+  }, [isModalOpen, closeModal]);
 
   return (
     <>
