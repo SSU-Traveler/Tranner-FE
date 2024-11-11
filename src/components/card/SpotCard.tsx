@@ -29,6 +29,13 @@ export default function SpotCard({
 }: SpotCardProps) {
   const { openModal } = useModal();
 
+  const truncateWord = (placeName: string) => {
+    if (placeName.length > 13) {
+      return placeName.slice(0, 12) + '...';
+    }
+    return placeName;
+  };
+
   const openCardModal = () => {
     openModal(
       <CardModal
@@ -48,7 +55,7 @@ export default function SpotCard({
       onClick={openCardModal}
     >
       <img src={imgPath} alt={spotName} className="w-[230px] h-[260px] rounded-[16px] object-cover" />
-      <p className="text-[#495057] font-bold text-[18px] self-start">{spotName}</p>
+      <p className="text-[#495057] font-bold text-[18px] self-start">{truncateWord(spotName)}</p>
     </div>
   );
 }
