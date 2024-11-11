@@ -79,16 +79,28 @@ export default function CustomTripPage() {
             ))}
           </nav>
           <div className="flex flex-wrap justify-between gap-[20px]">
-            {places.map((place, index) => (
+            {places.length > 0 ? (
+              places.map((place, index) => (
+                <SpotCard
+                  key={index}
+                  imgPath={place?.photos[0]}
+                  spotName={place?.name}
+                  spotDescription="설명"
+                  spotAddress={place?.formatted_address}
+                  needToLoginAlarm={needToLoginAlarm}
+                />
+              ))
+            ) : (
               <SpotCard
-                key={index}
-                imgPath={place?.photos[0]}
-                spotName={place?.name}
-                spotDescription="설명"
-                spotAddress={place?.formatted_address}
+                imgPath="/images/example-lotteworld.jpg"
+                spotName="롯데월드"
+                spotEngName="Lotte World"
+                spotAddress="서울특별시 송파구 올림픽로 240"
+                spotDescription="롯데월드(영어: Lotte World)는 대한민국 서울특별시 송파구 올림픽로 240에 위치한 테마파크이다. 롯데그룹의 계열사인 호텔롯데 월드 사업부에서 운영한다.
+            놀이시설은 실내의 롯데월드 어드벤처(Lotte World Adventure)와 야외의 매직아일랜드가 운영되고 있으며, 민속박물관, 아이스링크, 백화점, 마트, 호텔 등이 포함된다."
                 needToLoginAlarm={needToLoginAlarm}
               />
-            ))}
+            )}
           </div>
         </div>
       </section>
