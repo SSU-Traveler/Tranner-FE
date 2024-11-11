@@ -25,6 +25,13 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/weather-api/, ''), // '/weather-api' 경로를 제거
         secure: true,
       },
+      // 위키피디아 API
+      '/wikipedia-api': {
+        target: 'https://ko.wikipedia.org',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/wikipedia-api/, ''), // '/wikipedia-api' 경로를 제거
+        secure: true,
+      },
     },
   },
 });
