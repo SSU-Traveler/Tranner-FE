@@ -4,7 +4,7 @@ import SpotCard from '../components/card/SpotCard';
 import DataLoading from '../components/common/DataLoading';
 import FilterButton from '../components/common/FilterButton';
 import { FirstQuestion } from '../components/modal/SurveyModal';
-import { PRIMARY_THEME_OPTIONS } from '../constants/options';
+import { THEME_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useModal } from '../hooks/useModal';
 import { useOption } from '../hooks/useOption';
@@ -14,7 +14,7 @@ export default function CustomTripPage() {
   const [places, setPlaces] = useState([]);
   const { isModalOpen, openModal, closeModal } = useModal();
   const { needToLoginAlarm } = useAlarm();
-  const { selectedOption, handleChangeOption } = useOption(PRIMARY_THEME_OPTIONS);
+  const { selectedOption, handleChangeOption } = useOption(Object.keys(THEME_OPTIONS));
 
   const handleOpenModal = () => {
     if (!isLogin) needToLoginAlarm();
@@ -73,15 +73,27 @@ export default function CustomTripPage() {
       </section>
       <section className="absolute mt-[420px] pr-[120px]">
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] bg-white">
-          <nav className="flex flex-wrap gap-[8px] mb-[20px]">
-            {PRIMARY_THEME_OPTIONS.map((option) => (
-              <FilterButton
-                key={option}
-                buttonName={option}
-                selectedOption={selectedOption}
-                onClick={handleChangeOption}
-              />
-            ))}
+          <nav className="flex flex-col gap-y-[20px] mb-[20px]">
+            <div className="flex flex-wrap gap-[8px]">
+              {Object.keys(THEME_OPTIONS).map((option) => (
+                <FilterButton
+                  key={option}
+                  buttonName={option}
+                  selectedOption={selectedOption}
+                  onClick={handleChangeOption}
+                />
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-[8px]">
+              {THEME_OPTIONS[selectedOption].map((item) => (
+                <FilterButton
+                  key={item.korName}
+                  buttonName={item.korName}
+                  selectedOption={selectedOption}
+                  onClick={handleChangeOption}
+                />
+              ))}
+            </div>
           </nav>
           <div className="flex flex-wrap justify-center gap-x-[39px] gap-y-[20px]">
             {places.length > 0 ? (
