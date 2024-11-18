@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+import DOMPurify from 'dompurify';
 import { useState } from 'react';
 
 const buttonStyle =
@@ -30,6 +32,8 @@ export default function CardModal({
 }: CardModalProps) {
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(false); // notiflix 테스트용
+
+  const sanitizedHTML = DOMPurify.sanitize(placeDescription);
 
   const handleAddToCart = () => {
     if (!isLogin) {
@@ -75,7 +79,14 @@ export default function CardModal({
             <p className="text-[14px] text-[#B2B9C0] mb-[4px]">{placeEngName}</p>
             {placeAddress && <p className="text-[13px] text-[#495057]">{placeAddress}</p>}
           </section>
-          <p>{placeDescription}</p>
+          <div
+            className={clsx(
+              placeAddress ? 'h-[350px]' : 'h-[370px]',
+              'w-[410px] overflow-y-auto overflow-x-hidden scrollbar-custom'
+            )}
+          >
+            <p className="w-[400px] text-[15.5px]" dangerouslySetInnerHTML={{ __html: sanitizedHTML }}></p>
+          </div>
         </section>
         <section className="flex gap-[10px]">
           <button className={buttonStyle} onClick={handleAddToCart}>
