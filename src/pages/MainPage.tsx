@@ -1,39 +1,53 @@
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import { getPlaces, getPopularPlaces } from '../api/place.api';
 import { CustomNextArrow, CustomPrevArrow } from '../components/arrow/CustomArrow';
 import SpotCard from '../components/card/SpotCard';
+import DataLoading from '../components/common/DataLoading';
 import FilterButton from '../components/common/FilterButton';
 import PlaceInput from '../components/input/PlaceInput';
 import { CITY_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useChainOption } from '../hooks/useChainOption';
 import { useModal } from '../hooks/useModal';
-import { SummaryOfPlaceInfo } from '../types/place.type';
+import '../styles/loading.css';
 
 const h1Style = 'font-bold text-[24px]';
 const sectionStyle = 'my-[20px] flex flex-col gap-[10px]';
 
 export default function MainPage() {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
-  const [popularPlaces, setPopularPlaces] = useState<SummaryOfPlaceInfo[] | null>(null);
-  const [places, setPlaces] = useState<SummaryOfPlaceInfo[] | null>(null);
+  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
   const sliderRef = useRef<null | Slider>(null);
   const { needToLoginAlarm } = useAlarm();
   const { isModalOpen, closeModal } = useModal();
   const { primaryOption, secondaryOptions, selectedOption, handleChangeOption, handleChangeSecondaryButton } =
     useChainOption();
 
-  useEffect(() => {
-    async function fetchPopularPlaces() {
-      const result = await getPopularPlaces();
-      setPopularPlaces(result);
+  const {
+    data: popularPlaces,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ['popular places'],
+    queryFn: () => getPopularPlaces(),
+    staleTime: 600000, // 데이터가 10분 동안 신선
+    refetchInterval: 600000, // 데이터를 다시 불러오는 간격
+    refetchOnWindowFocus: false, // 다른 창을 봤다가 다시 현재 브라우저에 포커스 했을 때 리페칭을 막음
+  });
 
-      const result2 = await getPlaces(`${primaryOption} ${selectedOption}`);
-      setPlaces(result2);
-    }
-    fetchPopularPlaces();
-  }, [primaryOption, selectedOption]);
+  const { data: places, isSuccess } = useQuery({
+    queryKey: ['places', selectedOption],
+    queryFn: () => getPlaces(`${primaryOption} ${selectedOption}`),
+    staleTime: 600000, // 데이터가 10분 동안 신선
+    refetchInterval: 600000, // 데이터를 다시 불러오는 간격
+    refetchOnWindowFocus: false, // 다른 창을 봤다가 다시 현재 브라우저에 포커스 했을 때 리페칭을 막음
+  });
+
+  if (isSuccess && places && places.length >= 1 && !isDataLoaded) {
+    setIsDataLoaded(true);
+  }
 
   const playSlider = () => {
     if (sliderRef.current) sliderRef.current.slickPlay();
@@ -43,9 +57,6 @@ export default function MainPage() {
     if (sliderRef.current) sliderRef.current.slickPause();
     setIsPlaying(false);
   };
-
-  console.log(popularPlaces);
-  console.log(places);
 
   const settings = {
     dots: true,
@@ -82,7 +93,7 @@ export default function MainPage() {
     <>
       <section className={sectionStyle}>
         <h1 className={h1Style}>최근 인기 여행지</h1>
-        <div className="border border-[#B2B9C0] p-[20px] rounded-[8px]">
+        <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] bg-white">
           <Slider ref={sliderRef} {...settings}>
             {popularPlaces ? (
               popularPlaces.map((place) => (
@@ -117,7 +128,7 @@ export default function MainPage() {
       <section className={sectionStyle}>
         <h1 className={h1Style}>여행지 찾기</h1>
         <div className="flex justify-center">
-          <PlaceInput searchObj="여행지" />
+          <PlaceInput searchObj="여행지를" />
         </div>
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px]">
           {/* <FilterButtonFormat /> */}
@@ -143,7 +154,7 @@ export default function MainPage() {
               ))}
             </div>
           </nav>
-          <div className="flex flex-wrap justify-between gap-[20px]">
+          <div className="flex flex-wrap justify-center gap-x-[39px] gap-y-[20px]">
             {places ? (
               places.map((place) => (
                 <SpotCard
@@ -156,15 +167,7 @@ export default function MainPage() {
                 />
               ))
             ) : (
-              <SpotCard
-                imgPath="/images/example-lotteworld.jpg"
-                spotName="롯데월드"
-                spotEngName="Lotte World"
-                spotAddress="서울특별시 송파구 올림픽로 240"
-                spotDescription="롯데월드(영어: Lotte World)는 대한민국 서울특별시 송파구 올림픽로 240에 위치한 테마파크이다. 롯데그룹의 계열사인 호텔롯데 월드 사업부에서 운영한다.
-              놀이시설은 실내의 롯데월드 어드벤처(Lotte World Adventure)와 야외의 매직아일랜드가 운영되고 있으며, 민속박물관, 아이스링크, 백화점, 마트, 호텔 등이 포함된다."
-                needToLoginAlarm={needToLoginAlarm}
-              />
+              <DataLoading />
             )}
           </div>
         </div>
