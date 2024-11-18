@@ -1,16 +1,22 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { UserInfoElement } from '../types/signup.type';
 const SIGNUP_API_BASE_URL = '/api';
 
 //로그인
-export const LoginApi = async (data: Omit<UserInfoElement, 'email' | 'nickName'>) => {
+export const LoginApi = async (data: Omit<UserInfoElement, 'email' | 'nickName'>): Promise<AxiosResponse | null> => {
   try {
-    const response = await axios.post(SIGNUP_API_BASE_URL + '/login', data);
+    const response = await axios.post(SIGNUP_API_BASE_URL + '/login', data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     console.log(response);
+    alert('로그인 성공');
+    return response;
   } catch (error) {
     console.error('Error fetching boards:', error);
     alert('로그인 문제');
-    return []; // 에러 발생 시 빈 배열 반환
+    return null; // 에러 발생 시 빈 배열 반환
   }
 };
 
