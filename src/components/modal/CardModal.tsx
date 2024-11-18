@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+import DOMPurify from 'dompurify';
 import { useState } from 'react';
 import useBasketStore from '../../zustand/basketStore';
 
@@ -32,16 +34,14 @@ export default function CardModal({
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(false); // notiflix 테스트용
 
-  const addSpot = useBasketStore((state) => state.addSpot);
+  const sanitizedHTML = DOMPurify.sanitize(placeDescription);
 
-  const handleAddToCart = async () => {
-    //if (!isLogin) {
-    //   needToLoginAlarm();
-    // } else {
-    // console.log('TODO: 장바구니에 추가하는 기능 구현');
-    ///// `````````````````` 여기에 장바구니에 추가하는 logic 구현 해놨어요!! ``````````````````````
-    addSpot(placeKorName);
-    // }
+  const handleAddToCart = () => {
+    if (!isLogin) {
+      needToLoginAlarm();
+    } else {
+      console.log('TODO: 장바구니에 추가하는 기능 구현');
+    }
   };
 
   const handleAddToTripCard = () => {
@@ -80,7 +80,14 @@ export default function CardModal({
             <p className="text-[14px] text-[#B2B9C0] mb-[4px]">{placeEngName}</p>
             {placeAddress && <p className="text-[13px] text-[#495057]">{placeAddress}</p>}
           </section>
-          <p>{placeDescription}</p>
+          <div
+            className={clsx(
+              placeAddress ? 'h-[350px]' : 'h-[370px]',
+              'w-[410px] overflow-y-auto overflow-x-hidden scrollbar-custom'
+            )}
+          >
+            <p className="w-[400px] text-[15.5px]" dangerouslySetInnerHTML={{ __html: sanitizedHTML }}></p>
+          </div>
         </section>
         <section className="flex gap-[10px]">
           <button className={buttonStyle} onClick={handleAddToCart}>
