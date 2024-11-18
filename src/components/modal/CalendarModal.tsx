@@ -1,19 +1,13 @@
-import React, { ReactElement, useState } from 'react';
+import React, { Dispatch, useState } from 'react';
 import { DateRangePicker } from 'react-date-range';
 import { addDays, addYears, subDays } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import ModalContainer from './ModalContainer';
-
-interface TripDate {
-  tripStartDate: string;
-  tripEndDate: string;
-}
-
 interface Props {
   closeModal: () => void;
-  handleTripDate: React.Dispatch<React.SetStateAction<{ tripStartDate: string; tripEndDate: string }>>;
+  handleTripDate: Dispatch<React.SetStateAction<{ tripStartDate: string; tripEndDate: string }>>;
 }
 
 const CalendarModal = ({ closeModal, handleTripDate }: Props) => {
