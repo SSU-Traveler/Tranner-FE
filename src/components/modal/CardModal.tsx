@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useBasketStore from '../../zustand/basketStore';
 
 const buttonStyle =
   'w-[200px] h-[50px] p-[10px] rounded-[5px] font-bold bg-button-basic text-white hover:bg-button-hover';
@@ -31,12 +32,16 @@ export default function CardModal({
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(false); // notiflix 테스트용
 
-  const handleAddToCart = () => {
-    if (!isLogin) {
-      needToLoginAlarm();
-    } else {
-      console.log('TODO: 장바구니에 추가하는 기능 구현');
-    }
+  const addSpot = useBasketStore((state) => state.addSpot);
+
+  const handleAddToCart = async () => {
+    //if (!isLogin) {
+    //   needToLoginAlarm();
+    // } else {
+    // console.log('TODO: 장바구니에 추가하는 기능 구현');
+    ///// `````````````````` 여기에 장바구니에 추가하는 logic 구현 해놨어요!! ``````````````````````
+    addSpot(placeKorName);
+    // }
   };
 
   const handleAddToTripCard = () => {
