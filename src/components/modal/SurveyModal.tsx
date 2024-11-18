@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useState } from 'react';
-import { COUNTRY_OPTIONS, THEME_OPTIONS } from '../../constants/options';
+import { COUNTRY_OPTIONS, PRIMARY_THEME_OPTIONS } from '../../constants/options';
 import { useModal } from '../../hooks/useModal';
 
 const optionStyle = 'rounded-[5px] h-[50px] place-content-center text-center hover:bg-[#B2B9C0] hover:cursor-pointer';
@@ -14,7 +14,7 @@ export function FirstQuestion() {
   };
 
   return (
-    <div className="bg-[#EDE8E8] rounded-[10px] w-[460px] h-[650px] p-[20px]">
+    <div className="bg-[#EDE8E8] rounded-[10px] w-[460px] h-[650px] p-[20px]" id="modal-content">
       <img
         src="/close-button.svg"
         alt="close"
@@ -23,7 +23,7 @@ export function FirstQuestion() {
       />
       <h1 className="font-bold text-[20px] text-center">Q1. 어떤 목적으로 여행을 하고 싶나요?</h1>
       <section className="flex flex-col gap-[15px] mt-[30px] px-[40px]">
-        {THEME_OPTIONS.map((option) => (
+        {PRIMARY_THEME_OPTIONS.map((option) => (
           <div
             key={option}
             className={clsx(optionStyle, selectedOption === option ? 'bg-[#B2B9C0]' : 'bg-white')}
@@ -34,9 +34,9 @@ export function FirstQuestion() {
         ))}
       </section>
       <div className="mt-[15px] flex justify-center gap-[5px]">
-        <img src="/public/ellipse.svg" alt="질문 페이지 구분" className="w-[10px] h-[10px]" />
-        <img src="/public/ellipse.svg" alt="질문 페이지 구분" className="w-[10px] h-[10px]" />
-        <img src="/public/ellipse.svg" alt="질문 페이지 구분" className="w-[10px] h-[10px]" />
+        <img src="/ellipse.svg" alt="질문 페이지 구분" className="w-[10px] h-[10px]" />
+        <img src="/ellipse.svg" alt="질문 페이지 구분" className="w-[10px] h-[10px]" />
+        <img src="/ellipse.svg" alt="질문 페이지 구분" className="w-[10px] h-[10px]" />
       </div>
     </div>
   );
