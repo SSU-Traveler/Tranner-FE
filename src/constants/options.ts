@@ -94,16 +94,9 @@ export const LOCATION_OPTIONS: locationOptionsType[] = [
   { "name": '제주', "lat": 33.4996, "lng": 126.5312 },
 ];
 
-
-// 테마 옵션(맞춤 여행지 페이지) -> 키값: 1차 필터, 밸류값: 2차 필터(배열)
-export type themeOptionsType = { [key: string]: secondaryThemeType[] };
-
-export const PRIMARY_THEME_OPTIONS: string[] = [
-  '힐링, 휴식', '역사 공부, 문화 탐방', '자연/경치 관람', '액티비티, 모험', '미식 여행, 맛집 탐방', '사진 촬영, 인생샷 명소', '쇼핑, 도심 탐방', '호캉스',
-];
-
 export type secondaryThemeType = { korName: string; engName: string; };
 
+// 2차 필터(구체적인 테마 주제)
 export const HEALING_AND_REST: secondaryThemeType[] = [
   { "korName": '스파', "engName": 'spa' },
   { "korName": '공원', "engName": 'park' },
@@ -154,6 +147,20 @@ export const STAYCATION: secondaryThemeType[] = [
   { "korName": '호텔', "engName": 'hotel' },
   { "korName": '리조트', "engName": 'resort_hotel' },
 ];
+
+// 테마 옵션(맞춤 여행지 페이지) -> 키값: 1차 필터, 밸류값: 2차 필터(배열)
+export type themeOptionsType = { [key: string]: secondaryThemeType[] };
+
+export const THEME_OPTIONS: themeOptionsType = {
+  '힐링, 휴식': HEALING_AND_REST,
+  '역사 공부, 문화 탐방': HISTORY_STUDY_AND_NATURAL_TOUR,
+  '자연/경치 관람': NATURAL_VIEWING,
+  '액티비티, 모험': ACTIVITY_AND_ADVENTURE,
+  '미식 여행, 맛집 탐방': RESTAURANT_TOUR,
+  '사진 촬영, 인생샷 명소': PHOTO_SHOOT,
+  '쇼핑, 도심 탐방': SHOPPING_AND_CITY_TOUR,
+  '호캉스': STAYCATION
+};
 
 // 지역 옵션(맞춤 여행지 페이지)
 export const COUNTRY_OPTIONS: string[] = [
