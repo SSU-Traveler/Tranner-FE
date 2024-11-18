@@ -95,9 +95,64 @@ export const LOCATION_OPTIONS: locationOptionsType[] = [
 ];
 
 
-// 테마 옵션(맞춤 여행지 페이지)
-export const THEME_OPTIONS: string[] = [
+// 테마 옵션(맞춤 여행지 페이지) -> 키값: 1차 필터, 밸류값: 2차 필터(배열)
+export type themeOptionsType = { [key: string]: secondaryThemeType[] };
+
+export const PRIMARY_THEME_OPTIONS: string[] = [
   '힐링, 휴식', '역사 공부, 문화 탐방', '자연/경치 관람', '액티비티, 모험', '미식 여행, 맛집 탐방', '사진 촬영, 인생샷 명소', '쇼핑, 도심 탐방', '호캉스',
+];
+
+export type secondaryThemeType = { korName: string; engName: string; };
+
+export const HEALING_AND_REST: secondaryThemeType[] = [
+  { "korName": '스파', "engName": 'spa' },
+  { "korName": '공원', "engName": 'park' },
+  { "korName": '사원', "engName": 'mosque' },
+];
+
+export const HISTORY_STUDY_AND_NATURAL_TOUR: secondaryThemeType[] = [
+  { "korName": '아쿠아리움', "engName": 'aquarium' },
+  { "korName": '미술관', "engName": 'art_gallery' },
+  { "korName": '사원', "engName": 'mosque' },
+  { "korName": '박물관', "engName": 'museum' },
+  { "korName": '영화관', "engName": 'movie_theater' },
+  { "korName": '공연 예술 극장', "engName": 'performing_arts_theater' },
+];
+
+export const NATURAL_VIEWING: secondaryThemeType[] = [
+  { "korName": '자연 환경', "engName": 'natural_feature' },
+  { "korName": '공원', "engName": 'park' },
+];
+
+export const ACTIVITY_AND_ADVENTURE: secondaryThemeType[] = [
+  { "korName": '캠핑장', "engName": 'campground' },
+  { "korName": '놀이공원', "engName": 'amusement_park' },
+];
+
+export const RESTAURANT_TOUR: secondaryThemeType[] = [
+  { "korName": '레스토랑', "engName": 'restaurant' },
+  { "korName": '카페', "engName": 'cafe' },
+  { "korName": '바', "engName": 'bar' },
+];
+
+export const PHOTO_SHOOT: secondaryThemeType[] = [
+  { "korName": '동물원', "engName": 'zoo' },
+  { "korName": '아쿠아리움', "engName": 'aquarium' },
+  { "korName": '공원', "engName": 'park' },
+];
+
+export const SHOPPING_AND_CITY_TOUR: secondaryThemeType[] = [
+  { "korName": '쇼핑몰', "engName": 'shopping_mall' },
+  { "korName": '백화점', "engName": 'department_store' },
+  { "korName": '옷 가게', "engName": 'clothing_store' },
+  { "korName": '주얼리 가게', "engName": 'jewelry_store' },
+  { "korName": '신발 가게', "engName": 'shoe_store' },
+  { "korName": '상점', "engName": 'store' },
+];
+
+export const STAYCATION: secondaryThemeType[] = [
+  { "korName": '호텔', "engName": 'hotel' },
+  { "korName": '리조트', "engName": 'resort_hotel' },
 ];
 
 // 지역 옵션(맞춤 여행지 페이지)
