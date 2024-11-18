@@ -1,25 +1,41 @@
 // LocalCard 컴포넌트가 받게 될 props
 // 1. 이미지 경로   예) '/images/example-jeju.jpg'
 // 2. 지역 이름     예) "제주 제주시"
+//
+
+import { useModal } from '../../hooks/useModal';
+import CardModal from '../modal/CardModal';
 
 interface LocalCardProps {
   imgPath: string;
   localName: string;
+  localDescription: string;
+  needToLoginAlarm: () => void;
 }
 
-export default function LocalCard({ imgPath, localName }: LocalCardProps) {
+export default function LocalCard({ imgPath, localName, localDescription, needToLoginAlarm }: LocalCardProps) {
+  const { openModal } = useModal();
+
   const openCardModal = () => {
-    console.log('지역 카드를 클릭하면 카드 모달이 뜨게 해야 함');
-    // 이 함수를 따로 빼는 게 좋을 듯? -> SpotCard 컴포넌트에서도 쓰이니까
+    openModal(
+      <CardModal
+        imgPath={imgPath}
+        placeKorName={localName}
+        placeDescription={localDescription}
+        needToLoginAlarm={needToLoginAlarm}
+      />
+    );
   };
 
   return (
     <div
       style={{ backgroundImage: `url(${imgPath})` }}
-      className="w-[250px] h-[300px] rounded-[16px] bg-cover bg-center hover:cursor-pointer flex items-end"
+      className="w-[250px] h-[300px] rounded-[16px] border border-[#B2B9C0] bg-cover bg-center hover:cursor-pointer flex items-end"
       onClick={openCardModal}
     >
-      <p className="text-white font-bold text-[24px] pl-[10px] pb-[10px]">{localName}</p>
+      <div className="rounded-bl-[16px] px-[10px] py-[3px] bg-black">
+        <p className="text-white font-bold text-[20px]">{localName}</p>
+      </div>
     </div>
   );
 }
