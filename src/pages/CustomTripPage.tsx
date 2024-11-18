@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { getHealingPlaces } from '../api/place.api';
+import { getPlacesBasedOnTheme } from '../api/place.api';
 import SpotCard from '../components/card/SpotCard';
+import DataLoading from '../components/common/DataLoading';
 import FilterButton from '../components/common/FilterButton';
 import { FirstQuestion } from '../components/modal/SurveyModal';
-import { THEME_OPTIONS } from '../constants/options';
+import { PRIMARY_THEME_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useModal } from '../hooks/useModal';
 import { useOption } from '../hooks/useOption';
@@ -13,19 +14,23 @@ export default function CustomTripPage() {
   const [places, setPlaces] = useState([]);
   const { isModalOpen, openModal, closeModal } = useModal();
   const { needToLoginAlarm } = useAlarm();
-  const { selectedOption, handleChangeOption } = useOption(THEME_OPTIONS);
+  const { selectedOption, handleChangeOption } = useOption(PRIMARY_THEME_OPTIONS);
 
   const handleOpenModal = () => {
     if (!isLogin) needToLoginAlarm();
     else openModal(<FirstQuestion />);
   };
 
+  // const {data: themePlaces} = useQuery({
+  //   queryKey: ["theme places"]
+  // })
+
   useEffect(() => {
-    async function fetchHealingPlaces() {
-      const result = await getHealingPlaces();
+    async function fetchPlacesBasedOnTheme() {
+      const result = await getPlacesBasedOnTheme('spa');
       setPlaces(result);
     }
-    fetchHealingPlaces();
+    fetchPlacesBasedOnTheme();
   }, []);
 
   console.log(places);
@@ -51,7 +56,7 @@ export default function CustomTripPage() {
     <>
       <section
         style={{ backgroundImage: `url("images/theme/history-study.jpg")` }}
-        className="absolute top-0 left-0 w-[100vw] h-[400px] bg-cover bg-center flex items-center"
+        className="absolute top-0 left-0 w-full h-[400px] bg-cover bg-center flex items-center"
       >
         <div className="absolute inset-0 bg-black opacity-40"></div>
         <div className="relative z-10 text-white pl-[120px]">
@@ -66,10 +71,10 @@ export default function CustomTripPage() {
           </button>
         </div>
       </section>
-      <section className="absolute mt-[420px]">
+      <section className="absolute mt-[420px] pr-[120px]">
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] bg-white">
           <nav className="flex flex-wrap gap-[8px] mb-[20px]">
-            {THEME_OPTIONS.map((option) => (
+            {PRIMARY_THEME_OPTIONS.map((option) => (
               <FilterButton
                 key={option}
                 buttonName={option}
@@ -78,7 +83,7 @@ export default function CustomTripPage() {
               />
             ))}
           </nav>
-          <div className="flex flex-wrap justify-between gap-[20px]">
+          <div className="flex flex-wrap justify-center gap-x-[39px] gap-y-[20px]">
             {places.length > 0 ? (
               places.map((place, index) => (
                 <SpotCard
@@ -91,15 +96,7 @@ export default function CustomTripPage() {
                 />
               ))
             ) : (
-              <SpotCard
-                imgPath="/images/example-lotteworld.jpg"
-                spotName="롯데월드"
-                spotEngName="Lotte World"
-                spotAddress="서울특별시 송파구 올림픽로 240"
-                spotDescription="롯데월드(영어: Lotte World)는 대한민국 서울특별시 송파구 올림픽로 240에 위치한 테마파크이다. 롯데그룹의 계열사인 호텔롯데 월드 사업부에서 운영한다.
-            놀이시설은 실내의 롯데월드 어드벤처(Lotte World Adventure)와 야외의 매직아일랜드가 운영되고 있으며, 민속박물관, 아이스링크, 백화점, 마트, 호텔 등이 포함된다."
-                needToLoginAlarm={needToLoginAlarm}
-              />
+              <DataLoading />
             )}
           </div>
         </div>
