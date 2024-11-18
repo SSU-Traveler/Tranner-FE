@@ -4,7 +4,7 @@ import { isEmpty } from '../../utils/checkObjectEmpty';
 import UserInput from '../input/UserInput';
 
 interface SignUpUserElement extends UserInfoElement {
-  verificationCode: string;
+  authCode: string;
   passwordConfirm: string;
 }
 
@@ -12,8 +12,8 @@ type ErrMsg = Omit<SignUpUserElement, 'nickName'>;
 
 interface IsValid {
   email: boolean;
-  verificationCode: boolean;
-  memberId: boolean;
+  authCode: boolean;
+  username: boolean;
   password: boolean;
   passwordConfirm: boolean;
 }
@@ -22,7 +22,7 @@ interface Props {
   signUpData: SignUpUserElement;
   handleChange?: (field: string) => (value: string) => void;
   sendEmail(): void;
-  confirmVerificationCode(email: string, verificationCode: string): void;
+  confirmauthCode(email: string, authCode: string): void;
   isVisible: boolean;
   emailChecked: boolean;
   idChecked: boolean;
@@ -38,7 +38,7 @@ const SignUpForm = ({
   signUpData,
   handleChange,
   sendEmail,
-  confirmVerificationCode,
+  confirmauthCode,
   isVisible,
   emailChecked,
   idChecked,
@@ -85,8 +85,8 @@ const SignUpForm = ({
           <div className="flex items-end">
             <UserInput
               label="이메일 인증 코드"
-              value={signUpData.verificationCode}
-              onChange={handleChange?.('verificationCode')}
+              value={signUpData.authCode}
+              onChange={handleChange?.('authCode')}
               placeholder="인증코드 입력"
               box_width="input1"
             />
@@ -94,7 +94,7 @@ const SignUpForm = ({
               type="button"
               onClick={() => {
                 console.log('버튼 클릭됨');
-                confirmVerificationCode(signUpData.email, signUpData.verificationCode);
+                confirmauthCode(signUpData.email, signUpData.authCode);
               }}
               disabled={timeLeft <= 0}
               className={`border w-[80px] h-[40px] rounded-[10px] ml-5 ${
@@ -105,7 +105,7 @@ const SignUpForm = ({
             </button>
           </div>
           <p className="text-red-400">남은 시간: {formatTimeLeft(timeLeft)}</p>
-          {errMsg.verificationCode && <p className="text-red-500 text-xs">{errMsg.verificationCode}</p>}
+          {errMsg.authCode && <p className="text-red-500 text-xs">{errMsg.authCode}</p>}
         </div>
       )}
 
@@ -114,23 +114,23 @@ const SignUpForm = ({
         <div className="flex items-end">
           <UserInput
             label="아이디"
-            value={signUpData.memberId}
-            onChange={handleChange?.('memberId')}
+            value={signUpData.username}
+            onChange={handleChange?.('username')}
             placeholder="아이디 입력(영문자 또는 숫자 6~20자)"
             box_width="input1"
           />
           <button
             type="button"
-            disabled={!isValid.memberId || idChecked}
+            disabled={!isValid.username || idChecked}
             onClick={idDuplicatedCheck}
             className={`border rounded-[10px] ml-5 w-[80px] h-[40px] ${
-              !isValid.memberId || idChecked ? 'bg-[#d9d9d9]' : 'bg-button-basic hover:bg-button-hover'
+              !isValid.username || idChecked ? 'bg-[#d9d9d9]' : 'bg-button-basic hover:bg-button-hover'
             }`}
           >
             확인
           </button>
         </div>
-        {errMsg.memberId && <p className="text-red-500 text-xs">{errMsg.memberId}</p>}
+        {errMsg.username && <p className="text-red-500 text-xs">{errMsg.username}</p>}
       </div>
 
       {/* 비밀번호 입력 */}

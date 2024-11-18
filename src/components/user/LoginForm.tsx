@@ -20,8 +20,8 @@ const LoginForm = ({ loginData, handleChange, loginHandler }: Props) => {
         <div className="flex items-end">
           <UserInput
             label="아이디"
-            value={loginData.memberId}
-            onChange={handleChange?.('memberId')}
+            value={loginData.username}
+            onChange={handleChange?.('username')}
             placeholder="아이디 입력"
             box_width="input1"
           />

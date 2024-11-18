@@ -3,7 +3,7 @@
 export type UserInfoElement = {
   email: string;
   //verification: string;
-  memberId: string;
+  username: string;
   nickName: string;
   password: string;
   //passwordConfirm: string;

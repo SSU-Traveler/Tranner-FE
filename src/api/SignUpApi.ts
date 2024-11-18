@@ -39,13 +39,13 @@ export const SendEmailApi = async (email: string) => {
 };
 
 //인증번호 검증
-export const ConfirmVerificationCodeApi = async (email: string, verificationCode: string) => {
+export const ConfirmauthCodeApi = async (email: string, authCode: string) => {
   try {
     const response = await axios.post(
       `${SIGNUP_API_BASE_URL}/emails/verifications`,
       {
         email: email,
-        verificationCode: verificationCode,
+        authCode: authCode,
       },
       {
         headers: {
@@ -62,9 +62,9 @@ export const ConfirmVerificationCodeApi = async (email: string, verificationCode
 };
 
 //아이디 중복 체크
-export const IdDuplicatedCheckApi = async (memberId: string) => {
+export const IdDuplicatedCheckApi = async (username: string) => {
   try {
-    const response = await axios.get(`${SIGNUP_API_BASE_URL}/idDuplicatedCheck?memberId=${memberId}`);
+    const response = await axios.get(`${SIGNUP_API_BASE_URL}/idDuplicatedCheck?username=${username}`);
     console.log(response);
     return response;
   } catch (error) {

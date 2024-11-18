@@ -9,7 +9,7 @@ import kakao_login_medium_wide from '/images/login/kakao_login_medium_wide.png';
 export default function LoginPage() {
   //로그인 정보
   const [loginData, setLoginData] = useState({
-    memberId: '',
+    username: '',
     password: '',
   });
 
