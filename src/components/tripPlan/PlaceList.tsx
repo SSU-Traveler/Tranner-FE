@@ -1,22 +1,21 @@
-import { userPlaceType } from '../../types/tripPlan.type';
+import { useEffect, useState } from 'react';
+import { placeDetailType, placeObjType } from '../../types/tripPlan.type';
 import PlaceElement from './PlaceElement';
-
-type PlaceObjListType = {
-  isInPlanList: boolean;
-  placeName: string; //name 장소 이름
-  addr: string; //formattedAddress  주소
-};
+import DetailCardModal from '../modal/DetailCardModal';
 
 interface Props {
-  placeObjList: PlaceObjListType[];
-  handlePlaceObjList: () => void;
+  placeObjList: placeObjType[];
+  handlePlaceObjList: (index: number, placeObj: placeObjType) => void;
+  scrollRef: React.RefObject<HTMLDivElement>;
 }
 
-const PlaceList = ({ placeObjList, handlePlaceObjList }: Props) => {
+const PlaceList = ({ placeObjList, handlePlaceObjList, scrollRef }: Props) => {
   return (
-    <div>
+    <div ref={scrollRef} className="scroll w-[full] justify-center my-4 h-[calc(100%-180px)] overflow-auto">
       {placeObjList.map((element, index) => (
-        <PlaceElement placeObjList={element} handlePlaceObjList={handlePlaceObjList} />
+        <div key={index}>
+          <PlaceElement index={index} placeObj={element} handlePlaceObjList={handlePlaceObjList} />
+        </div>
       ))}
     </div>
   );

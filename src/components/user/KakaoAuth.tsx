@@ -22,7 +22,7 @@ const KakaoAuth = () => {
       //     const backData = await KakaoLogin(data);
       //     if (backData.token) {
       //       localStorage.setItem('TOKEN', backData.token);
-      //       localStorage.setItem('memberId', backData.memberIdv);
+      //       localStorage.setItem('username', backData.usernamev);
       //       alert('로그인 성공했어요!');
       //       navigate('/');
       //     }

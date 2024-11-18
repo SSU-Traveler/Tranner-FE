@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import SignUpForm from '../components/user/SignUpForm';
 import { SignUpApi, SendEmailApi, IdDuplicatedCheckApi, ConfirmVerificationCodeApi } from '../api/SignUpApi';
-import { isEmpty } from '../utils/checkObjectEmpty';
+import { useNavigate } from 'react-router-dom';
+import { Confirm } from 'notiflix';
+import { useModal } from '../hooks/useModal';
 
 export default function SignUpPage() {
   //유효성 검사 정규식
@@ -12,8 +14,8 @@ export default function SignUpPage() {
   //회원가입 정보
   const [signUpData, setSignUpData] = useState({
     email: '',
-    verificationCode: '',
-    memberId: '',
+    authCode: '',
+    username: '',
     nickName: '',
     password: '',
     passwordConfirm: '',
@@ -22,8 +24,8 @@ export default function SignUpPage() {
   //유효성 결과
   const [isValid, setIsValid] = useState({
     email: false,
-    verificationCode: false,
-    memberId: false,
+    authCode: false,
+    username: false,
     password: false,
     passwordConfirm: false,
   });
@@ -31,8 +33,8 @@ export default function SignUpPage() {
   //에러메세지
   const [errMsg, setErrMsg] = useState({
     email: '',
-    verificationCode: '',
-    memberId: '',
+    authCode: '',
+    username: '',
     password: '',
     passwordConfirm: '',
   });
@@ -45,10 +47,14 @@ export default function SignUpPage() {
   const [timer, setTimer] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState<number>(300); // 5분 (300초)
 
+  //모달 관련
+  const navigate = useNavigate();
+  const { closeModal } = useModal();
+
   useEffect(() => {
     if (timeLeft <= 0) {
       clearInterval(timer!);
-      setIsValid((prev) => ({ ...prev, verificationCode: false })); // 인증 코드 확인 버튼 비활성화
+      setIsValid((prev) => ({ ...prev, authCode: false })); // 인증 코드 확인 버튼 비활성화
       return;
     }
   }, [timeLeft]);
@@ -61,7 +67,7 @@ export default function SignUpPage() {
       setSignUpData((prevData) => ({
         ...prevData,
         [field]: value,
-        verificationCode: '',
+        authCode: '',
       }));
     } else {
       setSignUpData((prevData) => ({
@@ -84,7 +90,7 @@ export default function SignUpPage() {
     if (field === 'email') {
       result = REGEX_EMAIL.test(value);
       message = result ? '' : '이메일 형식이 올바르지 않습니다.';
-    } else if (field === 'memberId') {
+    } else if (field === 'username') {
       result = REGEX_MEMBERID.test(value);
       message = result ? '' : '아이디는 영문자 또는 숫자 6~20자여야 합니다.';
     } else if (field === 'password') {
@@ -111,7 +117,7 @@ export default function SignUpPage() {
     //인증코드 입력 부분 초기화
     setSignUpData((prevData) => ({
       ...prevData,
-      verificationCode: '',
+      authCode: '',
     }));
 
     //이메일 인증번호 div display
@@ -139,14 +145,14 @@ export default function SignUpPage() {
   };
 
   //인증코드 확인 함수
-  const confirmVerificationCode = async (email: string, verificationCode: string) => {
+  const confirmVerificationCode = async (email: string, authCode: string) => {
     //1. 인증번호 맞는지 틀린지 확인 - 서버에 email, 인증번호 보내고 코드 검증.
-    const response = await ConfirmVerificationCodeApi(email, verificationCode);
+    const response = await ConfirmVerificationCodeApi(email, authCode);
     //2-1. 맞으면
     if (response) {
       setIsValid((prevData) => ({
         ...prevData,
-        verificationCode: true,
+        authCode: true,
       }));
 
       setEmailChecked(true);
@@ -156,11 +162,11 @@ export default function SignUpPage() {
       //2-2.틀리면
       setErrMsg((prevData) => ({
         ...prevData,
-        verificationCode: '인증번호가 잘못되었습니다',
+        authCode: '인증번호가 잘못되었습니다',
       }));
       setSignUpData((prevData) => ({
         ...prevData,
-        verificationCode: '',
+        authCode: '',
       }));
     }
   };
@@ -175,13 +181,13 @@ export default function SignUpPage() {
   //아이디 중복 체크 함수
   const idDuplicatedCheck = async () => {
     try {
-      const response = await IdDuplicatedCheckApi(signUpData.memberId);
+      const response = await IdDuplicatedCheckApi(signUpData.username);
       console.log(response);
       //아이디 중복일 경우
       if (!response) {
         setErrMsg((prevData) => ({
           ...prevData,
-          memberId: '중복된 아이디가 존재합니다.',
+          username: '중복된 아이디가 존재합니다.',
         }));
       } else {
         //아이디가 중복이 아닐 경우
@@ -193,10 +199,34 @@ export default function SignUpPage() {
     }
   };
   //회원가입 함수
-  const signUpHandler = async () => {
+  const signUpHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const result = await SignUpApi(signUpData);
     //result가 true일 경우 회원가입이 완료되었습니다 모달 띄우기.
     console.log(result);
+    signUpAlarm();
+  };
+
+  //회원 가입 완료 모달
+  const signUpAlarm = () => {
+    Confirm.show(
+      'Tranner',
+      '회원가입이 완료되었습니다.<br>로그인 창으로 이동합니다.',
+      '확인',
+      '취소',
+      () => {
+        closeModal();
+        navigate('/login');
+      },
+      () => {},
+      {
+        width: '360px',
+        messageFontSize: '16px',
+        plainText: false,
+        titleColor: '#0BCDFE',
+        okButtonBackground: '#0BCDFE',
+      }
+    );
   };
 
   return (

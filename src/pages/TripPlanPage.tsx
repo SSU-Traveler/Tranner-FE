@@ -2,97 +2,34 @@ import CalendarModal from '../components/modal/CalendarModal';
 import Map from '../components/tripPlan/Map';
 import PlaceSearch from '../components/tripPlan/PlaceSearch';
 import TripPlanInfo from '../components/tripPlan/TripPlanInfo';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { userPlaceType } from '../types/tripPlan.type';
-
-const key = import.meta.env.VITE_GOOGLE_PLACE_API;
+import { useState } from 'react';
+import { placeObjType, userPlaceType } from '../types/tripPlan.type';
+import useBasketStore from '../zustand/basketStore';
 
 const TripPlanPage = () => {
+  //계획 이름
   const [planName, setPlanName] = useState('계획 이름 입력');
+  //인원수
   const [numberOfPeople, setNumberOfPeople] = useState(0);
+  //여행 계획 날짜
   const [tripDate, setTripDate] = useState({
     tripStartDate: '0000-00-00',
     tripEndDate: '0000-00-00',
   });
+  //모달창 열림 여부
   const [isOpen, setIsOpen] = useState(true);
+  //n일차에 추가 부분에서 현재 선택된 일차
   const [currentDateIndex, setCurrentDateIndex] = useState(1);
 
-  const [selectedSpots, setSelectedSpots] = useState(['길동', '고덕동', '경복궁']);
+  //사용자가 장바구니에 담은 요소들
+  const selectedSpots = useBasketStore((state) => state.basket);
+  //사용자가 장바구니의 요소들 중 현재 선택한 요소
   const [currSelectedSpot, setCurrSelectedSpot] = useState(selectedSpots[0]);
-  const [elementObj, setElementObj] = useState([
-    {
-      daySequence: 1,
-      locationSequence: 1,
-      placeName: '성산 일출봉', //name 장소 이름
-      addr: '대한민국 서귀포시 성산 일출봉', //formattedAddress  주소
-    },
-    {
-      daySequence: 1,
-      locationSequence: 2,
-      placeName: '우도', //name 장소 이름
-      addr: '대한민국 제주특별자치도 우도', //formattedAddress  주소
-    },
-    {
-      daySequence: 1,
-      locationSequence: 3,
-      placeName: '순풍해장국 길이 테스트용임', //name 장소 이름
-      addr: '대한민국 제주특별자치도 서귀포시 순풍해장국', //formattedAddress  주소
-    },
-    {
-      daySequence: 2,
-      locationSequence: 1,
-      placeName: '성산 일출봉', //name 장소 이름
-      addr: '대한민국 서귀포시 성산 일출봉', //formattedAddress  주소
-    },
-    {
-      daySequence: 2,
-      locationSequence: 2,
-      placeName: '우도', //name 장소 이름
-      addr: '대한민국 제주특별자치도 우도', //formattedAddress  주소
-    },
-    {
-      daySequence: 2,
-      locationSequence: 3,
-      placeName: '순풍해장국 길이 테스트용임', //name 장소 이름
-      addr: '대한민국 제주특별자치도 서귀포시 순풍해장국', //formattedAddress  주소
-    },
-    {
-      daySequence: 3,
-      locationSequence: 1,
-      placeName: '성산 일출봉', //name 장소 이름
-      addr: '대한민국 서귀포시 성산 일출봉', //formattedAddress  주소
-    },
-    {
-      daySequence: 3,
-      locationSequence: 2,
-      placeName: '우도', //name 장소 이름
-      addr: '대한민국 제주특별자치도 우도', //formattedAddress  주소
-    },
-    {
-      daySequence: 3,
-      locationSequence: 3,
-      placeName: '순풍해장국 길이 테스트용임', //name 장소 이름
-      addr: '대한민국 제주특별자치도 서귀포시 순풍해장국', //formattedAddress  주소
-    },
-  ]);
+  //여행 계획 부분에서의 장소 객체 배열
+  const [elementObj, setElementObj] = useState<userPlaceType[]>([]);
 
-  const [placeObjList, setPlaceObjList] = useState([
-    {
-      isInPlanList: true,
-      placeName: '성산 일출봉',
-      addr: '대한민국 서귀포시 성산 일출봉',
-    },
-    {
-      isInPlanList: true,
-      placeName: '우도', //name 장소 이름
-      addr: '대한민국 제주특별자치도 우도', //formattedAddress  주소
-    },
-    {
-      isInPlanList: true,
-      placeName: '순풍해장국 길이 테스트용임', //name 장소 이름
-      addr: '대한민국 제주특별자치도 서귀포시 순풍해장국', //formattedAddress  주소
-    },
-  ]);
+  //검색 결과로 출력될 장소 객체 배열
+  const [placeObjList, setPlaceObjList] = useState<placeObjType[]>([]);
 
   //날짜 변경 관련
   const getDateRange = (tripStartDate: string, tripEndDate: string) => {
@@ -113,41 +50,6 @@ const TripPlanPage = () => {
 
   const dateList = getDateRange(tripDate.tripStartDate, tripDate.tripEndDate);
 
-  //지도 관련
-  const mapRef = useRef<HTMLDivElement | null>(null);
-
-  const initMap = useCallback(() => {
-    if (mapRef.current) {
-      new window.google.maps.Map(mapRef.current, {
-        center: { lat: -34.397, lng: 150.644 },
-        zoom: 8,
-      });
-    }
-  }, [mapRef]);
-
-  useEffect(() => {
-    // 구글 맵 API 스크립트를 동적으로 추가
-    const loadGoogleMapsScript = () => {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${key}`; // 자신의 API 키로 변경
-      script.async = true;
-      script.onload = initMap;
-      document.head.appendChild(script);
-    };
-
-    loadGoogleMapsScript();
-
-    // Clean up function to remove the script
-    return () => {
-      const existingScript = document.querySelector(`script[src="https://maps.googleapis.com/maps/api/js?key=${key}"]`);
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, [initMap]);
-
-  useEffect(() => {});
-
   //planInfo 부분 관련
   const handlePlanName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlanName(e.target.value);
@@ -167,6 +69,17 @@ const TripPlanPage = () => {
 
   const closeModal = () => {
     setIsOpen(false);
+  };
+
+  const handleDelete = (elementToDelete: userPlaceType) => {
+    setPlaceObjList((prev) =>
+      prev.map((item) =>
+        item.addr === elementToDelete.addr && item.placeName === elementToDelete.placeName
+          ? { ...item, isInPlanList: !item.isInPlanList }
+          : item
+      )
+    );
+    deleteElement(elementToDelete);
   };
 
   const deleteElement = (elementToDelete: userPlaceType) => {
@@ -213,24 +126,56 @@ const TripPlanPage = () => {
     setCurrSelectedSpot(selectedSpots[index]);
   };
 
-  const handlePlaceObjList = () => {};
+  const handlePlaceObjList = (index: number, placeObject: placeObjType) => {
+    setPlaceObjList((prev) =>
+      prev.map((item, i) => (i === index ? { ...item, isInPlanList: !item.isInPlanList } : item))
+    );
+
+    if (placeObject.isInPlanList) {
+      //elementObj에서 제거
+      const delObj: userPlaceType | undefined = elementObj.find((element) => {
+        return element.addr === placeObject.addr && element.placeName === placeObject.placeName;
+      });
+      if (delObj !== undefined) {
+        deleteElement(delObj);
+      }
+    } else {
+      //elementObj에 추가.
+      const prevElements = elementObj.filter((element) => element.daySequence < currentDateIndex);
+      const filteredElements = elementObj.filter((element) => element.daySequence === currentDateIndex);
+      const nextElements = elementObj.filter((element) => element.daySequence > currentDateIndex);
+
+      const newObj = {
+        daySequence: currentDateIndex,
+        locationSequence: filteredElements.length + 1,
+        placeId: placeObject.placeId,
+        placeName: placeObject.placeName, //name 장소 이름
+        addr: placeObject.addr,
+        photoUrl: placeObject.photoUrl,
+        location: placeObject.location,
+      };
+      const resultElement = [...prevElements, ...filteredElements, newObj, ...nextElements];
+
+      setElementObj(resultElement);
+    }
+  };
 
   return (
-    <div className="flex h-auto">
+    <div className="flex">
       <TripPlanInfo
         planName={planName}
         handlePlanName={handlePlanName}
         numberOfPeople={numberOfPeople}
         handleNumofPeople={handleNumofPeople}
         tripDate={tripDate}
-        isOpen={isOpen}
         openModal={openModal}
         elementObj={elementObj}
-        deleteElement={deleteElement} //하,,,이거 수정해서 재사용하도록. placeElement에서도 사용
+        handleDelete={handleDelete} //하,,,이거 수정해서 재사용하도록. placeElement에서도 사용
         dateList={dateList}
       />
       {isOpen && <CalendarModal closeModal={closeModal} handleTripDate={setTripDate} />}
       <PlaceSearch
+        elementObj={elementObj}
         dateList={dateList}
         currentDateIndex={currentDateIndex}
         handleCurrentDateIndex={handleCurrentDateIndex}
@@ -240,8 +185,9 @@ const TripPlanPage = () => {
         handleCurrSelectedSpot={handleCurrSelectedSpot}
         placeObjList={placeObjList}
         handlePlaceObjList={handlePlaceObjList}
+        setPlaceObjList={setPlaceObjList}
       />
-      <Map ref={mapRef} />
+      <Map elementObj={elementObj} currSelectedSpot={currSelectedSpot} />
     </div>
   );
 };
