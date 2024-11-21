@@ -75,25 +75,6 @@ export const CITY_OPTIONS: cityOptionsType = {
   '제주': JEJU_COUNTRY_OPTIONS
 }
 
-export type locationOptionsType = { name: string; lat: number; lng: number; };
-
-export const LOCATION_OPTIONS: locationOptionsType[] = [
-  { "name": '서울', "lat": 37.5665, "lng": 126.9780 },
-  { "name": '경기', "lat": 37.4138, "lng": 127.5183 },
-  { "name": '인천', "lat": 37.4563, "lng": 126.7052 },
-  { "name": '강원', "lat": 37.8228, "lng": 128.1555 },
-  { "name": '대전', "lat": 36.3504, "lng": 127.3845 },
-  { "name": '대구', "lat": 35.8714, "lng": 128.6014 },
-  { "name": '충북', "lat": 36.6357, "lng": 127.4913 },
-  { "name": '충남', "lat": 36.5184, "lng": 126.8000 },
-  { "name": '전북', "lat": 35.7175, "lng": 127.1530 },
-  { "name": '전남', "lat": 34.8679, "lng": 126.9910 },
-  { "name": '부산', "lat": 35.1796, "lng": 129.0756 },
-  { "name": '경북', "lat": 36.5760, "lng": 128.5056 },
-  { "name": '경남', "lat": 35.2598, "lng": 128.6647 },
-  { "name": '제주', "lat": 33.4996, "lng": 126.5312 },
-];
-
 export type secondaryThemeType = { korName: string; engName: string; };
 
 // 2차 필터(구체적인 테마 주제)
