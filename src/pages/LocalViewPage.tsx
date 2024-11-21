@@ -5,7 +5,7 @@ import LocalCard from '../components/card/LocalCard';
 import Basket from '../components/common/Basket';
 import FilterButton from '../components/common/FilterButton';
 import PlaceInput from '../components/input/PlaceInput';
-import { SEOUL_DISTRICT_OPTIONS } from '../constants/locations';
+import { LOCAL_CITY_OPTIONS } from '../constants/districts';
 import { CITY_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useChainOption } from '../hooks/useChainOption';
@@ -17,6 +17,9 @@ export default function LocalViewPage() {
   const { primaryOption, secondaryOptions, selectedOption, handleChangeOption, handleChangeSecondaryButton } =
     useChainOption();
 
+  console.log(primaryOption);
+  console.log(secondaryOptions);
+
   const useFetchLocationDetails = (primaryOption: string, selectedOption: string) => {
     return useQuery({
       queryKey: ['location details', primaryOption, selectedOption],
@@ -25,7 +28,7 @@ export default function LocalViewPage() {
         const newPhotos: { [key: string]: string } = {};
 
         // 지역 목록 순회
-        for (const location of SEOUL_DISTRICT_OPTIONS[selectedOption]) {
+        for (const location of LOCAL_CITY_OPTIONS[primaryOption][selectedOption]) {
           const data = await getLocationDetails(location.trim(), selectedOption, primaryOption);
 
           newDescriptions[location] = data.summary || '정보 없음';
@@ -35,6 +38,9 @@ export default function LocalViewPage() {
         return { descriptions: newDescriptions, photos: newPhotos };
       },
       enabled: !!selectedOption,
+      staleTime: 600000, // 데이터가 10분 동안 신선
+      refetchInterval: 600000, // 데이터를 다시 불러오는 간격
+      refetchOnWindowFocus: false, // 다른 창을 봤다가 다시 현재 브라우저에 포커스 했을 때 리페칭을 막음
     });
   };
 
@@ -96,7 +102,7 @@ export default function LocalViewPage() {
           </nav>
           <Basket />
           <div className="flex flex-wrap justify-start gap-x-[39px] gap-y-[20px]">
-            {SEOUL_DISTRICT_OPTIONS[selectedOption].map((location) => (
+            {LOCAL_CITY_OPTIONS[primaryOption][selectedOption].map((location) => (
               <LocalCard
                 key={location}
                 imgPath={photos[location] || '/images/default-placeholder.jpg'}
