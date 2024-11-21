@@ -11,7 +11,6 @@ import { CITY_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useChainOption } from '../hooks/useChainOption';
 import { useModal } from '../hooks/useModal';
-import '../styles/loading.css';
 
 const h1Style = 'font-bold text-[24px]';
 const sectionStyle = 'my-[20px] flex flex-col gap-[10px]';

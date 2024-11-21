@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LOCATION_OPTIONS } from '../constants/options';
+import { CITY_INDICATORS } from '../constants/indicators';
 import { Place, SummaryOfPlaceInfo } from '../types/place.type';
 
 const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_PLACE_API;
@@ -147,7 +147,6 @@ export async function getLocationDetails(neighborhood: string, district: string,
               .replace(/\[\[(.*?)\]\]/g, '<b>$1</b>')
               .replace(/<ref.*?<\/ref>/gs, '')
           : '');
-      console.log(summary);
 
       // 이미지가 있으면 이미지 반환
       if (imageUrl) {
@@ -250,12 +249,12 @@ export async function getPlacesBasedOnTheme(theme: string) {
 
   let allPlaces = [];
 
-  // for (const location of LOCATION_OPTIONS) {
+  // for (const location of CITY_OPTIONS) {
   let nextPageToken = null;
 
   do {
     try {
-      const url = `/maps/api/place/nearbysearch/json?location=${LOCATION_OPTIONS[0].lat},${LOCATION_OPTIONS[0].lng}&radius=${radius}&type=${theme}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
+      const url = `/maps/api/place/nearbysearch/json?location=${CITY_INDICATORS[0].lat},${CITY_INDICATORS[0].lng}&radius=${radius}&type=${theme}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
 
       const response = await axios.get(nextPageToken ? `${url}&pagetoken=${nextPageToken}` : url);
 
@@ -278,6 +277,6 @@ export async function getPlacesBasedOnTheme(theme: string) {
   console.log('All Places: ', allPlaces);
   const placesWithDetails = await Promise.all(allPlaces.map((place) => getPlacePhotos(place.place_id)));
 
-  console.log('Healing Places: ', placesWithDetails);
+  console.log(`${theme} places: `, placesWithDetails);
   return placesWithDetails;
 }

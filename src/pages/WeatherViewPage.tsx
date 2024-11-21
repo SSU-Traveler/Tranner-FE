@@ -1,13 +1,36 @@
-import getWeatherApi from '../api/weather.api';
-import FilterButtonFormat from '../components/format/FilterButtonFormat';
+import { useEffect, useState } from 'react';
+import { getFutureWeather } from '../api/weather.api';
+import DataLoading from '../components/common/DataLoading';
+import FilterButton from '../components/common/FilterButton';
 import PlaceInput from '../components/input/PlaceInput';
+import Table from '../components/weather/Table';
+import { CITY_OPTIONS } from '../constants/options';
+import { useChainOption } from '../hooks/useChainOption';
+import { FutureWeather, FutureWeatherList } from '../types/weather.type';
+import groupWeatherData from '../utils/groupWeatherData';
 
 export default function WeatherViewPage() {
-  const WEATHER_AUTH_KEY = import.meta.env.VITE_WEATHER_AUTH_KEY;
+  const [todayFutureWeather, setTodayFutureWeather] = useState<FutureWeatherList[][]>([]);
+  const [futureWeathers, setFutureWeathers] = useState<FutureWeatherList[][]>([]);
+  const { primaryOption, secondaryOptions, selectedOption, handleChangeOption, handleChangeSecondaryButton } =
+    useChainOption();
 
-  const apiUrl = `/weather-api/api/typ01/url/json?tm=202211300900&stn=0&help=1&authKey=${WEATHER_AUTH_KEY}`;
-  // const savePath = "/path/to/save/file.json";
-  getWeatherApi();
+  useEffect(() => {
+    async function fetchFutureWeather() {
+      const result: FutureWeather | undefined = await getFutureWeather(37.5665, 126.978);
+      if (result) {
+        const weatherList: FutureWeatherList[] = result.list;
+        const groupedWeatherList: FutureWeatherList[][] = groupWeatherData(weatherList);
+        const today = [groupedWeatherList[0]];
+        const notToday = groupedWeatherList.slice(1);
+        setTodayFutureWeather(today);
+        setFutureWeathers(notToday);
+      }
+    }
+    fetchFutureWeather();
+  }, []);
+
+  console.log(todayFutureWeather);
 
   return (
     <>
@@ -17,9 +40,53 @@ export default function WeatherViewPage() {
       >
         <PlaceInput searchObj="날씨를" />
       </section>
-      <section className="absolute mt-[420px] mr-[120px]">
-        <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] ">
-          <FilterButtonFormat />
+      <section className="absolute mt-[420px] mr-[120px] lg:w-[1448px]">
+        <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] bg-white">
+          {/* <FilterButtonFormat /> */}
+          <nav className="flex flex-col gap-y-[20px] mb-[30px]">
+            <div className="flex flex-wrap gap-[8px]">
+              {Object.keys(CITY_OPTIONS).map((option) => (
+                <FilterButton
+                  key={option}
+                  buttonName={option}
+                  selectedOption={primaryOption}
+                  onClick={() => handleChangeSecondaryButton(option)}
+                />
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-[8px]">
+              {secondaryOptions.map((option) => (
+                <FilterButton
+                  key={option}
+                  buttonName={option}
+                  selectedOption={selectedOption}
+                  onClick={handleChangeOption}
+                />
+              ))}
+            </div>
+          </nav>
+          <details open>
+            <summary className="pb-[5px] pl-[5px]">현재 날씨</summary>
+          </details>
+          <details open>
+            <summary className="pb-[5px] pl-[5px]">미래 날씨</summary>
+            {futureWeathers.length > 0 ? (
+              <div className="py-[10px] px-[15px] mx-[20px] my-[5px] border border-[#B2B9C0] rounded-[8px]">
+                {/* <div className={textStyle}>11.20.(수)</div>
+                <div className={divStyle}>
+                  <table className={tableStyle}>
+                    <TableHeader />
+                    <TableBody weathers={todayFutureWeather[0]} />
+                  </table>
+                </div> */}
+                {futureWeathers.map((futureWeather) => (
+                  <Table weather={futureWeather} />
+                ))}
+              </div>
+            ) : (
+              <DataLoading />
+            )}
+          </details>
         </div>
       </section>
     </>

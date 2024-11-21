@@ -75,35 +75,9 @@ export const CITY_OPTIONS: cityOptionsType = {
   '제주': JEJU_COUNTRY_OPTIONS
 }
 
-export type locationOptionsType = { name: string; lat: number; lng: number; };
-
-export const LOCATION_OPTIONS: locationOptionsType[] = [
-  { "name": '서울', "lat": 37.5665, "lng": 126.9780 },
-  { "name": '경기', "lat": 37.4138, "lng": 127.5183 },
-  { "name": '인천', "lat": 37.4563, "lng": 126.7052 },
-  { "name": '강원', "lat": 37.8228, "lng": 128.1555 },
-  { "name": '대전', "lat": 36.3504, "lng": 127.3845 },
-  { "name": '대구', "lat": 35.8714, "lng": 128.6014 },
-  { "name": '충북', "lat": 36.6357, "lng": 127.4913 },
-  { "name": '충남', "lat": 36.5184, "lng": 126.8000 },
-  { "name": '전북', "lat": 35.7175, "lng": 127.1530 },
-  { "name": '전남', "lat": 34.8679, "lng": 126.9910 },
-  { "name": '부산', "lat": 35.1796, "lng": 129.0756 },
-  { "name": '경북', "lat": 36.5760, "lng": 128.5056 },
-  { "name": '경남', "lat": 35.2598, "lng": 128.6647 },
-  { "name": '제주', "lat": 33.4996, "lng": 126.5312 },
-];
-
-
-// 테마 옵션(맞춤 여행지 페이지) -> 키값: 1차 필터, 밸류값: 2차 필터(배열)
-export type themeOptionsType = { [key: string]: secondaryThemeType[] };
-
-export const PRIMARY_THEME_OPTIONS: string[] = [
-  '힐링, 휴식', '역사 공부, 문화 탐방', '자연/경치 관람', '액티비티, 모험', '미식 여행, 맛집 탐방', '사진 촬영, 인생샷 명소', '쇼핑, 도심 탐방', '호캉스',
-];
-
 export type secondaryThemeType = { korName: string; engName: string; };
 
+// 2차 필터(구체적인 테마 주제)
 export const HEALING_AND_REST: secondaryThemeType[] = [
   { "korName": '스파', "engName": 'spa' },
   { "korName": '공원', "engName": 'park' },
@@ -154,6 +128,20 @@ export const STAYCATION: secondaryThemeType[] = [
   { "korName": '호텔', "engName": 'hotel' },
   { "korName": '리조트', "engName": 'resort_hotel' },
 ];
+
+// 테마 옵션(맞춤 여행지 페이지) -> 키값: 1차 필터, 밸류값: 2차 필터(배열)
+export type themeOptionsType = { [key: string]: secondaryThemeType[] };
+
+export const THEME_OPTIONS: themeOptionsType = {
+  '힐링, 휴식': HEALING_AND_REST,
+  '역사 공부, 문화 탐방': HISTORY_STUDY_AND_NATURAL_TOUR,
+  '자연/경치 관람': NATURAL_VIEWING,
+  '액티비티, 모험': ACTIVITY_AND_ADVENTURE,
+  '미식 여행, 맛집 탐방': RESTAURANT_TOUR,
+  '사진 촬영, 인생샷 명소': PHOTO_SHOOT,
+  '쇼핑, 도심 탐방': SHOPPING_AND_CITY_TOUR,
+  '호캉스': STAYCATION
+};
 
 // 지역 옵션(맞춤 여행지 페이지)
 export const COUNTRY_OPTIONS: string[] = [

@@ -4,17 +4,32 @@ import SpotCard from '../components/card/SpotCard';
 import DataLoading from '../components/common/DataLoading';
 import FilterButton from '../components/common/FilterButton';
 import { FirstQuestion } from '../components/modal/SurveyModal';
-import { PRIMARY_THEME_OPTIONS } from '../constants/options';
+import { THEME_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useModal } from '../hooks/useModal';
 import { useOption } from '../hooks/useOption';
 
 export default function CustomTripPage() {
   const [isLogin, setIsLogin] = useState<boolean>(true); // notiflix 테스트용
+  const [theme, setTheme] = useState<string>('');
   const [places, setPlaces] = useState([]);
   const { isModalOpen, openModal, closeModal } = useModal();
   const { needToLoginAlarm } = useAlarm();
-  const { selectedOption, handleChangeOption } = useOption(PRIMARY_THEME_OPTIONS);
+
+  // useChainOption
+  const [primaryOption, setPrimaryOption] = useState<string>(Object.keys(THEME_OPTIONS)[0]);
+
+  const arrayOnlyKorname = THEME_OPTIONS[primaryOption].map((item) => item.korName);
+
+  const [secondaryOptions, setSecondaryOptions] = useState<string[]>(arrayOnlyKorname);
+  const { selectedOption, setSelectedOption, handleChangeOption } = useOption(arrayOnlyKorname);
+
+  const handleChangeSecondaryButton = (option: string) => {
+    setPrimaryOption(option);
+    const arrayOnlyKorname = THEME_OPTIONS[option].map((item) => item.korName);
+    setSecondaryOptions(arrayOnlyKorname);
+    setSelectedOption(arrayOnlyKorname[0]);
+  };
 
   const handleOpenModal = () => {
     if (!isLogin) needToLoginAlarm();
@@ -27,13 +42,14 @@ export default function CustomTripPage() {
 
   useEffect(() => {
     async function fetchPlacesBasedOnTheme() {
-      const result = await getPlacesBasedOnTheme('spa');
+      const themeStr = THEME_OPTIONS[primaryOption].filter((option) => option.korName === selectedOption)[0].engName;
+      setTheme(themeStr);
+      const result = await getPlacesBasedOnTheme(selectedOption);
+      console.log('result: ', result);
       setPlaces(result);
     }
     fetchPlacesBasedOnTheme();
-  }, []);
-
-  console.log(places);
+  }, [primaryOption, selectedOption]);
 
   useEffect(() => {
     const modal = document.getElementById('modal');
@@ -71,27 +87,39 @@ export default function CustomTripPage() {
           </button>
         </div>
       </section>
-      <section className="absolute mt-[420px] pr-[120px]">
+      <section className="absolute mt-[420px] pr-[120px] lg:w-[1568px]">
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] bg-white">
-          <nav className="flex flex-wrap gap-[8px] mb-[20px]">
-            {PRIMARY_THEME_OPTIONS.map((option) => (
-              <FilterButton
-                key={option}
-                buttonName={option}
-                selectedOption={selectedOption}
-                onClick={handleChangeOption}
-              />
-            ))}
+          <nav className="flex flex-col gap-y-[20px] mb-[20px]">
+            <div className="flex flex-wrap gap-[8px]">
+              {Object.keys(THEME_OPTIONS).map((option) => (
+                <FilterButton
+                  key={option}
+                  buttonName={option}
+                  selectedOption={primaryOption}
+                  onClick={() => handleChangeSecondaryButton(option)}
+                />
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-[8px]">
+              {secondaryOptions.map((option) => (
+                <FilterButton
+                  key={option}
+                  buttonName={option}
+                  selectedOption={selectedOption}
+                  onClick={handleChangeOption}
+                />
+              ))}
+            </div>
           </nav>
           <div className="flex flex-wrap justify-center gap-x-[39px] gap-y-[20px]">
             {places.length > 0 ? (
-              places.map((place, index) => (
+              places.map((place) => (
                 <SpotCard
-                  key={index}
-                  imgPath={place?.photos[0]}
-                  spotName={place?.name}
-                  spotDescription="설명"
+                  key={place.name}
+                  imgPath={place.photos[0]}
+                  spotName={place.name}
                   spotAddress={place?.formatted_address}
+                  spotDescription={place.description}
                   needToLoginAlarm={needToLoginAlarm}
                 />
               ))

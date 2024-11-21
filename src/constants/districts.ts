@@ -1,5 +1,6 @@
 export type districtOptionsType = { [key: string]: string[] };
 
+// 각 기초자치단체의 행정구역
 // 서울
 export const GANGNAM_LOCATION: string[] = [
   '개포동', '논현동', '도곡동', '대치동', '삼성동', '수서동', '세곡동', '신사동', '압구정동', '역삼동', '일원동', '청담동'
@@ -77,31 +78,31 @@ export const JUNGRANG_LOCATION: string[] = [
   '망우동', '상봉동', '중화동', '면목동', '묵동', '신내동',
 ];
 export const SEOUL_DISTRICT_OPTIONS: districtOptionsType = {
-  "강남구": GANGNAM_LOCATION,
-  "강동구": GANGDONG_LOCATION,
-  "강북구": GANGBUK_LOCATION,
-  "강서구": GANGSEO_LOCATION,
-  "관악구": GWANAK_LOCATION,
-  "광진구": GWANGJIN_LOCATION,
-  "구로구": GURO_LOCATION,
-  "금천구": GEUMCHEON_LOCATION,
-  "노원구": NOWON_LOCATION,
-  "도봉구": DOBOG_LOCATION,
-  "동대문구": DONGDAEMUN_LOCATION,
-  "동작구": DONGJAK_LOCATION,
-  "마포구": MAPO_LOCATION,
-  "서대문구": SEODAEMUN_LOCATION,
-  "서초구": SEOCHEO_LOCATION,
-  "성동구": SEONGDONG_LOCATION,
-  "성북구": SEONGBUK_LOCATION,
-  "송파구": SONGPA_LOCATION,
-  "양천구": YANGCHEON_LOCATION,
-  "영등포구": YEONGDEUNGPO_LOCATION,
-  "용산구": YONGSAN_LOCATION,
-  "은평구": EUNPYEONG_LOCATION,
   "종로구": JONGNO_LOCATION,
   "중구": JUNG_LOCATION,
+  "용산구": YONGSAN_LOCATION,
+  "성동구": SEONGDONG_LOCATION,
+  "광진구": GWANGJIN_LOCATION,
+  "동대문구": DONGDAEMUN_LOCATION,
   "중랑구": JUNGRANG_LOCATION,
+  "성북구": SEONGBUK_LOCATION,
+  "강북구": GANGBUK_LOCATION,
+  "도봉구": DOBOG_LOCATION,
+  "노원구": NOWON_LOCATION,
+  "은평구": EUNPYEONG_LOCATION,
+  "서대문구": SEODAEMUN_LOCATION,
+  "마포구": MAPO_LOCATION,
+  "양천구": YANGCHEON_LOCATION,
+  "강서구": GANGSEO_LOCATION,
+  "구로구": GURO_LOCATION,
+  "금천구": GEUMCHEON_LOCATION,
+  "영등포구": YEONGDEUNGPO_LOCATION,
+  "동작구": DONGJAK_LOCATION,
+  "관악구": GWANAK_LOCATION,
+  "서초구": SEOCHEO_LOCATION,
+  "강남구": GANGNAM_LOCATION,
+  "송파구": SONGPA_LOCATION,
+  "강동구": GANGDONG_LOCATION,
 }
 
 // 경기
@@ -183,33 +184,53 @@ export const HANAM_LOCATION: string[] = [
 export const HWASEONG_LOCATION: string[] = [
   '남양읍', '봉담읍', '우정읍', '향남읍', '마도면', '매송면', '비봉면', '서신면', '송산면', '양감면', '장안면', '팔탄면', '정남면', '반월동', '병점동', '기배동', '진안동', '동탄동', '새솔동', '화산동',
 ];
+export const ANYANG_LOCATION: string[] = [
+  "만안구", "동안구",
+]
+export const GWANGJU_LOCATION: string[] = [
+  "초월읍", "곤지암읍", "도척면", "퇴촌면", "남종면", "남한산성면", "경안동", "송정동", "광남동", "쌍령동", "탄벌동", "능평동", "신현동", "오포동", 
+];
+export const GWANGMYEONG_LOCATION: string[] = [
+  "광명동", "철산동", "하안동", "소하동", "일직동", "학온동",
+];
+export const POCHEON_LOCATION: string[] = [
+  "소흘읍", "군내면", "가산면", "관인면", "내촌면",  "신북면", "영북면", "영중면", "이동면", "일동면", "창수면", "화현면", "포천동", "선단동",
+];
+export const GWACHEON_LOCATION: string[] = [
+  "갈현동", "과천동", "문원동", "별양동", "부림동", "원문동", "중앙동",
+]
 export const GYEONGGI_DISTRICT_OPTIONS: districtOptionsType = {
-  "가평군": GAPYEONG_LOCATION,
-  "고양시": GOYANG_LOCATION,
-  "구리시": GURI_LOCATION,
-  "군포시": GUNPO_LOCATION,
-  "김포시": GIMPO_LOCATION,
-  "남양주시": NAMYANGJU_LOCATION,
-  "동두천시": DONGDUCHEON_LOCATION,
-  "부천시": BUCHEON_LOCATION,
-  "성남시": SEONGNAM_LOCATION,
   "수원시": SUWON_LOCATION,
-  "시흥시": SIHEUNG_LOCATION,
-  "안산시": ANSAN_LOCATION,
-  "안성시": ANSEONG_LOCATION,
-  "양주시": YANGJU_LOCATION,
-  "양평군": YANGPYEONG_LOCATION,
-  "여주시": YEOJU_LOCATION,
-  "연천군": YEONCHEON_LOCATION,
-  "오산시": OSAN_LOCATION,
   "용인시": YONGIN_LOCATION,
-  "의왕시": UIWANG_LOCATION,
-  "의정부시": UIJEONGBU_LOCATION,
-  "이천시": ICHEON_LOCATION,
-  "파주시": PAJU_LOCATION,
-  "평택시": PYEONGTAEK_LOCATION,
-  "하남시": HANAM_LOCATION,
+  "고양시": GOYANG_LOCATION,
   "화성시": HWASEONG_LOCATION,
+  "성남시": SEONGNAM_LOCATION,
+  "부천시": BUCHEON_LOCATION,
+  "남양주시": NAMYANGJU_LOCATION,
+  "안산시": ANSAN_LOCATION,
+  "평택시": PYEONGTAEK_LOCATION,
+  "안양시": ANYANG_LOCATION,
+  "시흥시": SIHEUNG_LOCATION,
+  "파주시": PAJU_LOCATION,
+  "김포시": GIMPO_LOCATION,
+  "의정부시": UIJEONGBU_LOCATION,
+  "광주시": GWANGJU_LOCATION,
+  "하남시": HANAM_LOCATION,
+  "광명시": GWANGMYEONG_LOCATION,
+  "군포시": GUNPO_LOCATION,
+  "양주시": YANGJU_LOCATION,
+  "오산시": OSAN_LOCATION,
+  "이천시": ICHEON_LOCATION,
+  "안성시": ANSEONG_LOCATION,
+  "구리시": GURI_LOCATION,
+  "의왕시": UIWANG_LOCATION,
+  "포천시": POCHEON_LOCATION,
+  "여주시": YEOJU_LOCATION,
+  "동두천시": DONGDUCHEON_LOCATION,
+  "과천시": GWACHEON_LOCATION,
+  "양평군": YANGPYEONG_LOCATION,
+  "가평군": GAPYEONG_LOCATION,
+  "연천군": YEONCHEON_LOCATION,
 }
 
 // 인천
@@ -244,16 +265,16 @@ export const INCHEON_JUNG_LOCATION: string[] = [
   "신포동", "연안동", "개항동", "신흥동", "도원동", "율목동", "동인천동", "영종동", "운서동", "용유동",
 ];
 export const INCHEON_DISTRICT_OPTIONS: districtOptionsType = {
-  "강화군": GANGHWA_LOCATION,
-  "계양구": GYEYANG_LOCATION,
-  "남동구": NAMDONG_LOCATION,
+  "중구": INCHEON_JUNG_LOCATION,
   "동구": DONG_LOCATION,
   "미추홀구": MICHUHOL_LOCATION,
-  "부평구": BUPYEONG_LOCATION,
-  "서구": SEO_LOCATION,
   "연수구": YEONSU_LOCATION,
+  "남동구": NAMDONG_LOCATION,
+  "부평구": BUPYEONG_LOCATION,
+  "계양구": GYEYANG_LOCATION,
+  "서구": SEO_LOCATION,
+  "강화군": GANGHWA_LOCATION,
   "옹진군": ONGJIN_LOCATION,
-  "중구": INCHEON_JUNG_LOCATION,
 };
 
 // 강원
@@ -313,19 +334,19 @@ export const HOENGSEONG_LOCATION: string[] = [
 ];
 export const GANGWON_DISTRICT_OPTIONS: districtOptionsType = {
   "강릉시": GANGNEUNG_LOCATION,
-  "고성군": GOSEONG_LOCATION,
   "동해시": DONGHAE_LOCATION,
   "삼척시": SAMCHEOK_LOCATION,
   "속초시": SOKCHO_LOCATION,
+  "원주시": WONJU_LOCATION,
+  "춘천시": CHUNCHEON_LOCATION,
+  "태백시": TAEBAEK_LOCATION,
+  "고성군": GOSEONG_LOCATION,
   "양구군": YANGGU_LOCATION,
   "양양군": YANGYANG_LOCATION,
   "영월군": YEONGWOL_LOCATION,
-  "원주시": WONJU_LOCATION,
   "인제군": INJE_LOCATION,
   "정선군": JEONGSEON_LOCATION,
   "철원군": CHEORWON_LOCATION,
-  "춘천시": CHUNCHEON_LOCATION,
-  "태백시": TAEBAEK_LOCATION,
   "평창군": PYEONGCHANG_LOCATION,
   "홍천군": HONGCHEON_LOCATION,
   "화천군": HWACHEON_LOCATION,
@@ -357,15 +378,19 @@ export const SUSEONGGU_LOCATION: string[] = [
 export const NAMGU_LOCATION: string[] = [
   "대명동", "봉덕동", "이천동",
 ];
+export const GUNWI_LOCATION: string[] = [
+  "군위읍", "부계면", "산성면", "삼국유사면", "소보면", "우보면", "의흥면", "효령면",
+]
 export const DAEGU_DISTRICT_OPTIONS: districtOptionsType = {
   "중구": JUNGGU_LOCATION,
+  "동구": DONGGU_LOCATION,
+  "서구": SEOGU_LOCATION,
+  "남구": NAMGU_LOCATION,
+  "북구": BUKGU_LOCATION,
+  "수성구": SUSEONGGU_LOCATION,
   "달서구": DALSEOGU_LOCATION,
   "달성군": DALSEONGGUN_LOCATION,
-  "동구": DONGGU_LOCATION,
-  "북구": BUKGU_LOCATION,
-  "서구": SEOGU_LOCATION,
-  "수성구": SUSEONGGU_LOCATION,
-  "남구": NAMGU_LOCATION,
+  "군위군": GUNWI_LOCATION,
 };
 
 // 대전
@@ -424,17 +449,21 @@ export const EUMSEONG_LOCATION: string[] = [
 export const DANYANG_LOCATION: string[] = [
   "단양읍", "매포읍", "가곡면", "단성면", "대강면", "영춘면", "어상천면", "적성면",
 ];
+export const JEUNGPYEONG_LOCATION: string[] = [
+  "증평읍", "도안면",
+]
 export const CHUNGBUK_DISTRICT_OPTIONS: districtOptionsType = {
+  "제천시": JECHON_LOCATION,
   "청주시": CHEONGJU_LOCATION,
   "충주시": CHUNGJU_LOCATION,
-  "제천시": JECHON_LOCATION,
-  "보은군": BOEUN_LOCATION,
-  "옥천군": OKCHEON_LOCATION,
-  "영동군": YEONGDONG_LOCATION,
-  "진천군": JINCHEON_LOCATION,
   "괴산군": GOESAN_LOCATION,
-  "음성군": EUMSEONG_LOCATION,
   "단양군": DANYANG_LOCATION,
+  "보은군": BOEUN_LOCATION,
+  "영동군": YEONGDONG_LOCATION,
+  "옥천군": OKCHEON_LOCATION,
+  "음성군": EUMSEONG_LOCATION,
+  "증평군": JEUNGPYEONG_LOCATION,
+  "진천군": JINCHEON_LOCATION,
 };
 
 // 충남
@@ -466,202 +495,264 @@ export const HONGSEONG_LOCATION: string[] = [
 export const YESAN_LOCATION: string[] = [
   "예산읍", "삽교읍", "대술면", "신양면", "광시면", "대흥면", "응봉면", "덕산면", "봉산면", "고덕면", "신암면", "오가면",
 ];
-// 여기부터
 export const CHEONGYANG_LOCATION: string[] = [
-  "청양읍", "운곡면", "대치면", "정산면", "목면", "청남면", "남양면", "화성면", 
-  "비봉면", "장평면",
+  "청양읍", "남양면", "대치면", "목면", "비봉면", "운곡면", "장평면", "정산면", "청남면",  "화성면", 
 ];
 export const TAEAN_LOCATION: string[] = [
   "태안읍", "안면읍", "고남면", "남면", "근흥면", "소원면", "원북면", "이원면",
 ];
 export const SEOCHEON_LOCATION: string[] = [
-  "서천읍", "마서면", "판교면", "종천면", "문산면", "비인면", "서면", "시초면", 
-  "한산면", "화양면", "기산면", "장항읍",
+  "서천읍", "장항읍", "기산면", "마산면", "마서면", "문산면", "비인면", "서면", "시초면", "종천면", "판교면", "한산면", "화양면",
+];
+export const GYERYONG_LOCATION: string[] = [
+  "두마면", "신도안면", "엄사면", "금암동",
+];
+export const GEUMSAN_LOCATION: string[] = [
+  "금산읍", "금성면", "군북면", "남이면", "남일면", "복수면", "제원면", "부리면", "진산면", "추부면",
+];
+export const BUYEO_LOCATION: string[] = [
+  "부여읍", "구룡면", "규암면", "남면", "내산면", "석성면", "세도면", "양화면", "옥산면", "은산면", "외산면", "임천면", "장암면", "초촌면", "홍산면", "충화면", 
 ];
 export const CHUNGNAM_DISTRICT_OPTIONS: districtOptionsType = {
-  "천안시": CHEONAN_LOCATION,
-  "아산시": ASAN_LOCATION,
+  "계룡시": GYERYONG_LOCATION,
   "공주시": GONGJU_LOCATION,
-  "보령시": BORYEONG_LOCATION,
-  "서산시": SEOSAN_LOCATION,
   "논산시": NONSAN_LOCATION,
   "당진시": DANGJIN_LOCATION,
-  "홍성군": HONGSEONG_LOCATION,
+  "보령시": BORYEONG_LOCATION,
+  "서산시": SEOSAN_LOCATION,
+  "아산시": ASAN_LOCATION,
+  "천안시": CHEONAN_LOCATION,
+  "금산군": GEUMSAN_LOCATION,
+  "부여군": BUYEO_LOCATION,
+  "서천군": SEOCHEON_LOCATION,
   "예산군": YESAN_LOCATION,
   "청양군": CHEONGYANG_LOCATION,
   "태안군": TAEAN_LOCATION,
-  "서천군": SEOCHEON_LOCATION,
+  "홍성군": HONGSEONG_LOCATION,
 };
 
 // 전북
 export const JEONJU_LOCATION: string[] = [
-  "완산구", "덕진구", "효자동", "중화산동", "평화동", "삼천동", "서신동", 
-  "금암동", "송천동", "인후동", "덕진동", "우아동", "호성동", "팔복동",
+  "완산구", "덕진구",
 ];
 export const IKSAN_LOCATION: string[] = [
-  "중앙동", "모현동", "신동", "영등동", "팔봉동", "남중동", "송학동", "낭산면", 
-  "망성면", "웅포면", "성당면", "삼기면", "용안면", "임실면", "함열읍", 
-  "왕궁면", "춘포면", "여산면", "금마면", "오산면",
+  "함열읍", "금마면", "낭산면", "망성면", "성당면", "삼기면", "여산면", "오산면", "왕궁면", "용동면", "웅포면", "용안면", "춘포면", "함라면", "황등면", "남중동", "마동", "모현동", "삼성동", "송학동", "신동", "어양동", "영등동", "인화동", "중앙동", "팔봉동", "평화동", 
 ];
 export const GUNSAN_LOCATION: string[] = [
-  "나운동", "옥산면", "대야면", "개정면", "옥구읍", "회현면", "임피면", 
-  "서수면", "성산면", "소룡동", "해망동", "비응도동", "월명동", "중앙동", 
-  "수송동", "선유도동",
+  "옥구읍", "개정면", "나포면", "대야면", "서수면", "성산면", "옥도면", "옥산면", "옥서면", "회현면", "임피면", "개정동", "경암동", "구암동", "나운동", "미성동", "삼학동", "소룡동", "수송동", "신풍동", "월명동", "조촌동", "중앙동", "해신동", "흥남동",
 ];
 export const NAMWON_LOCATION: string[] = [
-  "용산동", "월락동", "향교동", "노암동", "도통동", "남산동", "왕정동", 
-  "수지면", "주천면", "대강면", "산내면", "이백면", "아영면", "인월면", 
-  "동충동", "운봉읍", "덕과면",
+  "운봉읍", "금지면", "대강면", "대산면", "덕과면", "보절면", "사매면", "산내면", "산동면", "송동면", "수지면", "이백면", "아영면", "인월면", "주생면", "주천면", "금동", "노암동", "도통동", "왕정동", "동충동", "왕정동", "죽항동", "향교동", 
 ];
 export const JEONGEUP_LOCATION: string[] = [
-  "중앙동", "서부산동", "신태인읍", "상동동", "입암면", "부안면", "동초동", 
-  "영파동", "칠보면", "정우면", "산외면", "감곡면", "고부면", "옹동면", 
-  "소성면", "초산면",
+  "신태인읍", "감곡면", "고부면", "덕천면", "북면", "산내면", "산외면", "소성면", "영원면", "옹동면", "이평면", "입암면", "칠보면", "정우면", "칠보면", "태인면", "내장상동", "장명동", "농소동", "상교동", "수성동", "시기동", "초산동", "연지동",
 ];
 export const GIMJE_LOCATION: string[] = [
-  "교월동", "검산동", "덕암동", "운교동", "옥성동", "봉남면", "백구면", 
-  "부량면", "영등동", "진봉면", "청하면", "성덕면", "공덕면", "금산면", 
-  "부안면", "대야면",
+  "만경읍", "공덕면", "광활면", "금구면", "금산면", "백구면", "봉남면", "부량면", "성덕면", "용지면", "죽산면", "진봉면", "청하면", "황산면", "교월동", "검산동", "신풍동", "요촌동",
 ];
 export const BUAN_LOCATION: string[] = [
-  "부안읍", "계화면", "주산면", "줄포면", "진서면", "변산면", "상서면", 
-  "하서면", "보안면", "동진면", "백산면", "위도면",
+  "부안읍", "계화면", "동진면", "변산면", "상서면", "주산면", "하서면", "행앙면", "보안면", "줄포면", "진서면", "백산면", "위도면",
 ];
 export const IMSIL_LOCATION: string[] = [
-  "임실읍", "청웅면", "운암면", "신평면", "성수면", "삼계면", "강진면", 
-  "오수면", "덕치면", "관촌면", "지사면", "봉동읍",
+  "임실읍", "강진면", "관촌면", "덕치면", "삼계면", "성수면", "신덕면", "신평면", "운암면", "오수면", "운암면", "청웅면", "지사면",
 ];
 export const JANGSU_LOCATION: string[] = [
-  "장수읍", "번암면", "장계면", "천천면", "계남면", "계북면",
+  "장수읍", "번암면", "장계면", "산서면", "천천면", "계남면", "계북면",
 ];
 export const MUJU_LOCATION: string[] = [
-  "무주읍", "설천면", "적상면", "안성면", "부남면", "적상산면",
+  "무주읍", "무풍면", "설천면", "적상면", "안성면", "부남면",
 ];
 export const GOCHANG_LOCATION: string[] = [
-  "고창읍", "아산면", "심원면", "흥덕면", "성송면", "대산면", "부안면", 
-  "공음면", "무장면", "학원면", "고수면", "상하면",
+  "고창읍", "고수면", "공음면", "대산면", "부안면", "무장면", "상하면", "성내면", "성송면", "신림면", "아산면", "심원면", "흥덕면", "해리면", 
 ];
-export const SOONCHEON_LOCATION: string[] = [
-  "순창읍", "구림면", "동계면", "풍산면", "복흥면", "적성면", "유등면", 
-  "금과면", "팔덕면", "쌍치면", "금실면",
+export const SOONCHANG_LOCATION: string[] = [
+  "순창읍", "구림면", "금과면", "동계면", "복흥면", "쌍치면", "유등면", "인계면", "풍산면", "적성면", "팔덕면",
+];
+export const WANJU_LOCATION: string[] = [
+  "삼례읍", "봉동읍", "용진읍", "경천면", "구이면", "고산면", "동상면", "비봉면", "상관면", "이서면", "소양면", "운주면", "화산면",
+];
+export const JINAN_LOCATION: string[] = [
+  "진안읍", "동향면", "마령면", "백운면", "부귀면", "용담면", "안천면", "상전면", "성수면", "정천면", "주천면",
 ];
 export const JEONBUK_DISTRICT_OPTIONS: districtOptionsType = {
-  "전주시": JEONJU_LOCATION,
-  "익산시": IKSAN_LOCATION,
   "군산시": GUNSAN_LOCATION,
-  "남원시": NAMWON_LOCATION,
-  "정읍시": JEONGEUP_LOCATION,
   "김제시": GIMJE_LOCATION,
+  "남원시": NAMWON_LOCATION,
+  "익산시": IKSAN_LOCATION,
+  "전주시": JEONJU_LOCATION,
+  "정읍시": JEONGEUP_LOCATION,
+  "고창군": GOCHANG_LOCATION,
+  "무주군": MUJU_LOCATION,
   "부안군": BUAN_LOCATION,
+  "순창군": SOONCHANG_LOCATION,
+  "완주군": WANJU_LOCATION,
   "임실군": IMSIL_LOCATION,
   "장수군": JANGSU_LOCATION,
-  "무주군": MUJU_LOCATION,
-  "고창군": GOCHANG_LOCATION,
-  "순창군": SOONCHEON_LOCATION,
+  "진안군": JINAN_LOCATION,
 };
 
 // 전남
 export const MOKPO_LOCATION: string[] = [
-  "목원동", "삼학동", "산정동", "옥암동", "용당동", "이로동", "죽교동", "북항동",
-  "하당동", "신흥동", "대성동", "부흥동", "옥동", "유달동", "무안면",
+  "용당동", "연동", "산정동", "연산동", "원산동", "대성동", "목원동", "동명동", "삼학동", "만호동", "유달동", "죽교동", "북항동", "용해동", "이로동", "상동", "하당동", "신흥동", "삼항동", "옥암동", "부흥동", "부주동",
 ];
 export const YEOSU_LOCATION: string[] = [
-  "중앙동", "서강동", "여서동", "문수동", "신기동", "미평동", "학동", "덕충동",
-  "화양면", "돌산읍", "삼산면", "남면", "화정면", "소라면", "율촌면",
+  "돌산읍", "삼산면", "남면", "화양면", "화정면", "소라면", "율촌면", "광림동", "국동", "대교동", "동문동", "둔덕동", "만덕동", "묘도동", "문수동", "미평동", "삼일동", "서강동", "시전동", "쌍봉동", "여서동", "여천동", "월호동", "주삼동", "중앙동", "충무동", "한려동",
 ];
 export const SUNCHEON_LOCATION: string[] = [
-  "중앙동", "조례동", "연향동", "덕월동", "풍덕동", "신대동", "월등면", 
-  "송광면", "주암면", "승주읍", "황전면", "외서면", "구례면", "광양읍", 
-  "동광양읍", "태인동",
+  "승주읍", "해룡면", "서면", "황전면", "월등면", "주암면", "송광면", "외서면", "낙안면", "별량면", "상사면", "향동", "매곡동", "조곡동", "풍덕동", "저전동", "장천동", "삼산동", "덕연동", "남제동", "중앙동", "도사동", "왕조동",
 ];
 export const GWANGYANG_LOCATION: string[] = [
-  "광양읍", "중마동", "골약동", "광영동", "태인동", "옥룡면", "진상면", 
-  "진월면", "다압면", "봉강면", "금호동",
+  "광양읍", "다압면", "봉강면", "옥곡면", "옥룡면", "진상면", "진월면", "중마동", "골약동", "광영동", "태인동", "금호동",
 ];
 export const NAJU_LOCATION: string[] = [
-  "나주읍", "다시면", "문평면", "영산동", "왕곡면", "봉황면", "삼도면",
-  "반남면", "금천면", "다도면", "산포면", "세지면", "송월동",
+  "남평읍", "공산면", "금천면", "노안면", "다도면", "다시면", "동강면", "문평면", "반남면", "봉황면", "산포면", "세지면", "왕곡면", "금남동", "송월동", "성북동", "영강동", "영산동", "이창동", "빛가람동",
 ];
 export const DAMYANG_LOCATION: string[] = [
-  "담양읍", "금성면", "봉산면", "용면", "창평면", "고서면", "대덕면",
-  "무정면", "수북면", "가사문학면",
+  "담양읍", "고서면", "금성면", "가사문학면", "대덕면", "대전면", "무정면", "봉산면", "수북면", "용면", "창평면", "월산면",
 ];
 export const GOHEUNG_LOCATION: string[] = [
-  "고흥읍", "도화면", "점암면", "포두면", "풍양면", "금산면", "과역면",
-  "도양읍", "영남면", "동강면", "대서면", "거금도면", "남양면", "도덕면",
+  "고흥읍", "도양읍", "금산면", "과역면", "남양면", "대서면", "도덕면", "도화면", "동강면", "동일면", "두원면", "봉래면", "영남면", "점암면", "포두면", "풍양면",
 ];
 export const BOSEONG_LOCATION: string[] = [
-  "보성읍", "벌교읍", "조성면", "득량면", "노산면", "미력면", "겸백면", 
-  "율어면", "복내면", "문덕면", "웅치면",
+  "보성읍", "벌교읍", "겸백면", "노동면", "득량면", "문덕면", "미력면", "조성면", "회천면", "율어면", "복내면", "웅치면",
 ];
 export const HWA_SUN_LOCATION: string[] = [
-  "화순읍", "능주면", "도곡면", "이양면", "사평면", "청풍면", "북면",
-  "남면", "동면", "한천면", "춘양면",
+  "화순읍", "사평면", "능주면", "도곡면", "도암면", "동면", "동북면", "백아면", "이서면", "이양면", "청풍면", "한천면", "춘양면",
 ];
 export const JANGHEUNG_LOCATION: string[] = [
-  "장흥읍", "관산읍", "대덕읍", "회진면", "유치면", "안양면", "장동면", 
-  "장평면", "보림면",
+  "장흥읍", "관산읍", "대덕읍", "부산면", "안양면", "용산면", "유치면", "장동면", "회진면", "장평면",
 ];
 export const GANGJIN_LOCATION: string[] = [
-  "강진읍", "도암면", "군동면", "대구면", "마량면", "병영면", "성전면", 
-  "작천면", "신전면", "옥천면",
+  "강진읍", "도암면", "군동면", "대구면", "마량면", "병영면", "성전면", "작천면", "신전면", "옴천면", "칠량면",
 ];
 export const WANDO_LOCATION: string[] = [
-  "완도읍", "군외면", "신지면", "고금면", "약산면", "청산면", "소안면",
-  "금일읍", "노화읍", "보길면", "생일면",
+  "완도읍", "금일읍", "노화읍", "고금면", "군외면", "금당면", "신지면", "약산면", "청산면", "소안면", "보길면", "생일면",
 ];
 export const JINDO_LOCATION: string[] = [
-  "진도읍", "고군면", "의신면", "임회면", "지산면", "조도면", "군내면",
+  "진도읍", "고군면", "군내면", "의신면", "임회면", "지산면", "조도면", 
 ];
 export const HAENAM_LOCATION: string[] = [
-  "해남읍", "삼산면", "화원면", "황산면", "문내면", "현산면", "북일면",
-  "송지면", "옥천면", "계곡면", "마산면", "산이면",
+  "해남읍", "계곡면", "마산면", "문내면", "북일면", "북평면", "산이면", "삼산면", "송지면", "옥천면", "현산면", "화산면", "화원면", "황산면",
 ];
-export const MUNNAE_LOCATION: string[] = [
-  "무안읍", "삼향읍", "몽탄면", "청계면", "해제면", "운남면", "현경면",
+export const MUAN_LOCATION: string[] = [
+  "무안읍", "삼향읍", "일로읍", "망운면", "몽탄면", "청계면", "해제면", "운남면", "현경면",
 ];
 export const SINAN_LOCATION: string[] = [
-  "안좌면", "자은면", "비금면", "도초면", "흑산면", "하의면", "신의면",
-  "장산면", "압해읍",
+  "지도읍", "압해읍", "비금면", "도초면", "신의면", "안좌면", "암태면", "임자면", "자은면", "장산면", "증도면", "팔금면", "흑산면", "하의면", 
+];
+export const GOKSEONG_LOCATION: string[] = [
+  "곡성읍", "겸면", "고달면", "목사동면", "삼기면", "석곡면", "오곡면", "옥과면", "오산면", "죽곡면", "입면", 
+];
+export const GURYE_LOCATION: string[] = [
+  "구례읍", "간전면", "마산면", "광의면", "문척면", "토지면", "용방면", "산동면",
+];
+export const YEONGAM_LOCATION: string[] = [
+  "영암읍", "삼호읍", "군서면", "덕진면", "금정면", "도포면", "미암면", "신북면", "시종면", "서호면", "학산면", 
+];
+export const HAMPYEONG_LOCATION: string[] = [
+  "함평읍", "대동면", "나산면", "손불면", "신광면", "학교면", "엄다면", "해보면", "월야면",
+];
+export const YEONGGWANG_LOCATION: string[] = [
+  "영광읍", "백수읍", "홍농읍", "군서면", "군남면", "낙월면", "대마면", "묘량면", "불갑면", "염산면", "법성면",
+];
+export const JANGSEONG_LOCATION: string[] = [
+  "장성읍", "남면", "동화면", "북일면", "북이면", "북하면", "삼서면", "삼계면", "진원면", "황룡면", "서삼면",
 ];
 export const JEONNAM_DISTRICT_OPTIONS: districtOptionsType = {
   "목포시": MOKPO_LOCATION,
   "여수시": YEOSU_LOCATION,
   "순천시": SUNCHEON_LOCATION,
-  "광양시": GWANGYANG_LOCATION,
   "나주시": NAJU_LOCATION,
+  "광양시": GWANGYANG_LOCATION,
   "담양군": DAMYANG_LOCATION,
+  "곡성군": GOKSEONG_LOCATION,
+  "구례군": GURYE_LOCATION,
   "고흥군": GOHEUNG_LOCATION,
   "보성군": BOSEONG_LOCATION,
   "화순군": HWA_SUN_LOCATION,
   "장흥군": JANGHEUNG_LOCATION,
   "강진군": GANGJIN_LOCATION,
+  "해남군": HAENAM_LOCATION,
+  "영암군": YEONGAM_LOCATION,
+  "무안군": MUAN_LOCATION,
+  "함평군": HAMPYEONG_LOCATION,
+  "영왕군": YEONGGWANG_LOCATION,
+  "장성군": JANGSEONG_LOCATION,
   "완도군": WANDO_LOCATION,
   "진도군": JINDO_LOCATION,
-  "해남군": HAENAM_LOCATION,
-  "무안군": MUNNAE_LOCATION,
   "신안군": SINAN_LOCATION,
+};
+
+
+// 세종
+
+// 여기부터
+// 광주
+export const GWANGJU_DONGGU_LOCATION: string[] = [
+  "광산동", "금남로", "궁동", "동명동", "산수동", "불로동", "충장로", "학동", "계림동", "운림동",
+];
+export const GWANGJU_SEOGU_LOCATION: string[] = [
+  "농성동", "양동", "치평동", "화정동", "유촌동", "동천동", "서창동", "풍암동", "내방동", "상무동",
+];
+export const GWANGJU_NAMGU_LOCATION: string[] = [
+  "방림동", "백운동", "봉선동", "월산동", "임암동", "진월동", "노대동", "대촌동", "효천동", "양림동",
+];
+export const GWANGJU_BUKGU_LOCATION: string[] = [
+  "문흥동", "두암동", "삼각동", "문화동", "운암동", "용봉동", "일곡동", "매곡동", "중흥동", "오치동",
+];
+export const GWANGSAN_LOCATION: string[] = [
+  "송정동", "월곡동", "쌍암동", "운남동", "첨단동", "비아동", "도산동", "수완동", "임곡동", "평동",
+];
+export const GWANGJU_DISTRICT_OPTIONS: districtOptionsType = {
+  "동구": GWANGJU_DONGGU_LOCATION,
+  "서구": GWANGJU_SEOGU_LOCATION,
+  "남구": GWANGJU_NAMGU_LOCATION,
+  "북구": GWANGJU_BUKGU_LOCATION,
+  "광산구": GWANGSAN_LOCATION,
+};
+
+// 울산
+export const ULSAN_JUNGGU_LOCATION: string[] = [
+  "다운동", "태화동", "우정동", "성안동", "중앙동", "복산동", "학성동", "반구동", "약사동", "병영동",
+];
+export const ULSAN_NAMGU_LOCATION: string[] = [
+  "달동", "삼산동", "신정동", "옥동", "대현동", "수암동", "야음장생포동", "선암동", "무거동", "삼호동",
+];
+export const ULSAN_DONGGU_LOCATION: string[] = [
+  "남목동", "화정동", "전하동", "화정동", "대송동", "일산동", "방어동",
+];
+export const ULSAN_BUKGU_LOCATION: string[] = [
+  "농소동", "송정동", "효문동", "양정동", "염포동", "강동동",
+];
+export const ULJU_LOCATION: string[] = [
+  "범서읍", "언양읍", "온산읍", "온양읍", "청량읍", "삼남읍", "두동면", "두서면", "삼동면", "상북면", "서생면", "웅촌면",
+];
+export const ULSAN_DISTRICT_OPTIONS: districtOptionsType = {
+  "중구": ULSAN_JUNGGU_LOCATION,
+  "남구": ULSAN_NAMGU_LOCATION,
+  "동구": ULSAN_DONGGU_LOCATION,
+  "북구": ULSAN_BUKGU_LOCATION,
+  "울주군": ULJU_LOCATION,
 };
 
 // 부산
 export const JUNG_GU_LOCATION: string[] = [
-  "광복동", "대청동", "동광동", "보수동", "부평동", "신창동", "창선동",
+  "중앙동", "대청동", "동광동", "대창동", "보수동", "광복동", "부평동", "신창동", "창선동", "남포동", "영주동",
 ];
 export const SEO_GU_LOCATION: string[] = [
-  "동대신동", "서대신동", "부민동", "아미동", "토성동", "초장동", "충무동",
+  "동대신동", "서대신동", "부민동", "아미동", "초장동", "충무동", "남부민동", "암남동",
 ];
 export const DONG_GU_LOCATION: string[] = [
-  "수정동", "좌천동", "범일동",
+  "초량동", "수정동", "좌천동", "범일동",
 ];
 export const YEONGDO_GU_LOCATION: string[] = [
-  "남항동", "대교동", "봉래동", "신선동", "영선동", "청학동", "태종대동",
+  "남항동", "봉래동", "신선동", "영선동", "청학동", "동삼동",
 ];
 export const BUSAN_JIN_GU_LOCATION: string[] = [
-  "가야동", "개금동", "범천동", "범전동", "부암동", "부전동", "연지동", 
-  "전포동", "초읍동", "당감동",
+  "가야동", "개금동", "당감동", "범전동", "범천동", "부암동", "부전동", "양정동", "연지동", "전포동", "초읍동",
 ];
-export const DONGNAE_GU_LOCATION: string[] = [
-  "온천동", "안락동", "명륜동", "복천동", "수안동", "사직동",
+export const DONGRAE_GU_LOCATION: string[] = [
+  "낙민동", "명륜동", "명장동", "복천동", "온천동", "안락동", "수안동", "사직동", "칠산동",
 ];
 export const NAM_GU_LOCATION: string[] = [
   "대연동", "문현동", "용호동", "용당동", "우암동", "감만동",
@@ -670,19 +761,19 @@ export const BUK_GU_LOCATION: string[] = [
   "구포동", "금곡동", "덕천동", "만덕동", "화명동",
 ];
 export const HAEUNDAE_GU_LOCATION: string[] = [
-  "중동", "좌동", "송정동", "반송동", "반여동", "우동", "재송동",
+  "반송동", "반여동", "석대동", "중동", "좌동", "송정동", "우동", "재송동",
 ];
 export const SASANG_GU_LOCATION: string[] = [
-  "감전동", "괘법동", "덕포동", "삼락동", "엄궁동", "주례동", "학장동",
+  "감전동", "괘법동", "덕포동", "모라동", "삼락동", "엄궁동", "주례동", "학장동",
 ];
 export const SAHA_GU_LOCATION: string[] = [
-  "괴정동", "구평동", "다대동", "당리동", "장림동", "신평동", "하단동",
+  "감천동", "괴정동", "구평동", "다대동", "당리동", "장림동", "신평동", "하단동",
 ];
 export const GEUMJEONG_GU_LOCATION: string[] = [
-  "구서동", "금사동", "남산동", "부곡동", "서동", "장전동", "청룡동",
+  "구서동", "금사회동동", "금성동", "남산동", "청룡노포동", "선두구동", "부곡동", "오륜동", "서동", "장전동",
 ];
 export const GANGSEO_GU_LOCATION: string[] = [
-  "대저동", "명지동", "녹산동", "가락동", "강동동", "죽림동", "식만동",
+  "대저동", "강동동", "명지동", "죽림동", "식만동", "죽동동", "봉림동", "송정동", "화전동", "녹산동", "생곡동", "구랑동", "지사동", "미음동", "범방동", "신호동", "동선동", "성북동", "눌차동", "천성동", "대항동",
 ];
 export const YEONJE_GU_LOCATION: string[] = [
   "거제동", "연산동",
@@ -690,101 +781,225 @@ export const YEONJE_GU_LOCATION: string[] = [
 export const SUYEONG_GU_LOCATION: string[] = [
   "광안동", "남천동", "망미동", "민락동", "수영동",
 ];
-export const SAEMANGUM_LOCATION: string[] = [
-  "녹산동", "신호동", "천성동", "소도동",
-];
+export const GIJANG_GUN_LOCATION: string[] = [
+  "기장읍", "장안읍", "정관읍", "일광읍", "철마면",
+]
 export const BUSAN_DISTRICT_OPTIONS: districtOptionsType = {
   "중구": JUNG_GU_LOCATION,
   "서구": SEO_GU_LOCATION,
   "동구": DONG_GU_LOCATION,
   "영도구": YEONGDO_GU_LOCATION,
   "부산진구": BUSAN_JIN_GU_LOCATION,
-  "동래구": DONGNAE_GU_LOCATION,
+  "동래구": DONGRAE_GU_LOCATION,
   "남구": NAM_GU_LOCATION,
   "북구": BUK_GU_LOCATION,
   "해운대구": HAEUNDAE_GU_LOCATION,
-  "사상구": SASANG_GU_LOCATION,
   "사하구": SAHA_GU_LOCATION,
   "금정구": GEUMJEONG_GU_LOCATION,
   "강서구": GANGSEO_GU_LOCATION,
   "연제구": YEONJE_GU_LOCATION,
   "수영구": SUYEONG_GU_LOCATION,
+  "사상구": SASANG_GU_LOCATION,
+  "기장군": GIJANG_GUN_LOCATION,
 };
 
 // 경북
 export const ANDONG_LOCATION: string[] = [
-  "동문동", "북문동", "용상동", "송천동", "서부동", "안막동", "신기동", 
-  "진성동", "봉산동", "광석동", "남후면", "안계면", "풍산읍",
+  "강남동", "명륜동", "서구동", "송하동", "안기동", "옥동", "용상동", "중구동", "태화동", "평화동",
 ];
 export const GYEONGJU_LOCATION: string[] = [
-  "황남동", "황성동", "노서동", "노포동", "보문동", "경주읍", "천북면",
-  "산내면", "양남면", "내남면", "감포읍", "기계면", "천하면",
+  "동천동", "보덕동", "불국동", "선도동", "성건동", "용강동", "월성동", "중부동", "황남동", "황성동", "황오동",
 ];
 export const KIMCHEON_LOCATION: string[] = [
-  "중앙동", "북성동", "금암동", "문당동", "대상동", "회룡동", "용계동",
-  "죽곡면", "삼계면", "평지면", "용두동",
+  "자산동", "평화남산동", "양금동", "대신동", "대곡동", "지좌동", "율곡동",
 ];
 export const GUMI_LOCATION: string[] = [
-  "구미동", "장천동", "선산읍", "송정동", "황상동", "인동", "검단동",
-  "남통동", "장수동", "상모동",
+  "송정동", "원평동", "지산동", "양포동", "선주원남동", "형곡동", "공단동", "신평동", "비산동", "도량동", "광평동", "상모사곡동", "임오동", "인동동", "진미동",
 ];
 export const YEONGCHEON_LOCATION: string[] = [
-  "성산동", "북문동", "중앙동", "동촌동", "고수동", "가산동", "송호동", 
-  "산곡동", "부곡동", "금릉면", "조일면",
+  "남부동", "동부동", "서부동", "완산동", "중앙동",
 ];
 export const BONGHWA_LOCATION: string[] = [
-  "안일면", "청수면", "문경읍", "상주읍", "호계면", "송도면", "동성리",
+  "봉화읍", "명호면", "물야면", "법전면", "봉성면", "상운면", "석포면", "소천면", "재산면", "춘양면",
 ];
-export const ULJU_LOCATION: string[] = [
-  "동부리", "평리", "죽전리", "삼산면", "남양리", "광석리", "중산리",
-  "송내리", "미산리", "장성리", "운암리", "일산리", "가야리",
+export const GYEONGSAN_LOCATION: string[] = [
+  "남부동", "동부동", "북부동", "서부동", "중방동", "중앙동",
+];
+export const MUNGYEONG_LOCATION: string[] = [
+  "점촌동", "문경읍", "가은읍", "농암면", "동로면", "마성면", "호계면", "영순면", "산북면", "산양면",
+];
+export const SANGJU_LOCATION: string[] = [
+  "계림동", "남원동", "동문동", "동성동", "북문동", "신흥동",
+];
+export const YEONGJU_LOCATION: string[] = [
+  "가흥동", "상망동", "하망동", "영주동", "휴천동",
+];
+export const POHANG_LOCATION: string[] = [
+  "남구", "북구",
+];
+export const GORYEONG_LOCATION: string[] = [
+  "대가야읍", "개진면", "다산면", "덕곡면", "성산면", "쌍림면", "운수면", "우곡면", 
+];
+export const SEONGJU_LOCATION: string[] = [
+  "성주읍", "가천면", "금수강산면", "선남면", "대가면", "벽진면", "수륜면", "초전면", "월항면", "용암면",
+];
+export const YEONGDEOK_LOCATION: string[] = [
+  "영덕읍", "강구면", "남정면", "달산면", "병곡면", "창수면", "지품면", "영해면", "축산면",
+];
+export const YEONGYANG_LOCATION: string[] = [
+  "영양읍", "입암면", "석보면", "일월면", "수비면", "청기면",
+];
+export const YECHEON_LOCATION: string[] = [
+  "예천읍", "호명읍", "감천면", "개포면", "보문면", "용문면", "유천면", "용궁면", "지보면", "풍양면", "효자면", "은풍면",
+];
+export const ULLEUNG_LOCATION: string[] = [
+  "울릉읍", "서면", "북면",
+];
+export const ULJIN_LOCATION: string[] = [
+  "울진읍", "평해읍", "근남면", "기성면", "금강송면", "매화면", "북면", "죽변면", "후포면", "온정면", 
+];
+export const UISEONG_LOCATION: string[] = [
+  "의성읍", "가음면", "구천면", "금성면", "다인면", "단밀면", "단북면", "단촌면", "비안면", "봉양면", "사곡면", "신평면", "안계면", "안사면", "안평면", "점곡면", "옥산면", "춘산면", 
+];
+export const CHEONGDO_LOCATION: string[] = [
+  "청도읍", "화양읍", "각남면", "각북면", "풍각면", "이서면", "운문면", "금천면", "매전면", 
+];
+export const CHEONGSONG_LOCATION: string[] = [
+  "청송읍", "부남면", "안덕면", "현서면", "현동면", "파천면", "진보면", "주왕산면",
+];
+export const CHILGOK_LOCATION: string[] = [
+  "북삼읍", "석적읍", "왜관읍", "가산면", "기산면", "약목면", "지천면", "동명면",
 ];
 export const GYEONGBUK_DISTRICT_OPTIONS: districtOptionsType = {
-  "안동시": ANDONG_LOCATION,
+  "경산시": GYEONGSAN_LOCATION,
   "경주시": GYEONGJU_LOCATION,
-  "김천시": KIMCHEON_LOCATION,
   "구미시": GUMI_LOCATION,
+  "김천시": KIMCHEON_LOCATION,
+  "문경시": MUNGYEONG_LOCATION,
+  "상주시": SANGJU_LOCATION,
+  "안동시": ANDONG_LOCATION,
+  "영주시": YEONGJU_LOCATION,
   "영천시": YEONGCHEON_LOCATION,
+  "포항시": POHANG_LOCATION,
+  "고령군": GORYEONG_LOCATION,
   "봉화군": BONGHWA_LOCATION,
-  "울주군": ULJU_LOCATION,
+  "성주군": SEONGJU_LOCATION,
+  "영덕군": YEONGDEOK_LOCATION,
+  "영양군": YEONGYANG_LOCATION,
+  "예천군": YECHEON_LOCATION,
+  "울릉군": ULLEUNG_LOCATION,
+  "울진군": ULJIN_LOCATION,
+  "의성군": UISEONG_LOCATION,
+  "청도군": CHEONGDO_LOCATION,
+  "청송군": CHEONGSONG_LOCATION,
+  "칠곡군": CHILGOK_LOCATION,
 };
 
 // 경남
-// 경상남도 각 구/군 읍면동 리스트
 export const CHANGWON_LOCATION: string[] = [
-  "성산구", "진해구", "마산합포구", "마산회원구", "회원구", "상남동", "여좌동", 
-  "진해동", "구산동", "장복동", "대산면", "웅동", "진해구",
+  "의창구", "성산구", "진해구", "마산합포구", "마산회원구",
 ];
 export const GIMHAE_LOCATION: string[] = [
-  "내동", "관광지", "김해읍", "삼계동", "장유동", "인제동", "선천면", "성산동", 
-  "서상동", "어방동", "양동", "남해면",
+  "내외동", "동상동", "부원동", "북부동", "불암동", "삼안동", "장유동", "칠산서부동", "활천동", "회현동",
 ];
 export const JINJU_LOCATION: string[] = [
-  "시청동", "진주대동", "동정동", "천전동", "상대동", "대평동", "노동", 
-  "지내동", "정촌면", "사천면", "원동",
-];
-export const MASAN_LOCATION: string[] = [
-  "두산동", "산내동", "가야동", "해운동", "마산동", "고성동", "서호동",
-  "고송동", "진해로", "사천읍", "남해읍",
-];
-export const GYEONGNAM_GANGJIN_LOCATION: string[] = [
-  "삼계동", "낙동동", "용호동", "동상동", "상촌동", "우촌동", "모곡동", "태화동", 
-  "구수동", "항동",
+  "가호동", "상대동", "상봉동", "상평동", "성북동", "신안동", "이현동", "중앙동", "천전동", "초장동", "충무공동", "판문동", "평거동", "하대동",
 ];
 export const CHANGYEONG_LOCATION: string[] = [
-  "사람동", "향목동", "중리", "반석동", "동양동", "예원동", "양평동", "예인동",
+  "창녕읍", "남지읍", "계성면", "고암면", "길곡면", "대지면", "대합면", "도천면", "부곡면", "성산면", "영산면", "유어면", "이방면", "장마면",
 ];
 export const YANGSAN_LOCATION: string[] = [
-  "정산동", "화명동", "미산동", "시외동", "동래동", "사랑동", "청동", "금호동", "진성동",
+  "중앙동", "양주동", "삼성동", "강서동", "서창동", "소주동", "평산동", "덕계동",
+];
+export const GEOJE_LOCATION: string[] = [
+  "고현동", "상문동", "수양동", "장평동", "능포동", "장승포동", "아주동", "옥포동",
+];
+export const MIRYANG_LOCATION: string[] = [
+  "삼문동", "내일동", "가곡동", "내이동", "교동",
+];
+export const SACHEON_LOCATION: string[] = [
+  "남양동", "동서동", "동서금동", "벌용동", "선구동", "향촌동",
+];
+export const TONGYEONG_LOCATION: string[] = [
+  "도천동", "명정동", "무전동", "미수동", "봉평동", "북신동", "정량동", "중앙동",
+];
+export const GEOCHANG_LOCATION: string[] = [
+  "거창읍", "가조면", "가북면", "고제면", "남상면", "남하면", "마리면", "북상면", "신원면", "웅양면", "위천면", "주상면",
+];
+export const GYEONGNAM_GOSEONG_LOCATION: string[] = [
+  "고성읍", "개천면", "거류면", "구만면", "대가면", "동해면", "마암면", "삼산면", "상리면", "하이면", "하일면", "영오면", "영현면", "회화면",
+];
+export const NAMHAE_LOCATION: string[] = [
+  "남해읍", "고현면", "남면", "미조면", "삼동면", "상주면", "서면", "설천면", "창선면", "이동면",
+];
+export const SANCHEONG_LOCATION: string[] = [
+  "산청읍", "차황면", "오부면", "생초면", "금서면", "삼장면", "시천면", "단성면", "신안면", "생비량면", "신등면",
+];
+export const UIREONG_LOCATION: string[] = [
+  "의령읍", "가례면", "칠곡면", "대의면", "화정면", "용덕면", "정곡면", "지정면", "낙서면", "부림면", "봉수면", "궁류면", "유곡면",
+];
+export const HADONG_LOCATION: string[] = [
+  "하동읍", "고전면", "금남면", "금성면", "북천면", "악양면", "양보면", "옥종면", "적량면", "진교면", "횡천면", "청암면", "화개면", 
+];
+export const HAMAN_LOCATION: string[] = [
+  "가야읍", "칠원읍", "군북면", "대산면", "산인면", "법수면", "여항면", "칠서면", "칠북면", "함안면",
+];
+export const HAMYANG_LOCATION: string[] = [
+  "함양읍", "마천면", "백전면", "서상면", "서하면", "수동면", "안의면", "휴천면", "유림면", "지곡면", "병곡면",
+];
+export const HAPCHEON_LOCATION: string[] = [
+  "합천읍", "가야면", "가회면", "대병면", "대양면", "덕곡면", "묘산면", "봉산면", "쌍백면", "쌍책면", "야로면", "용주면", "율곡면", "적중면", "초계면", "청덕면", "삼가면",
 ];
 export const GYEONGNAM_DISTRICT_OPTIONS: districtOptionsType = {
   "창원시": CHANGWON_LOCATION,
+  "거제시": GEOJE_LOCATION,
   "김해시": GIMHAE_LOCATION,
-  "진주시": JINJU_LOCATION,
-  "마산시": MASAN_LOCATION,
-  "강진시": GANGJIN_LOCATION,
-  "창녕군": CHANGYEONG_LOCATION,
+  "밀양시": MIRYANG_LOCATION,
+  "사천시": SACHEON_LOCATION,
   "양산시": YANGSAN_LOCATION,
+  "진주시": JINJU_LOCATION,
+  "통영시": TONGYEONG_LOCATION,
+  "거창군": GEOCHANG_LOCATION,
+  "고성군": GOSEONG_LOCATION,
+  "남해군": NAMHAE_LOCATION,
+  "산청군": SANCHEONG_LOCATION,
+  "의령군": UIREONG_LOCATION,
+  "창녕군": CHANGYEONG_LOCATION,
+  "하동군": HADONG_LOCATION,
+  "함안군": HAMAN_LOCATION,
+  "함양군": HAMYANG_LOCATION,
+  "합천군": HAPCHEON_LOCATION,
 };
 
 // 제주
+export const SEOGWIPO_LOCATION: string[] = [
+  "송산동", "정방동", "중앙동", "천지동", "효돈동", "영천동", "동홍동", "서홍동", "대륜동", "대천동", "중문동", "예래동",
+];
+export const JEJU_LOCATION: string[] = [
+  "건입동", "노형동", "도두동", "봉개동", "삼도동", "삼양동", "아라동", "연동", "외도동", "오라동", "용담동", "이도동", "이호동", "일도동", "화북동",
+];
+export const JEJU_DISTRICT_OPTIONS: districtOptionsType = {
+  "서귀포시": SEOGWIPO_LOCATION,
+  "제주시": JEJU_LOCATION,
+};
+
+export type localType = {[key: string]: districtOptionsType}
+
+// 전국
+// 키값: 1차 필터, 밸류값: 2차 필터(배열)
+export const LOCAL_CITY_OPTIONS: localType = {
+  '서울': SEOUL_DISTRICT_OPTIONS,
+  '경기': GYEONGGI_DISTRICT_OPTIONS,
+  '인천': INCHEON_DISTRICT_OPTIONS,
+  '강원': GANGWON_DISTRICT_OPTIONS,
+  '대구': DAEGU_DISTRICT_OPTIONS,
+  '대전': DAEJEON_DISTRICT_OPTIONS,
+  '충북': CHUNGBUK_DISTRICT_OPTIONS,
+  '충남': CHUNGNAM_DISTRICT_OPTIONS,
+  '전북': JEONBUK_DISTRICT_OPTIONS,
+  '전남': JEONNAM_DISTRICT_OPTIONS,
+  '부산': BUSAN_DISTRICT_OPTIONS,
+  '경북': GYEONGBUK_DISTRICT_OPTIONS,
+  '경남': GYEONGNAM_DISTRICT_OPTIONS,
+  '제주': JEJU_DISTRICT_OPTIONS
+}
