@@ -47,6 +47,7 @@ export const SendEmailApi = async (email: string) => {
 
 //인증번호 검증
 export const ConfirmVerificationCodeApi = async (email: string, authCode: string) => {
+
   try {
     const response = await axios.post(
       `${SIGNUP_API_BASE_URL}/emails/verifications`,
