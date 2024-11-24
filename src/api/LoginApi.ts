@@ -3,7 +3,7 @@ import { UserInfoElement } from '../types/signup.type';
 const SIGNUP_API_BASE_URL = '/api';
 
 //로그인
-export const LoginApi = async (data: Omit<UserInfoElement, 'email' | 'nickName'>): Promise<AxiosResponse | null> => {
+export const LoginApi = async (data: Omit<UserInfoElement, 'email' | 'nickname'>): Promise<AxiosResponse | null> => {
   try {
     const response = await axios.post(SIGNUP_API_BASE_URL + '/login', data, {
       headers: {

@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { Link, useLocation } from 'react-router-dom';
+import useLoginStore from '../zustand/loginStore';
 
 const tabStyle = 'hover:font-bold hover:text-button-hover';
 const selectedTabStyle = 'font-bold text-button-selected';
@@ -8,6 +9,11 @@ const buttonStyle =
 
 export default function Header() {
   const { pathname }: { pathname: string } = useLocation();
+  const { isLoggedIn, logout } = useLoginStore();
+
+  const logoutHandler = () => {
+    logout();
+  };
 
   return (
     <header className="min-w-[900px] h-[75px] border border-b-[#495057] px-[120px] flex justify-between">
@@ -37,20 +43,27 @@ export default function Header() {
         </nav>
       </div>
       <div className="flex justify-center items-center">
-        {/* 비로그인 상태에서의 UI */}
-        <nav className="flex gap-[16px] text-[17px]">
-          <Link to="/login" className={buttonStyle}>
-            로그인
-          </Link>
-          <Link to="/sign-up" className={buttonStyle}>
-            회원가입
-          </Link>
-        </nav>
-        {/* 로그인 상태에서 UI */}
-        {/* <nav className="flex gap-[16px]">
-          <Link to={'/my/1'}>마이페이지</Link>
-          <button className={buttonStyle}>로그아웃</button>
-        </nav> */}
+        {!isLoggedIn ? (
+          //* 비로그인 상태에서의 UI */
+          <nav className="flex gap-[16px]">
+            <Link to="/login" className={buttonStyle}>
+              로그인
+            </Link>
+            <Link to="/sign-up" className={buttonStyle}>
+              회원가입
+            </Link>
+          </nav>
+        ) : (
+          // 로그인 상태에서 UI
+          <nav className="flex gap-[16px] items-center">
+            <button className={buttonStyle} onClick={logoutHandler}>
+              로그아웃
+            </button>
+            <Link to={'/my'}>
+              <i className="xi-profile xi-3x"></i>
+            </Link>
+          </nav>
+        )}
       </div>
     </header>
   );

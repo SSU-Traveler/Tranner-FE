@@ -12,7 +12,7 @@ export default function Layout() {
 
   const location = useLocation();
   // 특정 경로를 확인하여 패딩을 결정
-  const isPaddingZero = location.pathname === '/trip-plan'; // 특정 경로를 지정
+  const isPaddingZero = location.pathname === '/trip-plan' || location.pathname === '/my'; // 특정 경로를 지정
   const minHeightNone = location.pathname === '/trip-plan';
 
   useEffect(() => {

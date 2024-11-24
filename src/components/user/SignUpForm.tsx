@@ -8,7 +8,7 @@ interface SignUpUserElement extends UserInfoElement {
   passwordConfirm: string;
 }
 
-type ErrMsg = Omit<SignUpUserElement, 'nickName'>;
+type ErrMsg = Omit<SignUpUserElement, 'nickname'>;
 
 interface IsValid {
   email: boolean;
@@ -137,8 +137,8 @@ const SignUpForm = ({
         <UserInput
           label="닉네임"
           type="text"
-          value={signUpData.nickName}
-          onChange={handleChange?.('nickName')}
+          value={signUpData.nickname}
+          onChange={handleChange?.('nickname')}
           placeholder="닉네임 입력"
           box_width="input2"
         />

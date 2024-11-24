@@ -8,9 +8,10 @@ import { THEME_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useModal } from '../hooks/useModal';
 import { useOption } from '../hooks/useOption';
+import useLoginStore from '../zustand/loginStore';
 
 export default function CustomTripPage() {
-  const [isLogin, setIsLogin] = useState<boolean>(true); // notiflix 테스트용
+  const { isLoggedIn } = useLoginStore();
   const [theme, setTheme] = useState<string>('');
   const [places, setPlaces] = useState([]);
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -32,7 +33,7 @@ export default function CustomTripPage() {
   };
 
   const handleOpenModal = () => {
-    if (!isLogin) needToLoginAlarm();
+    if (!isLoggedIn) needToLoginAlarm();
     else openModal(<FirstQuestion />);
   };
 

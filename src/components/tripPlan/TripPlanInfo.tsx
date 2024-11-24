@@ -60,7 +60,7 @@ const TripPlanInfo = ({
   const makePlan = async () => {
     const resposne = await makePlanApi(planName, numberOfPeople, tripDate, elementObj);
     console.log(resposne);
-    if (resposne?.status) {
+    if (resposne === '스케줄 생성 성공') {
       console.log('성공');
       //계획 생성 완료 모달 띄우기
       //이동할 페이지?
@@ -96,7 +96,7 @@ const TripPlanInfo = ({
           <button
             type="button"
             onClick={() => {
-              if (numberOfPeople > 0) {
+              if (numberOfPeople > 1) {
                 handleNumofPeople('-');
               }
             }}

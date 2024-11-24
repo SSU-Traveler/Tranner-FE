@@ -5,7 +5,7 @@ import Dropdown from '../common/Dropdown';
 import { placeObjType, userPlaceType } from '../../types/tripPlan.type';
 import { fetchPlacesText, fetchPlacesNearby, getPlacesInfo } from '../../api/tripPlan.api';
 import { basketType } from '../../types/basket.type';
-import useBookmarkStore from '../../zustand/bookmark';
+import useBookmarkStore from '../../zustand/bookmarkStore';
 import { bookmarkType } from '../../types/bookmark.type';
 
 interface NewPlacesResponse {

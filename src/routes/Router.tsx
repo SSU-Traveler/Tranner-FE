@@ -63,7 +63,7 @@ const router = createBrowserRouter([
       },
       // 마이페이지
       {
-        path: '/my/:username',
+        path: '/my',
         element: <MyPage />,
       },
 
