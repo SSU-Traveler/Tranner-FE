@@ -28,9 +28,8 @@ export default function Basket() {
 
   return (
     <div className="flex">
-      <div className="h-[55px] flex gap-[7px] px-[10px] bg-button-selected w-fit rounded-l-[10px] justify-around items-center text-white font-bold text-[18px]">
+      <div className="min-w-fit h-[55px] flex gap-[7px] px-[10px] bg-button-selected rounded-l-[10px] justify-around items-center text-white font-bold text-[18px]">
         <img src="/basket.svg" alt="장바구니" />
-        <p>서울</p>
         <button onClick={handleToggleButton}>{isOpen ? '〉' : '〈'}</button>
       </div>
       <div

@@ -18,11 +18,24 @@ export default defineConfig({
         changeOrigin: true,
         secure: true,
       },
-      // 날씨 API
+      // 구글 검색 API
+      '/customsearch': {
+        target: 'https://www.googleapis.com',
+        changeOrigin: true,
+        secure: true,
+      },
+      // 기상청 API
       '/weather-api': {
         target: 'https://apihub.kma.go.kr',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/weather-api/, ''), // '/weather-api' 경로를 제거
+        secure: true,
+      },
+      // OpenWeather API
+      '/openweather-api': {
+        target: 'https://api.openweathermap.org',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/openweather-api/, ''), // '/openweather-api' 경로를 제거
         secure: true,
       },
       // 위키피디아 API

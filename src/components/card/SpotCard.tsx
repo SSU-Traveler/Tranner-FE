@@ -16,7 +16,7 @@ interface SpotCardProps {
   spotEngName?: string;
   spotDescription: string;
   spotAddress: string;
-  needToLoginAlarm: () => void;
+  needToLoginAlarm?: () => void;
 }
 
 export default function SpotCard({
@@ -44,7 +44,7 @@ export default function SpotCard({
         placeEngName={spotEngName}
         placeAddress={spotAddress}
         placeDescription={spotDescription}
-        needToLoginAlarm={needToLoginAlarm}
+        needToLoginAlarm={needToLoginAlarm!}
       />
     );
   };
