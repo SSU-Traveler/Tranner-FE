@@ -285,9 +285,22 @@ export async function getPlacesBasedOnTheme(theme: string) {
 }
 
 // 설문조사 후 추천 여행지 가져오는 함수
-export async function getRecommendPlaces(theme: string | string[]) {
+export async function getRecommendPlaces(lat: number, lng: number, theme: string | string[]) {
+  let url: string = '';
+  // let data // 나중에 타입 지정
   try {
-    const url = `/maps/api/place/nearbysearch/json?location=${CITY_INDICATORS[0].lat},${CITY_INDICATORS[0].lng}&radius=5000&type=${theme}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
+    if (typeof theme === 'string') {
+      url = `/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${theme}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log('추천 여행지: ', data);
+    } else {
+      const requests = theme.map((t) => {
+        return (url = `/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${t}&region=kr&key=${GOOGLE_MAP_API_KEY}`);
+      });
+      const data = await Promise.all(requests.map((url) => fetch(url).then((response) => response.json())));
+      console.log('추천 여행지: ', data);
+    }
   } catch (error) {
     console.error('getRecommendPlaces() 함수 에러: ', error);
   }
