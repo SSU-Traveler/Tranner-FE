@@ -16,7 +16,7 @@ export default function SignUpPage() {
     email: '',
     authCode: '',
     username: '',
-    nickName: '',
+    nickname: '',
     password: '',
     passwordConfirm: '',
   });
@@ -77,7 +77,7 @@ export default function SignUpPage() {
     }
 
     //onChange와 동시에 유효성 검사
-    if (field !== 'nickName') {
+    if (field !== 'nickname') {
       checkValid(field, value);
     }
   };
