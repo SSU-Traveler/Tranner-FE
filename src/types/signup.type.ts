@@ -4,7 +4,7 @@ export type UserInfoElement = {
   email: string;
   //verification: string;
   username: string;
-  nickName: string;
+  nickname: string;
   password: string;
   //passwordConfirm: string;
 };

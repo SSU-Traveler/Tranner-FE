@@ -15,7 +15,7 @@ const loadBookmarksFromLocalStorage = (): bookmarkType[] => {
 
 const useBookmarkStore: UseBoundStore<StoreApi<BookmarkState>> = create((set) => ({
   bookmarks: loadBookmarksFromLocalStorage(),
-  addBookmarks: async (bmkObj: bookmarkType) => {
+  addBookmarks: (bmkObj: bookmarkType) => {
     set((state) => {
       const newBookmarks = [...state.bookmarks, bmkObj];
       localStorage.setItem('bookmarks', JSON.stringify(newBookmarks)); // 상태 저장

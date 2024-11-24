@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useAlarm } from './../../hooks/useAlarm';
+import useLoginStore from '../../zustand/loginStore';
+import { useNavigate } from 'react-router-dom';
 
 export default function Basket() {
-  const [isLogin, setIsLogin] = useState<boolean>(false); // notiflix 테스트용
+  const { isLoggedIn } = useLoginStore();
   const [isOpen, setIsOpen] = useState<boolean>(true); // 슬라이더 상태 관리
   const { needToLoginAlarm } = useAlarm();
+  const navigator = useNavigate();
 
   const handleToggleButton = () => {
     setIsOpen(!isOpen);
@@ -15,10 +18,11 @@ export default function Basket() {
   };
 
   const handlePlanTrip = () => {
-    if (!isLogin) {
+    if (!isLoggedIn) {
       needToLoginAlarm();
     } else {
       console.log('TODO: 여행 계획하는 기능 구현');
+      navigator('/trip-plan');
     }
   };
 

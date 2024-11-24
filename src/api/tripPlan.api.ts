@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { basketType } from '../types/basket.type';
-import { tripDate, userPlaceType } from '../types/tripPlan.type';
+import { filteredUserPlaceType, tripDate, userPlaceType } from '../types/tripPlan.type';
+import { apiPost } from '../zustand/tokenStore';
 
 const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_PLACE_API;
 
@@ -119,6 +120,37 @@ export const getPlacesInfo = async (place_id: string) => {
   }
 };
 
+export const getPhotoUrl = async (place_id: string) => {
+  try {
+    const url = `/maps/api/place/details/json?place_id=${place_id}&fields=photo&key=${GOOGLE_MAP_API_KEY}`;
+    const response = await axios.get(url);
+    const details = response.data.result;
+
+    // 사진 URL 생성
+    const photoUrl = details.photos
+      ? `/maps/api/place/photo?maxwidth=400&photoreference=${details.photos[0].photo_reference}&key=${GOOGLE_MAP_API_KEY}`
+      : '';
+
+    return { photoUrl };
+  } catch (error) {
+    console.error('Error fetching place details: ', error);
+    return null;
+  }
+};
+
+export const getBmkInfoById = async (place_id: string) => {
+  try {
+    const url = `/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address&key=${GOOGLE_MAP_API_KEY}`;
+    const response = await axios.get(url);
+    const details = response.data.result;
+
+    return { name: details.name, addr: details.formatted_address, placeId: place_id };
+  } catch (error) {
+    console.error('Error fetching place details: ', error);
+    return null;
+  }
+};
+
 export const makePlanApi = async (
   planName: string,
   numberOfPeople: number,
@@ -126,19 +158,20 @@ export const makePlanApi = async (
   elementObj: userPlaceType[]
 ) => {
   try {
+    const filteredElementObj = elementObj.map(({ daySequence, locationSequence, placeId }) => ({
+      daySequence: daySequence,
+      locationSequence: locationSequence,
+      locationName: placeId,
+    }));
     const url = '/api/schedule/add';
     const data = {
       name: planName,
       howManyPeople: numberOfPeople,
       startDate: tripDate.tripStartDate,
       endDate: tripDate.tripEndDate,
-      detailSchedules: elementObj,
+      detailSchedules: filteredElementObj,
     };
-    const response = await axios.post(url, data, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await apiPost(url, data);
     console.log(response);
     return response;
   } catch (error) {

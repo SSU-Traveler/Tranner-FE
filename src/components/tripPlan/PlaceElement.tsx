@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { placeDetailType, placeObjType } from '../../types/tripPlan.type';
 import DetailCardModal from '../modal/DetailCardModal';
 import { getPlacesDetail } from '../../api/tripPlan.api';
-import useBookmarkStore from '../../zustand/bookmark';
+import useBookmarkStore from '../../zustand/bookmarkStore';
 
 interface Props {
   placeObj: placeObjType;

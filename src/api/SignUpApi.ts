@@ -9,7 +9,7 @@ export const SignUpApi = async (prop: UserInfoElement) => {
       username: prop.username,
       password: prop.password,
       memberEmail: prop.email,
-      nickname: prop.nickName,
+      nickname: prop.nickname,
     };
     const response = await axios.post(SIGNUP_API_BASE_URL + '/register', data, {
       headers: {
@@ -29,7 +29,7 @@ export const SignUpApi = async (prop: UserInfoElement) => {
 export const SendEmailApi = async (email: string) => {
   try {
     const data = { email: email };
-    const url = `${SIGNUP_API_BASE_URL}/emails/verification-requests`;
+    const url = `${SIGNUP_API_BASE_URL}/emails/register-requests`;
     const response = await axios.post(url, data, {
       headers: {
         'Content-Type': 'application/json',

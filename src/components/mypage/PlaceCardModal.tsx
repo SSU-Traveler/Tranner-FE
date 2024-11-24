@@ -1,59 +1,34 @@
-import clsx from 'clsx';
-import DOMPurify from 'dompurify';
 import { useState } from 'react';
-import useBasketStore from '../../zustand/basketStore';
-import useLoginStore from '../../zustand/loginStore';
+import DOMPurify from 'dompurify';
+import clsx from 'clsx';
+import useBookmarkStore from '../../zustand/bookmarkStore';
 
 const buttonStyle =
   'w-[200px] h-[50px] p-[10px] rounded-[5px] font-bold bg-button-basic text-white hover:bg-button-hover';
 
-// CardModal 컴포넌트가 받게 될 props
-// 1. 이미지 경로       예) "/images/성산일출봉.jpeg"
-// 2. 장소 국문 이름    예) "성산일출봉"
-// 3. 장소 영문 이름    예) "Seongsan Ilchulbong Tuff Cone Natural Reserve"
-// 4. 장소 주소(선택사항: 만약 장소가 특정 명소가 아닌 지역이라면, 주소는 없음)
-// 5. 장소 설명
-// 6. 로그인이 필요하다는 알림(함수)
-
-interface CardModalProps {
+interface Props {
+  placeId: string;
   imgPath: string;
   placeKorName: string;
   placeEngName?: string;
   placeAddress?: string;
   placeDescription: string;
-  needToLoginAlarm: () => void;
 }
 
-export default function CardModal({
-  imgPath,
-  placeKorName,
-  placeEngName,
-  placeAddress,
-  placeDescription,
-  needToLoginAlarm,
-}: CardModalProps) {
-  const [isSaved, setIsSaved] = useState<boolean>(false);
-  const [isLogin, setIsLogin] = useState<boolean>(false); // notiflix 테스트용
-  const { isLoggedIn } = useLoginStore();
-  const addSpot = useBasketStore((state) => state.addSpot);
-
+const PlaceCardModal = ({ placeId, imgPath, placeKorName, placeEngName, placeAddress, placeDescription }: Props) => {
   const sanitizedHTML = DOMPurify.sanitize(placeDescription);
 
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(true);
+
+  const addBookmarks = useBookmarkStore((state) => state.addBookmarks);
+  const removeBookmarks = useBookmarkStore((state) => state.removeBookmarks);
+
   const handleAddToCart = () => {
-    if (!isLoggedIn) {
-      needToLoginAlarm();
-    } else {
-      console.log('TODO: 장바구니에 추가하는 기능 구현');
-      addSpot(placeKorName);
-    }
+    //장바구니에 담겨있는지 여부 확인하고 코드 수정해야할듯
   };
 
   const handleAddToTripCard = () => {
-    if (!isLoggedIn) {
-      needToLoginAlarm();
-    } else {
-      console.log('TODO: 기존 여행 계획에 추가하는 기능 구현');
-    }
+    //TODO: 기존 여행 계획에 추가하는 기능 구현
   };
 
   return (
@@ -65,19 +40,35 @@ export default function CardModal({
             <section className="flex justify-between">
               <p className="text-[20px] font-bold">{placeKorName}</p>
               {placeAddress &&
-                (isSaved ? (
+                (isBookmarked ? (
                   <img
                     src="/full-heart.svg"
                     alt="찜한 후"
                     className="hover:cursor-pointer"
-                    onClick={() => setIsSaved((prev) => !prev)}
+                    onClick={() => {
+                      const obj = {
+                        placeId: placeId,
+                        name: placeKorName,
+                        addr: placeAddress,
+                      };
+                      removeBookmarks(obj);
+                      setIsBookmarked(false);
+                    }}
                   />
                 ) : (
                   <img
                     src="/empty-heart.svg"
                     alt="찜하기 전"
                     className="hover:cursor-pointer"
-                    onClick={() => setIsSaved((prev) => !prev)}
+                    onClick={() => {
+                      const obj = {
+                        placeId: placeId,
+                        name: placeKorName,
+                        addr: placeAddress,
+                      };
+                      addBookmarks(obj);
+                      setIsBookmarked(true);
+                    }}
                   />
                 ))}
             </section>
@@ -104,4 +95,6 @@ export default function CardModal({
       </div>
     </div>
   );
-}
+};
+
+export default PlaceCardModal;
