@@ -3,7 +3,7 @@ import { getPlacesBasedOnTheme } from '../api/place.api';
 import SpotCard from '../components/card/SpotCard';
 import DataLoading from '../components/common/DataLoading';
 import FilterButton from '../components/common/FilterButton';
-import { FirstQuestion } from '../components/modal/SurveyModal';
+import FirstQuestion from '../components/modal/survey/FirstQuestion';
 import { THEME_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useModal } from '../hooks/useModal';
@@ -52,11 +52,11 @@ export default function CustomTripPage() {
   }, [primaryOption, selectedOption]);
 
   useEffect(() => {
-    const modal = document.getElementById('modal');
+    const modal = document.getElementById('modal-by-hj');
     const modalContent = document.getElementById('modal-content');
 
     const handleOverlayClick = (e: MouseEvent) => {
-      if (modal && !modalContent?.contains(e.target as Node)) closeModal();
+      if (modal && modalContent && !modalContent?.contains(e.target as Node)) closeModal();
     };
 
     if (isModalOpen) {
@@ -68,6 +68,12 @@ export default function CustomTripPage() {
     };
   }, [isModalOpen, closeModal]);
 
+  useEffect(() => {
+    localStorage.removeItem('survey_first');
+    localStorage.removeItem('survey_second');
+    localStorage.removeItem('survey_third');
+  }, []);
+
   return (
     <>
       <section
@@ -76,13 +82,13 @@ export default function CustomTripPage() {
       >
         <div className="absolute inset-0 bg-black opacity-40"></div>
         <div className="relative z-10 text-white pl-[120px]">
-          <p className="font-bold text-[45px] mb-[20px]">당신의 꿈의 여행을 찾아드립니다!</p>
-          <div className="mb-[20px]">
+          <p className="font-bold text-[50px] mb-[20px]">당신의 꿈의 여행을 찾아드립니다!</p>
+          <div className="mb-[20px] text-[17px]">
             <p>맞춤형 여행지 추천 서비스에서 3가지 간단한 질문에 답해주세요.</p>
             <p>휴식과 힐링, 관광, 쇼핑 등 원하는 테마에 맞는 최적의 여행지를 추천해 드립니다.</p>
             <p>지금 시작해 보세요!</p>
           </div>
-          <button onClick={handleOpenModal} className="hover:font-bold text-[25px] hover:cursor-pointer">
+          <button onClick={handleOpenModal} className="hover:font-bold text-[28px] hover:cursor-pointer">
             맞춤 여행지 찾기 {'〉'}
           </button>
         </div>
@@ -112,7 +118,7 @@ export default function CustomTripPage() {
             </div>
           </nav>
           <div className="flex flex-wrap justify-center gap-x-[39px] gap-y-[20px]">
-            {places.length > 0 ? (
+            {places.length > 0 && places[0] ? (
               places.map((place) => (
                 <SpotCard
                   key={place.name}
