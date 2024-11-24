@@ -24,11 +24,7 @@ export default function MainPage() {
   const { primaryOption, secondaryOptions, selectedOption, handleChangeOption, handleChangeSecondaryButton } =
     useChainOption();
 
-  const {
-    data: popularPlaces,
-    isPending,
-    isError,
-  } = useQuery({
+  const { data: popularPlaces } = useQuery({
     queryKey: ['popular places'],
     queryFn: () => getPopularPlaces(),
     staleTime: 600000, // 데이터가 10분 동안 신선
