@@ -4,7 +4,7 @@ import { UserInfoElement } from '../../types/signup.type';
 import { isEmpty } from '../../utils/checkObjectEmpty';
 import UserInput from '../input/UserInput';
 
-type LoginInfoElement = Omit<UserInfoElement, 'email' | 'nickName'>;
+type LoginInfoElement = Omit<UserInfoElement, 'email' | 'nickname'>;
 
 interface Props {
   loginData: LoginInfoElement;

@@ -10,7 +10,7 @@ const TripPlanPage = () => {
   //계획 이름
   const [planName, setPlanName] = useState('계획 이름 입력');
   //인원수
-  const [numberOfPeople, setNumberOfPeople] = useState(0);
+  const [numberOfPeople, setNumberOfPeople] = useState(1);
   //여행 계획 날짜
   const [tripDate, setTripDate] = useState({
     tripStartDate: '0000-00-00',

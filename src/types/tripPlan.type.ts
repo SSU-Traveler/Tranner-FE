@@ -11,6 +11,12 @@ export type userPlaceType = {
   };
 };
 
+export type filteredUserPlaceType = {
+  daySequence: number;
+  locationSequence: number;
+  placeId: string;
+};
+
 export type placeObjType = {
   isInPlanList: boolean;
   isBookmarked: boolean;

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+ import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { getLocationDetails } from '../api/place.api';
 import LocalCard from '../components/card/LocalCard';
