@@ -1,11 +1,9 @@
-import { useRef, useState, useEffect } from 'react';
-import TripPlanBox from './TripPlanBox';
-import changeDateFormat from '../../utils/changeDateFormat';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { makePlanApi } from '../../api/tripPlan.api';
 import { tripDate, userPlaceType } from '../../types/tripPlan.type';
 import dateWithDays from '../../utils/dateWithDay';
-import { isEmpty } from '../../utils/checkObjectEmpty';
-import { makePlanApi } from '../../api/tripPlan.api';
-import { useNavigate } from 'react-router-dom';
+import TripPlanBox from './TripPlanBox';
 
 interface Props {
   planName: string;

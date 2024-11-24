@@ -1,5 +1,4 @@
 // src/components/SignUpForm.js
-import { useEffect } from 'react';
 import { UserInfoElement } from '../../types/signup.type';
 import { isEmpty } from '../../utils/checkObjectEmpty';
 import UserInput from '../input/UserInput';

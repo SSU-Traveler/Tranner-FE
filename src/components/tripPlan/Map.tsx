@@ -1,6 +1,6 @@
-import { forwardRef, useCallback, useEffect, useRef } from 'react';
-import { userPlaceType } from '../../types/tripPlan.type';
+import { useCallback, useEffect, useRef } from 'react';
 import { basketType } from '../../types/basket.type';
+import { userPlaceType } from '../../types/tripPlan.type';
 
 const key = import.meta.env.VITE_GOOGLE_PLACE_API;
 

@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import DOMPurify from 'dompurify';
 import { useState } from 'react';
-import useBasketStore from '../../zustand/basketStore';
 
 const buttonStyle =
   'w-[200px] h-[50px] p-[10px] rounded-[5px] font-bold bg-button-basic text-white hover:bg-button-hover';

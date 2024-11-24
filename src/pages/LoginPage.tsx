@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import LoginForm from '../components/user/LoginForm';
-import { LoginApi } from '../api/LoginApi';
 import { Link, useNavigate } from 'react-router-dom';
-import HorizonLine from '../components/common/HorizonLine';
 import { KAKAO_AUTH_URL } from '../api/ApiUrls';
+import { LoginApi } from '../api/LoginApi';
+import HorizonLine from '../components/common/HorizonLine';
+import LoginForm from '../components/user/LoginForm';
 import kakao_login_medium_wide from '/images/login/kakao_login_medium_wide.png';
-import { AxiosResponse } from 'axios';
 
 export default function LoginPage() {
   const navigate = useNavigate();
