@@ -683,7 +683,6 @@ export const JEONNAM_DISTRICT_OPTIONS: districtOptionsType = {
   "신안군": SINAN_LOCATION,
 };
 
-// 여기부터
 // 세종
 export const SEJONG_LOCATION: string[] = [
   "고운동", "나성동", "다정동", "대평동", "도담동", "반곡동", "보람동", "새롬동", "소담동", "아름동", "어진동", "종촌동", "한솔동", "해밀동",
@@ -692,6 +691,7 @@ export const SEJONG_DISTRICT_OPTIONS: districtOptionsType = {
   "세종특별자치시": SEJONG_LOCATION,
 };
 
+// 여기부터
 // 광주
 export const GWANGJU_DONGGU_LOCATION: string[] = [
   "광산동", "금남로", "궁동", "동명동", "산수동", "불로동", "충장로", "학동", "계림동", "운림동",
@@ -706,7 +706,7 @@ export const GWANGJU_BUKGU_LOCATION: string[] = [
   "문흥동", "두암동", "삼각동", "문화동", "운암동", "용봉동", "일곡동", "매곡동", "중흥동", "오치동",
 ];
 export const GWANGSAN_LOCATION: string[] = [
-  "송정동", "월곡동", "쌍암동", "운남동", "첨단동", "비아동", "도산동", "수완동", "임곡동", "평동",
+  "송정동", "월곡동", "운남동", "첨단동", "비아동", "도산동", "수완동", "임곡동", "평동",
 ];
 export const GWANGJU_DISTRICT_OPTIONS: districtOptionsType = {
   "동구": GWANGJU_DONGGU_LOCATION,
