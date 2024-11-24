@@ -72,7 +72,7 @@ export default function MainPage() {
 
   // 이 부분 커스텀 훅으로 만들기!!
   useEffect(() => {
-    const modal = document.getElementById('modal');
+    const modal = document.getElementById('modal-by-hj');
     const modalContent = document.getElementById('modal-content');
 
     const handleOverlayClick = (e: MouseEvent) => {
@@ -99,10 +99,10 @@ export default function MainPage() {
                 <div className="flex justify-end">
                   <SpotCard
                     key={place.name}
-                    imgPath={place.photos[0]}
+                    imgPath={place?.photos[0] || ''}
                     spotName={place.name}
                     spotAddress={place.formatted_address!}
-                    spotDescription="설명"
+                    spotDescription={place.description}
                     needToLoginAlarm={needToLoginAlarm}
                   />
                 </div>
@@ -127,7 +127,11 @@ export default function MainPage() {
       <section className={sectionStyle}>
         <h1 className={h1Style}>여행지 찾기</h1>
         <div className="flex justify-center">
-          <PlaceInput searchObj="여행지를" />
+          <PlaceInput
+            searchObj="여행지를"
+            handleChangeRegion={handleChangeSecondaryButton}
+            handleChangeCountry={handleChangeOption}
+          />
         </div>
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px]">
           {/* <FilterButtonFormat /> */}
@@ -158,7 +162,7 @@ export default function MainPage() {
               places.map((place) => (
                 <SpotCard
                   key={place.name}
-                  imgPath={place.photos[0]}
+                  imgPath={place?.photos[0] || ''}
                   spotName={place.name}
                   spotAddress={place.formatted_address!}
                   spotDescription={place.description}
