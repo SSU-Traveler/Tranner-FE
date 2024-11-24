@@ -1,0 +1,30 @@
+export const WEATHER_BACKGROUNDS: { [key: string]: string } = {
+  Thunderstorm: '/images/weather/thunder-day.jpg',
+  Drizzle: '/images/weather/drizzle-day.jpg',
+  Haze: '/images/weather/drizzle-day.jpg',
+  Rain: '/images/weather/rainy-day.jpg',
+  Snow: '/images/weather/snowy-day.jpg',
+  Atmosphere: '/images/weather/misty-day.jpg',
+  Clear: '/images/weather/sunny-day.jpg',
+  Clouds: '/images/weather/cloudy-day.jpg',
+};
+
+export const REGION_BACKGROUNDS: { [key: string]: string } = {
+  서울: '/images/place/서울.jpg',
+  경기: '/images/place/경기.jpg',
+  인천: '/images/place/인천.jpg',
+  강원: '/images/place/강원.jpg',
+  대전: '/images/place/대전.jpg',
+  대구: '/images/place/대구.jpg',
+  세종: '/images/place/세종.jpg',
+  충북: '/images/place/충북.jpg',
+  충남: '/images/place/충남.jpg',
+  광주: '/images/place/광주.jpg',
+  전북: '/images/place/전북.jpg',
+  전남: '/images/place/전남.jpg',
+  부산: '/images/place/부산.jpg',
+  울산: '/images/place/울산.jpg',
+  경북: '/images/place/경북.jpg',
+  경남: '/images/place/경남.jpg',
+  제주: '/images/place/제주.jpg',
+};
