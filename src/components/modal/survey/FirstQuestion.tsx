@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useState } from 'react';
-import { COUNTRY_OPTIONS } from '../../../constants/options';
+import { COUNTRY_OPTIONS, CountryOptionsType } from '../../../constants/options';
 import { useModal } from '../../../hooks/useModal';
 import SecondQuestion from './SecondQuestion';
 
@@ -12,12 +12,18 @@ export default function FirstQuestion() {
     localStorage.removeItem('survey_first');
     localStorage.removeItem('survey_second');
     localStorage.removeItem('survey_third');
+    localStorage.removeItem('lat');
+    localStorage.removeItem('lng');
+    localStorage.removeItem('type');
+    localStorage.removeItem('types');
     closeModal();
   };
 
-  const handleClickOption = (option: string) => {
-    localStorage.setItem('survey_first', option);
-    setSelectedOption(option);
+  const handleClickOption = (option: CountryOptionsType) => {
+    localStorage.setItem('survey_first', String(option.name));
+    localStorage.setItem('lat', String(option.lat));
+    localStorage.setItem('lng', String(option.lng));
+    setSelectedOption(String(option.name));
   };
 
   const handleMoveNextQuestion = () => {
@@ -37,15 +43,15 @@ export default function FirstQuestion() {
         <div className="flex flex-wrap gap-x-[15px] gap-y-[20px] mt-[30px] px-[40px] justify-center items-start">
           {COUNTRY_OPTIONS.map((option) => (
             <div
-              key={option}
+              key={option.name}
               className={clsx(
                 'rounded-[5px] h-[50px] place-content-center text-center hover:bg-[#B2B9C0] hover:cursor-pointer',
                 'w-[160px]',
-                selectedOption === option ? 'bg-[#B2B9C0]' : 'bg-white'
+                selectedOption === option.name ? 'bg-[#B2B9C0]' : 'bg-white'
               )}
               onClick={() => handleClickOption(option)}
             >
-              {option}
+              {option.name}
             </div>
           ))}
         </div>

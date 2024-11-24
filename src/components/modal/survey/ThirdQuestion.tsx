@@ -14,7 +14,7 @@ export default function ThirdQuestion({ themeOption }: { themeOption: string }) 
   const question = QUESTION_BASED_ON_OPTIONS[themeOption].question;
   const optionContents = Object.entries(QUESTION_BASED_ON_OPTIONS[themeOption])
     .filter(([key]) => key !== 'question')
-    .reduce((acc, [key, value]) => {
+    .reduce<Record<string, string | string[]>>((acc, [key, value]) => {
       acc[key] = value;
       return acc;
     }, {});
@@ -23,12 +23,18 @@ export default function ThirdQuestion({ themeOption }: { themeOption: string }) 
     localStorage.removeItem('survey_first');
     localStorage.removeItem('survey_second');
     localStorage.removeItem('survey_third');
+    localStorage.removeItem('lat');
+    localStorage.removeItem('lng');
+    localStorage.removeItem('type');
+    localStorage.removeItem('types');
     closeModal();
   };
 
-  const handleClickOption = (option: string) => {
-    localStorage.setItem('survey_third', option);
-    setSelectedOption(option);
+  const handleClickOption = (key: string, value: string | string[]) => {
+    localStorage.setItem('survey_third', key);
+    if (typeof value === 'string') localStorage.setItem('type', value);
+    else localStorage.setItem('types', JSON.stringify(value));
+    setSelectedOption(key);
   };
 
   const handleMovePastQuestion = () => {
@@ -50,13 +56,13 @@ export default function ThirdQuestion({ themeOption }: { themeOption: string }) 
       <h1 className="font-bold text-center text-[20px] mt-[20px]">Q3. {question}</h1>
       <section className="h-[505px]">
         <div className="flex flex-col gap-[15px] mt-[30px] px-[40px]">
-          {Object.keys(optionContents).map((option) => (
+          {Object.entries(optionContents).map(([key, value]) => (
             <div
-              key={option}
-              className={clsx(optionStyle, selectedOption === option ? 'bg-[#B2B9C0]' : 'bg-white')}
-              onClick={() => handleClickOption(option)}
+              key={key}
+              className={clsx(optionStyle, selectedOption === key ? 'bg-[#B2B9C0]' : 'bg-white')}
+              onClick={() => handleClickOption(key, value)}
             >
-              {option}
+              {key}
             </div>
           ))}
         </div>

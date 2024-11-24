@@ -72,6 +72,10 @@ export default function CustomTripPage() {
     localStorage.removeItem('survey_first');
     localStorage.removeItem('survey_second');
     localStorage.removeItem('survey_third');
+    localStorage.removeItem('lat');
+    localStorage.removeItem('lng');
+    localStorage.removeItem('type');
+    localStorage.removeItem('types');
   }, []);
 
   return (
