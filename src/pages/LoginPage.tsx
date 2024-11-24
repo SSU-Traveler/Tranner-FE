@@ -63,7 +63,7 @@ export default function LoginPage() {
       //사용자 정보 저장
       saveUserData(response.data.username, response.data.nickname);
       //navigator로 전 페이지로 돌아가기
-      navigate(-1);
+      navigate('/');
     }
   };
 

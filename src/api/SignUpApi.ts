@@ -72,7 +72,7 @@ export const ConfirmVerificationCodeApi = async (email: string, authCode: string
 //아이디 중복 체크
 export const IdDuplicatedCheckApi = async (username: string) => {
   try {
-    const response = await axios.get(`${SIGNUP_API_BASE_URL}/idDuplicatedCheck?username=${username}`);
+    const response = await axios.get(`${SIGNUP_API_BASE_URL}/idDuplicatedCheck?id=${username}`);
     console.log(response);
     return response;
   } catch (error) {

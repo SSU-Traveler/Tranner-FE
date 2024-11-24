@@ -155,7 +155,8 @@ export const makePlanApi = async (
   planName: string,
   numberOfPeople: number,
   tripDate: tripDate,
-  elementObj: userPlaceType[]
+  elementObj: userPlaceType[],
+  navigate: any
 ) => {
   try {
     const filteredElementObj = elementObj.map(({ daySequence, locationSequence, placeId }) => ({
@@ -171,7 +172,7 @@ export const makePlanApi = async (
       endDate: tripDate.tripEndDate,
       detailSchedules: filteredElementObj,
     };
-    const response = await apiPost(url, data);
+    const response = await apiPost(url, data, navigate);
     console.log(response);
     return response;
   } catch (error) {
