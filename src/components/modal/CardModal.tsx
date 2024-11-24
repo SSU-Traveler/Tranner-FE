@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import DOMPurify from 'dompurify';
 import { useState } from 'react';
 import useBasketStore from '../../zustand/basketStore';
+import useLoginStore from '../../zustand/loginStore';
 
 const buttonStyle =
   'w-[200px] h-[50px] p-[10px] rounded-[5px] font-bold bg-button-basic text-white hover:bg-button-hover';
@@ -33,19 +34,22 @@ export default function CardModal({
 }: CardModalProps) {
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(false); // notiflix 테스트용
+  const { isLoggedIn } = useLoginStore();
+  const addSpot = useBasketStore((state) => state.addSpot);
 
   const sanitizedHTML = DOMPurify.sanitize(placeDescription);
 
   const handleAddToCart = () => {
-    if (!isLogin) {
+    if (!isLoggedIn) {
       needToLoginAlarm();
     } else {
       console.log('TODO: 장바구니에 추가하는 기능 구현');
+      addSpot(placeKorName);
     }
   };
 
   const handleAddToTripCard = () => {
-    if (!isLogin) {
+    if (!isLoggedIn) {
       needToLoginAlarm();
     } else {
       console.log('TODO: 기존 여행 계획에 추가하는 기능 구현');
