@@ -27,6 +27,8 @@ interface Props {
   isVisible: boolean;
   emailChecked: boolean;
   idChecked: boolean;
+  pwdChecked: boolean;
+  pwdConfirmChecked: boolean;
   timeLeft: number;
   formatTimeLeft(seconds: number): string;
   errMsg: ErrMsg;
@@ -43,6 +45,8 @@ const SignUpForm = ({
   isVisible,
   emailChecked,
   idChecked,
+  pwdChecked,
+  pwdConfirmChecked,
   timeLeft,
   formatTimeLeft,
   errMsg,
@@ -62,6 +66,7 @@ const SignUpForm = ({
             onChange={handleChange?.('email')}
             placeholder="이메일을 입력해주세요."
             box_width="input1"
+            disabled={emailChecked}
           />
           <button
             type="button"
@@ -119,6 +124,7 @@ const SignUpForm = ({
             onChange={handleChange?.('username')}
             placeholder="아이디 입력(영문자 또는 숫자 6~20자)"
             box_width="input1"
+            disabled={idChecked}
           />
           <button
             type="button"
@@ -170,9 +176,11 @@ const SignUpForm = ({
       </div>
       <button
         type="submit"
-        disabled={isEmpty(signUpData) || !emailChecked || !idChecked}
+        disabled={isEmpty(signUpData) || !emailChecked || !idChecked || !pwdChecked || !pwdConfirmChecked}
         className={`border rounded-[10px] w-[400px] h-[40px] ${
-          !isEmpty(signUpData) && emailChecked && idChecked ? 'bg-button-basic hover:bg-button-hover' : 'bg-[#d9d9d9]'
+          !isEmpty(signUpData) && emailChecked && idChecked && pwdChecked && pwdConfirmChecked
+            ? 'bg-button-basic hover:bg-button-hover'
+            : 'bg-[#d9d9d9]'
         }`}
       >
         회원가입

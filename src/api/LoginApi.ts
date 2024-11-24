@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { UserInfoElement } from '../types/signup.type';
 const SIGNUP_API_BASE_URL = '/api';
+//const SIGNUP_API_BASE_URL = 'https://api.tranner.com';
 
 //로그인
 export const LoginApi = async (data: Omit<UserInfoElement, 'email' | 'nickname'>): Promise<AxiosResponse | null> => {
