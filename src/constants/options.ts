@@ -218,7 +218,20 @@ export const QUESTION_BASED_ON_OPTIONS: questionOptionsType = {
   '호캉스': STAYCATION_QUESTION,
 }
 
+export type CountryOptionsType =  {[key: string]: string | number}
+
 // 지역 옵션(맞춤 여행지 페이지)
-export const COUNTRY_OPTIONS: string[] = [
-  '서울', '경기, 인천', '강원도', '대전',  '충청도', '전라도', '대구', '부산', '경상도', '제주도',
+export const COUNTRY_OPTIONS:CountryOptionsType[] = [
+  { name: '서울', lat: 37.5665, lng: 126.978, },
+  { name: '인천', lat: 37.4563, lng: 126.7052 },
+  { name: '경기도', lat: 37.4138, lng: 127.5183 },
+  { name: '강원도', lat: 37.8228, lng: 128.1555, },
+  { name: '대전', lat: 36.3504, lng: 127.3845 },
+  { name: '충청도', lat: 36.6369, lng: 127.4898 },
+  { name: '전라도', lat: 35.4213, lng: 127.3738 },
+  { name: '광주', lat: 35.1595, lng: 126.8526 },
+  { name: '대구', lat: 35.8714, lng: 128.6014},
+  { name: '부산', lat: 35.1796, lng: 129.0756 },
+  { name: '경상도', lat: 35.8410, lng: 128.5664 },
+  { name: '제주도', lat: 33.4996, lng: 126.5312 },
 ];
