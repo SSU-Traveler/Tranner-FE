@@ -683,8 +683,13 @@ export const JEONNAM_DISTRICT_OPTIONS: districtOptionsType = {
   "신안군": SINAN_LOCATION,
 };
 
-
 // 세종
+export const SEJONG_LOCATION: string[] = [
+  "고운동", "나성동", "다정동", "대평동", "도담동", "반곡동", "보람동", "새롬동", "소담동", "아름동", "어진동", "종촌동", "한솔동", "해밀동",
+];
+export const SEJONG_DISTRICT_OPTIONS: districtOptionsType = {
+  "세종특별자치시": SEJONG_LOCATION,
+};
 
 // 여기부터
 // 광주
@@ -701,7 +706,7 @@ export const GWANGJU_BUKGU_LOCATION: string[] = [
   "문흥동", "두암동", "삼각동", "문화동", "운암동", "용봉동", "일곡동", "매곡동", "중흥동", "오치동",
 ];
 export const GWANGSAN_LOCATION: string[] = [
-  "송정동", "월곡동", "쌍암동", "운남동", "첨단동", "비아동", "도산동", "수완동", "임곡동", "평동",
+  "송정동", "월곡동", "운남동", "첨단동", "비아동", "도산동", "수완동", "임곡동", "평동",
 ];
 export const GWANGJU_DISTRICT_OPTIONS: districtOptionsType = {
   "동구": GWANGJU_DONGGU_LOCATION,
@@ -992,13 +997,16 @@ export const LOCAL_CITY_OPTIONS: localType = {
   '경기': GYEONGGI_DISTRICT_OPTIONS,
   '인천': INCHEON_DISTRICT_OPTIONS,
   '강원': GANGWON_DISTRICT_OPTIONS,
-  '대구': DAEGU_DISTRICT_OPTIONS,
   '대전': DAEJEON_DISTRICT_OPTIONS,
+  '대구': DAEGU_DISTRICT_OPTIONS,
+  '세종': SEJONG_DISTRICT_OPTIONS,
   '충북': CHUNGBUK_DISTRICT_OPTIONS,
   '충남': CHUNGNAM_DISTRICT_OPTIONS,
+  '광주': GWANGJU_DISTRICT_OPTIONS,
   '전북': JEONBUK_DISTRICT_OPTIONS,
   '전남': JEONNAM_DISTRICT_OPTIONS,
   '부산': BUSAN_DISTRICT_OPTIONS,
+  '울산': ULSAN_DISTRICT_OPTIONS,
   '경북': GYEONGBUK_DISTRICT_OPTIONS,
   '경남': GYEONGNAM_DISTRICT_OPTIONS,
   '제주': JEJU_DISTRICT_OPTIONS

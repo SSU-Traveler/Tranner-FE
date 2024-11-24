@@ -6,7 +6,9 @@ export default function TableHeader() {
     <thead>
       <tr>
         {tableHeader.map((title) => (
-          <th className={tableStyle}>{title}</th>
+          <th key={title} className={tableStyle}>
+            {title}
+          </th>
         ))}
       </tr>
     </thead>

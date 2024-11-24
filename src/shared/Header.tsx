@@ -10,12 +10,12 @@ export default function Header() {
   const { pathname }: { pathname: string } = useLocation();
 
   return (
-    <header className="min-w-[900px] h-[70px] border border-b-[#495057] px-[120px] flex justify-between">
+    <header className="min-w-[900px] h-[75px] border border-b-[#495057] px-[120px] flex justify-between">
       <div className="flex justify-center items-center lg:gap-[50px] md:gap-[40px]">
-        <Link to="/" className="text-[32px] font-extrabold hover:text-button-hover whitespace-nowrap">
+        <Link to="/" className="text-[35px] font-extrabold hover:text-button-hover whitespace-nowrap">
           🚄Tranner🏕️
         </Link>
-        <nav className="flex gap-[20px]">
+        <nav className="flex gap-[20px] text-[17px]">
           <Link
             to="/local-view"
             className={clsx(pathname === '/local-view' ? selectedTabStyle : tabStyle, 'whitespace-nowrap')}
@@ -38,7 +38,7 @@ export default function Header() {
       </div>
       <div className="flex justify-center items-center">
         {/* 비로그인 상태에서의 UI */}
-        <nav className="flex gap-[16px]">
+        <nav className="flex gap-[16px] text-[17px]">
           <Link to="/login" className={buttonStyle}>
             로그인
           </Link>

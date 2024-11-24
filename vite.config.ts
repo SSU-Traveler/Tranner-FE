@@ -18,6 +18,12 @@ export default defineConfig({
         changeOrigin: true,
         secure: true,
       },
+      // 구글 검색 API
+      '/customsearch': {
+        target: 'https://www.googleapis.com',
+        changeOrigin: true,
+        secure: true,
+      },
       // 기상청 API
       '/weather-api': {
         target: 'https://apihub.kma.go.kr',
