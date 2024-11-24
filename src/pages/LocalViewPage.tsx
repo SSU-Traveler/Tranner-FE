@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { getLocationDetails } from '../api/place.api';
+import { getPlaceSearchResult } from '../api/search.api';
 import LocalCard from '../components/card/LocalCard';
 import Basket from '../components/common/Basket';
 import FilterButton from '../components/common/FilterButton';
 import PlaceInput from '../components/input/PlaceInput';
+import { REGION_BACKGROUNDS } from '../constants/backgrounds';
 import { LOCAL_CITY_OPTIONS } from '../constants/districts';
 import { CITY_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
@@ -16,9 +18,6 @@ export default function LocalViewPage() {
   const { isModalOpen, closeModal } = useModal();
   const { primaryOption, secondaryOptions, selectedOption, handleChangeOption, handleChangeSecondaryButton } =
     useChainOption();
-
-  console.log(primaryOption);
-  console.log(secondaryOptions);
 
   const useFetchLocationDetails = (primaryOption: string, selectedOption: string) => {
     return useQuery({
@@ -46,11 +45,13 @@ export default function LocalViewPage() {
 
   const { data: locationDetails } = useFetchLocationDetails(primaryOption, selectedOption);
 
+  const backgroundImg = REGION_BACKGROUNDS[primaryOption];
+
   const { descriptions, photos } = locationDetails || { descriptions: {}, photos: {} };
 
   // 이 부분 커스텀 훅으로 만들기!!
   useEffect(() => {
-    const modal = document.getElementById('modal');
+    const modal = document.getElementById('modal-by-hj');
     const modalContent = document.getElementById('modal-content');
 
     const handleOverlayClick = (e: MouseEvent) => {
@@ -66,13 +67,24 @@ export default function LocalViewPage() {
     };
   }, [isModalOpen, closeModal]);
 
+  useEffect(() => {
+    async function fetchPlaceSearchResult() {
+      await getPlaceSearchResult();
+    }
+    fetchPlaceSearchResult();
+  }, []);
+
   return (
     <>
       <section
-        style={{ backgroundImage: `url("images/place/seoul-lotte-world-tower.jpg")` }}
+        style={{ backgroundImage: `url(${backgroundImg})` }}
         className="absolute top-0 left-0 w-full h-[400px] bg-cover bg-center flex justify-center items-center"
       >
-        <PlaceInput searchObj="원하는 여행 지역을" />
+        <PlaceInput
+          searchObj="원하는 여행 지역을"
+          handleChangeRegion={handleChangeSecondaryButton}
+          handleChangeCountry={handleChangeOption}
+        />
       </section>
 
       <section className="absolute mt-[420px] pr-[120px]">
