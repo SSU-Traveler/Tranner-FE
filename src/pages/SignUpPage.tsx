@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import SignUpForm from '../components/user/SignUpForm';
+
 import { SignUpApi, SendEmailApi, IdDuplicatedCheckApi, ConfirmVerificationCodeApi } from '../api/SignUpApi';
 import { useNavigate } from 'react-router-dom';
 import { Confirm } from 'notiflix';
 import { useModal } from '../hooks/useModal';
 
+
 export default function SignUpPage() {
   //유효성 검사 정규식
   const REGEX_EMAIL = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-  const REGEX_MEMBERID = /^[a-z]+[a-z0-9]{5,19}$/g;
+  const REGEX_username = /^[a-z]+[a-z0-9]{5,19}$/g;
   const REGEX_PASSWORD = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
 
   //회원가입 정보
@@ -16,7 +18,9 @@ export default function SignUpPage() {
     email: '',
     authCode: '',
     username: '',
+
     nickname: '',
+
     password: '',
     passwordConfirm: '',
   });
@@ -93,7 +97,9 @@ export default function SignUpPage() {
       result = REGEX_EMAIL.test(value);
       message = result ? '' : '이메일 형식이 올바르지 않습니다.';
     } else if (field === 'username') {
+
       result = REGEX_MEMBERID.test(value);
+
       message = result ? '' : '아이디는 영문자 또는 숫자 6~20자여야 합니다.';
     } else if (field === 'password') {
       result = REGEX_PASSWORD.test(value);
@@ -156,6 +162,7 @@ export default function SignUpPage() {
   const confirmVerificationCode = async (email: string, authCode: string) => {
     //1. 인증번호 맞는지 틀린지 확인 - 서버에 email, 인증번호 보내고 코드 검증.
     const response = await ConfirmVerificationCodeApi(email, authCode);
+
     //2-1. 맞으면
     if (response) {
       setIsValid((prevData) => ({
@@ -250,7 +257,7 @@ export default function SignUpPage() {
           signUpData={signUpData}
           handleChange={handleChange}
           sendEmail={sendEmail}
-          confirmVerificationCode={confirmVerificationCode}
+          confirmauthCode={confirmauthCode}
           isVisible={isVisible}
           emailChecked={emailChecked}
           idChecked={idChecked}
