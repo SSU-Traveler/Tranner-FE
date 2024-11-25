@@ -81,7 +81,6 @@ export const HEALING_AND_REST: SecondaryThemeType[] = [
   { "korName": '스파', "engName": 'spa' },
   { "korName": '공원', "engName": 'park' },
   { "korName": '사원', "engName": 'mosque' },
-  { "korName": '자연 환경', "engName": 'natural_feature' },
 ];
 export const HISTORY_STUDY_AND_NATURAL_TOUR: SecondaryThemeType[] = [
   { "korName": '미술관', "engName": 'art_gallery' },
@@ -91,7 +90,6 @@ export const HISTORY_STUDY_AND_NATURAL_TOUR: SecondaryThemeType[] = [
   { "korName": '역사적 명소', "engName": 'historical_landmark' }
 ];
 export const NATURAL_VIEWING: SecondaryThemeType[] = [
-  { "korName": '자연 환경', "engName": 'natural_feature' },
   { "korName": '공원', "engName": 'park' },
   { "korName": '국립 공원', "engName": 'national_park' },
 ];

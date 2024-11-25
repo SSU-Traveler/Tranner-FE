@@ -8,18 +8,19 @@ import { THEME_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useModal } from '../hooks/useModal';
 import { useOption } from '../hooks/useOption';
+import { SummaryOfPlaceInfo } from '../types/place.type';
 import useLoginStore from '../zustand/loginStore';
 
 export default function CustomTripPage() {
   const { isLoggedIn } = useLoginStore();
-  const [theme, setTheme] = useState<string>('');
-  const [places, setPlaces] = useState([]);
+  const [places, setPlaces] = useState<SummaryOfPlaceInfo[]>([]);
   const { isModalOpen, openModal, closeModal } = useModal();
   const { needToLoginAlarm } = useAlarm();
 
   // useChainOption
   const [primaryOption, setPrimaryOption] = useState<string>(Object.keys(THEME_OPTIONS)[0]);
 
+  console.log(THEME_OPTIONS[primaryOption]);
   const arrayOnlyKorname = THEME_OPTIONS[primaryOption].map((item) => item.korName);
 
   const [secondaryOptions, setSecondaryOptions] = useState<string[]>(arrayOnlyKorname);
@@ -43,10 +44,11 @@ export default function CustomTripPage() {
 
   useEffect(() => {
     async function fetchPlacesBasedOnTheme() {
-      const themeStr = THEME_OPTIONS[primaryOption].filter((option) => option.korName === selectedOption)[0].engName;
-      setTheme(themeStr);
-      const result = await getPlacesBasedOnTheme(selectedOption);
-      console.log('result: ', result);
+      const { korName, engName } = THEME_OPTIONS[primaryOption].filter(
+        (option) => option.korName === selectedOption
+      )[0];
+      const result: SummaryOfPlaceInfo[] = await getPlacesBasedOnTheme(korName, engName);
+      console.log(result);
       setPlaces(result);
     }
     fetchPlacesBasedOnTheme();
@@ -124,12 +126,12 @@ export default function CustomTripPage() {
           </nav>
           <div className="flex flex-wrap justify-center gap-x-[39px] gap-y-[20px]">
             {places.length > 0 && places[0] ? (
-              places.map((place) => (
+              places.map((place, index) => (
                 <SpotCard
-                  key={place.name}
-                  imgPath={place.photos[0]}
+                  key={`${place.name}${index}`}
+                  imgPath={place.photos[0] || '/images/default.jpg'}
                   spotName={place.name}
-                  spotAddress={place?.formatted_address}
+                  spotAddress={place?.formatted_address || ''}
                   spotDescription={place.description}
                   needToLoginAlarm={needToLoginAlarm}
                 />

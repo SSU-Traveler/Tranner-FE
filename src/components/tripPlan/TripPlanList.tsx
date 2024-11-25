@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import TripPlanListElement from './TripPlanListElement';
 import { userPlaceType } from '../../types/tripPlan.type';
 import dateWithDays from '../../utils/dateWithDay';
+import TripPlanListElement from './TripPlanListElement';
 
 interface Props {
   dateIndex: number;

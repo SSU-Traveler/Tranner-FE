@@ -1,11 +1,11 @@
-export type PhotosType = {
+export type Photos = {
   height: number;
   html_attributions: string[];
   photo_reference: string;
   width: number;
 };
 
-export type BasicPlaceInfo = {
+export type PlaceInfo = {
   formatted_address?: string; // text search로 했을 때만 존재
   geometry: {
     location: {
@@ -24,15 +24,17 @@ export type BasicPlaceInfo = {
     };
   };
   name: string;
-  rating: number;
 };
 
-export type SummaryOfPlaceInfo = BasicPlaceInfo & {
-  description: string;
-  photos: string[];
-};
+export type PlaceInfoWithRating = PlaceInfo & { rating: number };
 
-export type Place = BasicPlaceInfo & {
+export type PlaceInfoWithRatingAndPhotos = PlaceInfoWithRating & { photos: Photos[] };
+
+export type NewPlaceInfoWithPhotos = PlaceInfoWithRating & { photos: string[] };
+
+export type SummaryOfPlaceInfo = NewPlaceInfoWithPhotos & { description: string };
+
+export type Place = PlaceInfoWithRating & {
   business_status: string;
   icon: string;
   icon_background_color: string;
@@ -40,7 +42,7 @@ export type Place = BasicPlaceInfo & {
   opening_hours?: {
     open_now: boolean;
   }; // text search로 했을 때만 존재
-  photos: PhotosType[];
+  photos: Photos[];
   place_id: string;
   plus_code: {
     compound_code: string;

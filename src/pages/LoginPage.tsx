@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import LoginForm from '../components/user/LoginForm';
-import { LoginApi } from '../api/LoginApi';
 import { Link, useNavigate } from 'react-router-dom';
-import HorizonLine from '../components/common/HorizonLine';
 import { KAKAO_AUTH_URL } from '../api/ApiUrls';
-import kakao_login_medium_wide from '/images/login/kakao_login_medium_wide.png';
+import { LoginApi } from '../api/LoginApi';
+import { getBmkInfoById } from '../api/tripPlan.api';
+import HorizonLine from '../components/common/HorizonLine';
+import LoginForm from '../components/user/LoginForm';
+import useBasketStore from '../zustand/basketStore';
+import useBookmarkStore from '../zustand/bookmarkStore';
 import useLoginStore from '../zustand/loginStore';
 import useTokenStore from '../zustand/tokenStore';
 import { saveUserData } from '../zustand/userDataStore';
-import useBasketStore from '../zustand/basketStore';
-import { getBmkInfoById } from '../api/tripPlan.api';
-import useBookmarkStore from '../zustand/bookmarkStore';
+import kakao_login_medium_wide from '/images/login/kakao_login_medium_wide.png';
 
 export default function LoginPage() {
   const navigate = useNavigate();

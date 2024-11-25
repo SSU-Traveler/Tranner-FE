@@ -1,16 +1,16 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { CITY_INDICATORS } from '../constants/indicators';
-import { Place, SummaryOfPlaceInfo } from '../types/place.type';
+import { PageData, WikipediaApiResponse } from '../types/pageData.type';
+import { NewPlaceInfoWithPhotos, Place, PlaceInfoWithRatingAndPhotos, SummaryOfPlaceInfo } from '../types/place.type';
 
 const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 // 장소 사진 가져오는 함수
-async function getPlacePhotos(placeId: string) {
+async function getPlacePhotos(placeId: string): Promise<NewPlaceInfoWithPhotos | null> {
   try {
     const url = `/maps/api/place/details/json?place_id=${placeId}&fields=name,rating,formatted_address,photo,geometry&key=${GOOGLE_MAP_API_KEY}`;
     const response = await axios.get(url);
-    const details = response.data.result;
-    // console.log('details: ', details);
+    const details: PlaceInfoWithRatingAndPhotos = response.data.result;
 
     // 사진 URL 생성
     const photos = details?.photos
@@ -19,7 +19,6 @@ async function getPlacePhotos(placeId: string) {
             `/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${GOOGLE_MAP_API_KEY}`
         )
       : [];
-
     return { ...details, photos };
   } catch (error) {
     console.error('getPlacePhotos() 함수 에러: ', error);
@@ -28,18 +27,22 @@ async function getPlacePhotos(placeId: string) {
 }
 
 // 장소 설명 가져오는 함수 (by 위키피디아)
-export async function getPlaceDescription(placeName: string) {
+export async function getPlaceDescription(placeName: string): Promise<string | null> {
   try {
     const url = `/wikipedia-api/api/rest_v1/page/summary/${encodeURIComponent(placeName)}`;
     const response = await axios.get(url);
     return response.data.extract; // 장소에 대한 요약 설명 반환
   } catch (error) {
-    if (error.response && error.response.status === 404) {
-      console.error(`${placeName}에 대한 위키피디아 설명 없음`);
-      return '설명 없음';
+    if (error instanceof AxiosError) {
+      if (error.response && error.response.status === 404) {
+        return '설명 없음';
+      }
+      console.error('getPlaceDescription() 함수 에러: ', error);
+      return null;
+    } else {
+      console.error('예상하지 못한 에러 발생:', error);
+      return null;
     }
-    console.error('getPlaceDescription() 함수 에러: ', error);
-    return null;
   }
 }
 
@@ -48,7 +51,17 @@ export async function getLocationDetails(neighborhood: string, district: string,
   const url = '/wikipedia-api/w/api.php';
 
   // 지역 정보 배열 (우선순위)
-  const searchQueries = [neighborhood, `${neighborhood} (${district})`, `${neighborhood} (${city})`];
+  let searchQueries: string[] = [''];
+  if (city === '광주') {
+    searchQueries = [
+      `${neighborhood} (${city})`,
+      `${neighborhood} (광주광역시)`,
+      `${neighborhood} (${district})`,
+      neighborhood,
+    ];
+  } else {
+    searchQueries = [`${neighborhood} (${city})`, `${neighborhood} (${district})`, neighborhood];
+  }
 
   const params = {
     action: 'query', // 문서 조회
@@ -57,32 +70,27 @@ export async function getLocationDetails(neighborhood: string, district: string,
     rvslots: '*', // 모든 슬롯(본문 내용 포함) 가져오기
     rvprop: 'content', // 본문 내용 가져오기
     piprop: 'original', // 원본 이미지 URL 가져오기
-    exintro: true, // 첫 섹션만 가져오기
+    exintro: 'true', // 첫 섹션만 가져오기
+    titles: '',
     // origin: '*', // CORS 회피
   };
 
   try {
-    for (let query of searchQueries) {
+    for (const query of searchQueries) {
       params.titles = query;
-      const queryString = new URLSearchParams(params).toString();
+      const queryString = new URLSearchParams(params as Record<string, string>).toString();
       const response = await fetch(`${url}?${queryString}`);
-      const data = await response.json();
-
-      // console.log(data.query);
+      const data: WikipediaApiResponse = await response.json();
       // 페이지 데이터 추출
-      const pageData = Object.values(data.query.pages)[0];
-      // console.log(pageData);
-
+      const pageData: PageData = Object.values(data.query.pages)[0];
       // 페이지가 없으면 계속해서 다른 쿼리로 시도
       if (pageData.missing == '') {
         continue;
       }
 
-      let intro = pageData.extract;
-      let fullText = pageData.revisions[0]?.slots?.main['*']; // 전체 텍스트
-      const imageUrl = pageData.original?.source; // 이미지 URL
-
-      // console.log(fullText);
+      const intro: string = pageData.extract;
+      const fullText: string = pageData.revisions[0]?.slots?.main['*']; // 전체 텍스트
+      const imageUrl: string = pageData.original?.source; // 이미지 URL
 
       // 위키피디아 문서 페이지에서 특정 섹션(개요, 특징, 유래, 역사)의 텍스트만 추출
       const summary =
@@ -149,20 +157,11 @@ export async function getLocationDetails(neighborhood: string, district: string,
               .replace(/<ref.*?<\/ref>/gs, '')
           : '');
 
-      // 이미지가 있으면 이미지 반환
-      if (imageUrl) {
-        return {
-          summary,
-          imageUrl,
-        };
-      }
+      return {
+        summary,
+        imageUrl: imageUrl || null,
+      };
     }
-
-    // 이미지가 없으면 null 반환
-    return {
-      summary: '정보 없음', // 개요 텍스트
-      imageUrl: null, // 이미지 URL
-    };
   } catch (error) {
     console.error('getLocationDetails() 함수 에러:', error);
     return {
@@ -177,32 +176,38 @@ export async function getPlaces(location: string): Promise<SummaryOfPlaceInfo[]>
   const textSearchQuery = `${location} 인기 명소`;
   const textSearchUrl = `/maps/api/place/textsearch/json?query=${encodeURIComponent(
     textSearchQuery
-  )}&key=${GOOGLE_MAP_API_KEY}`;
+  )}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
 
   try {
     const textResponse = await fetch(textSearchUrl);
     const textData = await textResponse.json();
     const places: Place[] = textData.results;
-    // console.log(`${location} 인기 명소: `, places);
-
-    // const placesWithDetails = await Promise.all(
-    //   places
-    //     .filter((place) => place.formatted_address.includes('서울 강남구'))
-    //     .map((place) => getPlaceDetails(place.place_id))
-    // );
 
     // 장소의 사진 및 설명 가져오기
     const placesWithDetails = await Promise.all(
       places.map(async (place) => {
-        const photos = await getPlacePhotos(place.place_id);
-        const description = await getPlaceDescription(place.name);
+        const photosResult: NewPlaceInfoWithPhotos | null = await getPlacePhotos(place.place_id);
+        const photos = photosResult?.photos ?? [];
+        const description: string | null = (await getPlaceDescription(place.name)) ?? '';
+
+        const geometry = place.geometry || {
+          location: { lat: 0, lng: 0 },
+          viewport: {
+            northeast: { lat: 0, lng: 0 },
+            southwest: { lat: 0, lng: 0 },
+          },
+        };
+
         return {
-          ...photos, // 사진 및 기본 정보
-          description, // 장소 설명
+          name: place.name ?? '', // name이 undefined일 경우 빈 문자열
+          formatted_address: place.formatted_address ?? '', // address 처리
+          geometry,
+          rating: place.rating ?? 0, // rating 기본값 0
+          photos,
+          description,
         };
       })
     );
-
     return placesWithDetails;
   } catch (error) {
     console.error('getPlaces() 함수 에러:', error);
@@ -215,26 +220,38 @@ export async function getPopularPlaces(): Promise<SummaryOfPlaceInfo[]> {
   const textSearchQuery = '대한민국 인기 명소';
   const textSearchUrl = `/maps/api/place/textsearch/json?query=${encodeURIComponent(
     textSearchQuery
-  )}&key=${GOOGLE_MAP_API_KEY}`;
+  )}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
 
   try {
     const textResponse = await fetch(textSearchUrl);
     const textData = await textResponse.json();
     const places: Place[] = textData.results;
-    // console.log(`슬라이더 인기 명소: `, places);
 
     // 장소의 사진 및 설명 가져오기
     const placesWithDetails = await Promise.all(
       places.map(async (place) => {
-        const photos = await getPlacePhotos(place.place_id);
-        const description = await getPlaceDescription(place.name);
+        const photosResult: NewPlaceInfoWithPhotos | null = await getPlacePhotos(place.place_id);
+        const photos = photosResult?.photos ?? [];
+        const description: string | null = (await getPlaceDescription(place.name)) ?? '';
+
+        const geometry = place.geometry || {
+          location: { lat: 0, lng: 0 },
+          viewport: {
+            northeast: { lat: 0, lng: 0 },
+            southwest: { lat: 0, lng: 0 },
+          },
+        };
+
         return {
-          ...photos, // 사진 및 기본 정보
-          description, // 장소 설명
+          name: place.name ?? '', // name이 undefined일 경우 빈 문자열
+          formatted_address: place.formatted_address ?? '', // address 처리
+          geometry,
+          rating: place.rating ?? 0, // rating 기본값 0
+          photos,
+          description,
         };
       })
     );
-
     return placesWithDetails;
   } catch (error) {
     console.error('getPopularPlaces() 함수 에러:', error);
@@ -243,30 +260,29 @@ export async function getPopularPlaces(): Promise<SummaryOfPlaceInfo[]> {
 }
 
 // 특정 장소 타입에 맞는 장소들만 가져오는 함수
-export async function getPlacesBasedOnTheme(theme: string) {
+export async function getPlacesBasedOnTheme(korName: string, engName: string): Promise<SummaryOfPlaceInfo[]> {
   // 매개변수 받기
   // 위도, 경도 배열로 만들기
   // 데이터 전체 불러오기
   // 무한 스크롤
-  const radius = 50000;
+  let allPlaces: Place[] = [];
 
-  let allPlaces = [];
-
-  // for (const location of CITY_OPTIONS) {
+  // for (const location of CITY_INDICATORS) {
   let nextPageToken = null;
 
   do {
     try {
-      const url = `/maps/api/place/nearbysearch/json?location=${CITY_INDICATORS[0].lat},${CITY_INDICATORS[0].lng}&radius=${radius}&type=${theme}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
+      const url = `/maps/api/place/textsearch/json?query=${encodeURIComponent(korName)}&location=${
+        CITY_INDICATORS[4].lat
+      },${CITY_INDICATORS[4].lng}&radius=10000&type=${engName}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
 
-      const response = await axios.get(nextPageToken ? `${url}&pagetoken=${nextPageToken}` : url);
+      const response = await fetch(nextPageToken ? `${url}&pagetoken=${nextPageToken}` : url);
+      const data = await response.json();
+      const result: Place[] = data.results;
+      console.log(result);
 
-      // console.log(response.data);
-
-      const places = response.data.results;
-      allPlaces = allPlaces.concat(places);
-
-      nextPageToken = response.data.next_page_token;
+      allPlaces = allPlaces.concat(result);
+      nextPageToken = data.next_page_token;
 
       if (nextPageToken) {
         await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -277,30 +293,63 @@ export async function getPlacesBasedOnTheme(theme: string) {
     }
   } while (nextPageToken);
   // }
-  // console.log('All Places: ', allPlaces);
-  const placesWithDetails = await Promise.all(allPlaces.map((place) => getPlacePhotos(place.place_id)));
+  console.log('All Places: ', allPlaces);
+  const placesWithDetails = await Promise.all(
+    allPlaces.map(async (place) => {
+      const photosResult: NewPlaceInfoWithPhotos | null = await getPlacePhotos(place.place_id);
+      const photos = photosResult?.photos ?? [];
+      const description: string | null = (await getPlaceDescription(place.name)) ?? '';
 
-  // console.log(`${theme} places: `, placesWithDetails);
+      const geometry = place.geometry || {
+        location: { lat: 0, lng: 0 },
+        viewport: {
+          northeast: { lat: 0, lng: 0 },
+          southwest: { lat: 0, lng: 0 },
+        },
+      };
+
+      return {
+        name: place.name ?? '', // name이 undefined일 경우 빈 문자열
+        formatted_address: place.formatted_address ?? '', // address 처리
+        geometry,
+        rating: place.rating ?? 0, // rating 기본값 0
+        photos,
+        description,
+      };
+    })
+  );
+
   return placesWithDetails;
 }
 
 // 설문조사 후 추천 여행지 가져오는 함수
-export async function getRecommendPlaces(lat: number, lng: number, theme: string | string[]) {
+export async function getRecommendPlaces(
+  lat: number,
+  lng: number,
+  theme: string | string[]
+): Promise<Place[] | undefined> {
   let url: string = '';
-  // let data // 나중에 타입 지정
+  let result: Place[] = [];
+  console.log(typeof theme, Array.isArray(theme));
+
   try {
     if (typeof theme === 'string') {
       url = `/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${theme}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
       const response = await fetch(url);
       const data = await response.json();
-      console.log('추천 여행지: ', data);
+      console.log(data);
+      result = data.results;
+      console.log(result);
     } else {
       const requests = theme.map((t) => {
         return (url = `/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${t}&region=kr&key=${GOOGLE_MAP_API_KEY}`);
       });
       const data = await Promise.all(requests.map((url) => fetch(url).then((response) => response.json())));
-      console.log('추천 여행지: ', data);
+      console.log(data);
+      result = data[0].results;
+      console.log(result);
     }
+    return result;
   } catch (error) {
     console.error('getRecommendPlaces() 함수 에러: ', error);
   }

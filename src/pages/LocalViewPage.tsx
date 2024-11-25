@@ -1,9 +1,7 @@
- import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getLocationDetails } from '../api/place.api';
 import { getPlaceSearchResult } from '../api/search.api';
 import LocalCard from '../components/card/LocalCard';
-import Basket from '../components/common/Basket';
 import FilterButton from '../components/common/FilterButton';
 import PlaceInput from '../components/input/PlaceInput';
 import { REGION_BACKGROUNDS } from '../constants/backgrounds';
@@ -19,37 +17,24 @@ export default function LocalViewPage() {
   const { primaryOption, secondaryOptions, selectedOption, handleChangeOption, handleChangeSecondaryButton } =
     useChainOption();
 
-  const useFetchLocationDetails = (primaryOption: string, selectedOption: string) => {
-    return useQuery({
-      queryKey: ['location details', primaryOption, selectedOption],
-      queryFn: async () => {
-        const newDescriptions: { [key: string]: string } = {};
-        const newPhotos: { [key: string]: string } = {};
+  const [descriptions, setDescriptions] = useState<{ [key: string]: string }>({});
+  const [photos, setPhotos] = useState<{ [key: string]: string }>({});
 
-        // 지역 목록 순회
-        for (const location of LOCAL_CITY_OPTIONS[primaryOption][selectedOption]) {
-          const data = await getLocationDetails(location.trim(), selectedOption, primaryOption);
+  useEffect(() => {
+    if (!primaryOption || !selectedOption) return;
 
-          newDescriptions[location] = data.summary || '정보 없음';
-          newPhotos[location] = data.imageUrl || '/images/default-placeholder.jpg';
-        }
+    const locations: string[] = LOCAL_CITY_OPTIONS[primaryOption][selectedOption];
 
-        return { descriptions: newDescriptions, photos: newPhotos };
-      },
-      enabled: !!selectedOption,
-      staleTime: 600000, // 데이터가 10분 동안 신선
-      refetchInterval: 600000, // 데이터를 다시 불러오는 간격
-      refetchOnWindowFocus: false, // 다른 창을 봤다가 다시 현재 브라우저에 포커스 했을 때 리페칭을 막음
+    // 데이터를 하나씩 가져오며 업데이트
+    locations.forEach(async (location) => {
+      const data = await getLocationDetails(location.trim(), selectedOption, primaryOption);
+      setDescriptions((prev) => ({ ...prev, [location]: data?.summary || '정보 없음' }));
+      setPhotos((prev) => ({ ...prev, [location]: data?.imageUrl || '/images/default.jpg' }));
     });
-  };
-
-  const { data: locationDetails } = useFetchLocationDetails(primaryOption, selectedOption);
+  }, [primaryOption, selectedOption]);
 
   const backgroundImg = REGION_BACKGROUNDS[primaryOption];
 
-  const { descriptions, photos } = locationDetails || { descriptions: {}, photos: {} };
-
-  // 이 부분 커스텀 훅으로 만들기!!
   useEffect(() => {
     const modal = document.getElementById('modal-by-hj');
     const modalContent = document.getElementById('modal-content');
@@ -112,14 +97,13 @@ export default function LocalViewPage() {
               ))}
             </div>
           </nav>
-          <Basket />
           <div className="flex flex-wrap justify-start gap-x-[39px] gap-y-[20px]">
             {LOCAL_CITY_OPTIONS[primaryOption][selectedOption].map((location) => (
               <LocalCard
                 key={location}
-                imgPath={photos[location] || '/images/default-placeholder.jpg'}
+                imgPath={photos[location] || '/images/default.jpg'}
                 localName={location}
-                localDescription={descriptions[location]}
+                localDescription={descriptions[location] || '로딩 중...'}
                 needToLoginAlarm={needToLoginAlarm}
               />
             ))}

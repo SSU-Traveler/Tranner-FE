@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { KakaoLogin } from '../../api/LoginApi';
 import Loading from '../common/Loading';
 
