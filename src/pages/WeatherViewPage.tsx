@@ -23,8 +23,6 @@ export default function WeatherViewPage() {
   const { primaryOption, secondaryOptions, selectedOption, handleChangeOption, handleChangeSecondaryButton } =
     useChainOption();
 
-  console.log(todayFutureWeather);
-
   const backgroundImg =
     (todayWeather && WEATHER_BACKGROUNDS[todayWeather.weather[0].main]) || '/images/weather/sunny-day.jpg';
 
@@ -68,7 +66,7 @@ export default function WeatherViewPage() {
   }, [lat, lng]);
 
   return (
-    <>
+    <div>
       <section
         style={{ backgroundImage: `url(${backgroundImg})` }}
         className="absolute top-0 left-0 w-full h-[400px] bg-cover bg-center flex justify-center items-center"
@@ -79,7 +77,7 @@ export default function WeatherViewPage() {
           handleChangeCountry={handleChangeOption}
         />
       </section>
-      <section className="absolute mt-[420px] mr-[120px] lg:w-[1448px]">
+      <section className={`absolute mt-[420px] mr-[120px] lg:w-[1448px]`}>
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] bg-white">
           {/* <FilterButtonFormat /> */}
           <nav className="flex flex-col gap-y-[20px] mb-[30px]">
@@ -171,6 +169,6 @@ export default function WeatherViewPage() {
           </details>
         </div>
       </section>
-    </>
+    </div>
   );
 }

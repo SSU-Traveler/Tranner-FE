@@ -5,7 +5,9 @@ export async function getPlaceSearchResult() {
   const query = '단원구'; // 후에 매개변수로 받을 것임!
   // searchEngineID 생성해야 함
   try {
-    const url = `/customsearch/v1?q=${query}&cx=${SEARCH_ENGINE_ID}&key=${GOOGLE_API_KEY}&searchType=image`;
+    const url = `/customsearch/v1?q=${encodeURIComponent(
+      query
+    )}&cx=${SEARCH_ENGINE_ID}&key=${GOOGLE_API_KEY}&searchType=image`;
 
     const response = await fetch(url);
     const data = await response.json();

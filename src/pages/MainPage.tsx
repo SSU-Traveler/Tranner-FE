@@ -95,7 +95,7 @@ export default function MainPage() {
                 <div className="flex justify-end">
                   <SpotCard
                     key={place.name}
-                    imgPath={place?.photos[0] || ''}
+                    imgPath={place?.photos[0] || '/images/default.jpg'}
                     spotName={place.name}
                     spotAddress={place.formatted_address!}
                     spotDescription={place.description}
@@ -158,7 +158,7 @@ export default function MainPage() {
               places.map((place) => (
                 <SpotCard
                   key={place.name}
-                  imgPath={place?.photos[0] || ''}
+                  imgPath={place?.photos[0] || '/images/default.jpg'}
                   spotName={place.name}
                   spotAddress={place.formatted_address!}
                   spotDescription={place.description}

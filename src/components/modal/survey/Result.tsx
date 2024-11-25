@@ -19,7 +19,7 @@ export default function Result() {
 
   const lat = localStorage.getItem('lat') || 0;
   const lng = localStorage.getItem('lng') || 0;
-  const type = localStorage.getItem('type') || localStorage.getItem('types') || 'no value';
+  const type = localStorage.getItem('type') || JSON.parse(localStorage.getItem('types') || 'no value') || 'no value';
 
   const { data: recommendPlaces } = useQuery({
     queryKey: ['recommend places'],
@@ -48,17 +48,6 @@ export default function Result() {
           spotDescription="설명"
           needToLoginAlarm={needToLoginAlarm}
         /> */}
-        <SurveyResultCard />
-        <SurveyResultCard />
-        <SurveyResultCard />
-        <SurveyResultCard />
-        <SurveyResultCard />
-        <SurveyResultCard />
-        <SurveyResultCard />
-        <SurveyResultCard />
-        <SurveyResultCard />
-        <SurveyResultCard />
-        <SurveyResultCard />
         <SurveyResultCard />
       </section>
     </div>
