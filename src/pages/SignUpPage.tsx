@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import SignUpForm from '../components/user/SignUpForm';
+
 import { SignUpApi, SendEmailApi, IdDuplicatedCheckApi, ConfirmVerificationCodeApi } from '../api/SignUpApi';
 import { useNavigate } from 'react-router-dom';
 import { Confirm } from 'notiflix';
@@ -16,7 +17,9 @@ export default function SignUpPage() {
     email: '',
     authCode: '',
     username: '',
+
     nickname: '',
+
     password: '',
     passwordConfirm: '',
   });
@@ -43,6 +46,8 @@ export default function SignUpPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [emailChecked, setEmailChecked] = useState(false);
   const [idChecked, setIdChecked] = useState(false);
+  const [pwdChecked, setPwdChecked] = useState(false);
+  const [pwdConfirmChecked, setPwdConfirmChecked] = useState(false);
 
   const [timer, setTimer] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState<number>(300); // 5분 (300초)
@@ -92,13 +97,20 @@ export default function SignUpPage() {
       message = result ? '' : '이메일 형식이 올바르지 않습니다.';
     } else if (field === 'username') {
       result = REGEX_MEMBERID.test(value);
+
       message = result ? '' : '아이디는 영문자 또는 숫자 6~20자여야 합니다.';
     } else if (field === 'password') {
       result = REGEX_PASSWORD.test(value);
       message = result ? '' : '영문, 숫자, 특수문자 포함 8자 이상이어야 합니다.';
+      if (result) {
+        setPwdChecked(true);
+      }
     } else if (field === 'passwordConfirm') {
       result = signUpData.password === value;
       message = result ? '' : '비밀번호가 일치하지 않습니다.';
+      if (result) {
+        setPwdConfirmChecked(true);
+      }
     }
 
     setIsValid((prevData) => ({
@@ -148,6 +160,7 @@ export default function SignUpPage() {
   const confirmVerificationCode = async (email: string, authCode: string) => {
     //1. 인증번호 맞는지 틀린지 확인 - 서버에 email, 인증번호 보내고 코드 검증.
     const response = await ConfirmVerificationCodeApi(email, authCode);
+
     //2-1. 맞으면
     if (response) {
       setIsValid((prevData) => ({
@@ -183,14 +196,18 @@ export default function SignUpPage() {
     try {
       const response = await IdDuplicatedCheckApi(signUpData.username);
       console.log(response);
-      //아이디 중복일 경우
-      if (!response) {
+      //아이디 중복일 경우(true return)
+      if (response !== undefined && response.data) {
         setErrMsg((prevData) => ({
           ...prevData,
           username: '중복된 아이디가 존재합니다.',
         }));
       } else {
         //아이디가 중복이 아닐 경우
+        setErrMsg((prevData) => ({
+          ...prevData,
+          username: '',
+        }));
         setIdChecked(true);
       }
       //아이디 사용 가능할 경우
@@ -242,6 +259,8 @@ export default function SignUpPage() {
           isVisible={isVisible}
           emailChecked={emailChecked}
           idChecked={idChecked}
+          pwdChecked={pwdChecked}
+          pwdConfirmChecked={pwdConfirmChecked}
           timeLeft={timeLeft}
           formatTimeLeft={formatTimeLeft}
           errMsg={errMsg}

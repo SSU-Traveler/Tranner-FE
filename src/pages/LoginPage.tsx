@@ -4,7 +4,6 @@ import { KAKAO_AUTH_URL } from '../api/ApiUrls';
 import { LoginApi } from '../api/LoginApi';
 import { getBmkInfoById } from '../api/tripPlan.api';
 import HorizonLine from '../components/common/HorizonLine';
-import LoginForm from '../components/user/LoginForm';
 import useBasketStore from '../zustand/basketStore';
 import useBookmarkStore from '../zustand/bookmarkStore';
 import useLoginStore from '../zustand/loginStore';
@@ -61,7 +60,7 @@ export default function LoginPage() {
       //사용자 정보 저장
       saveUserData(response.data.username, response.data.nickname);
       //navigator로 전 페이지로 돌아가기
-      navigate(-1);
+      navigate('/');
     }
   };
 

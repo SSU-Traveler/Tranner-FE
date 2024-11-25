@@ -18,8 +18,6 @@ const TripPlanList = ({ dateIndex, date, elementObj, handleDelete }: Props) => {
     setVisible(!visible);
   };
 
-  const handleElementObj = () => {};
-
   return (
     <div className="scroll overflow-auto px-1">
       <div className="flex w-full h-[35px] bg-button-selected border rounded-[15px] text-white px-2 py-1 my-3 justify-between items-center">

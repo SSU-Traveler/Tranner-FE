@@ -58,7 +58,7 @@ const TripPlanInfo = ({
   }, [editable]);
 
   const makePlan = async () => {
-    const resposne = await makePlanApi(planName, numberOfPeople, tripDate, elementObj);
+    const resposne = await makePlanApi(planName, numberOfPeople, tripDate, elementObj, navigate);
     console.log(resposne);
     if (resposne === '스케줄 생성 성공') {
       console.log('성공');
@@ -113,7 +113,7 @@ const TripPlanInfo = ({
           </button>
         </div>
       </div>
-      <TripPlanBox tripDate={tripDate} elementObj={elementObj} handleDelete={handleDelete} dateList={dateList} />
+      <TripPlanBox elementObj={elementObj} handleDelete={handleDelete} dateList={dateList} />
       <button
         type="button"
         disabled={Array.isArray(elementObj) && elementObj.length === 0}

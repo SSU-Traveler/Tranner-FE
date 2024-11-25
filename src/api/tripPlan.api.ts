@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { basketType } from '../types/basket.type';
-import { filteredUserPlaceType, tripDate, userPlaceType } from '../types/tripPlan.type';
+import { tripDate, userPlaceType } from '../types/tripPlan.type';
 import { apiPost } from '../zustand/tokenStore';
 
-const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_PLACE_API;
+const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 export const getLocation = async (spot: string) => {
   try {
@@ -155,7 +155,8 @@ export const makePlanApi = async (
   planName: string,
   numberOfPeople: number,
   tripDate: tripDate,
-  elementObj: userPlaceType[]
+  elementObj: userPlaceType[],
+  navigate: any
 ) => {
   try {
     const filteredElementObj = elementObj.map(({ daySequence, locationSequence, placeId }) => ({
@@ -171,7 +172,7 @@ export const makePlanApi = async (
       endDate: tripDate.tripEndDate,
       detailSchedules: filteredElementObj,
     };
-    const response = await apiPost(url, data);
+    const response = await apiPost(url, data, navigate);
     console.log(response);
     return response;
   } catch (error) {

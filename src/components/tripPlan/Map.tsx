@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { basketType } from '../../types/basket.type';
 import { userPlaceType } from '../../types/tripPlan.type';
 
-const key = import.meta.env.VITE_GOOGLE_PLACE_API;
+const key = import.meta.env.VITE_GOOGLE_API_KEY;
 
 interface Props {
   elementObj: userPlaceType[];
