@@ -4,6 +4,7 @@ import { KAKAO_AUTH_URL } from '../api/ApiUrls';
 import { LoginApi } from '../api/LoginApi';
 import { getBmkInfoById } from '../api/tripPlan.api';
 import HorizonLine from '../components/common/HorizonLine';
+import LoginForm from '../components/user/LoginForm';
 import useBasketStore from '../zustand/basketStore';
 import useBookmarkStore from '../zustand/bookmarkStore';
 import useLoginStore from '../zustand/loginStore';
