@@ -1,4 +1,4 @@
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { KakaoLogin } from '../../api/LoginApi';
 import Loading from '../common/Loading';
@@ -8,7 +8,7 @@ const KakaoAuth = () => {
   //const location = useLocation();
   //const CODE = location.search.split('=')[1];
   const CODE = new URL(window.location.href).searchParams.get('code');
-  
+
   // Strict Mode 를 유지하면서 백으로 로그인 인가 코드를 한번만 보내게 하기 위해
   const hasFetched = useRef(false);
 
@@ -43,12 +43,12 @@ const KakaoAuth = () => {
 
   // Strict Mode 를 유지하면서 백으로 로그인 인가 코드를 한번만 보내게 하기 위해
   useEffect(() => {
-    if(!hasFetched.current){
+    if (!hasFetched.current) {
       getKakaoToken();
-      hasFetched.current=true;
+      hasFetched.current = true;
     }
   }, []);
-  
+
   return <Loading />;
 };
 

@@ -1,7 +1,7 @@
 import { create, StoreApi, UseBoundStore } from 'zustand';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import useLoginStore from './loginStore';
+// import { useNavigate } from 'react-router-dom';
+// import useLoginStore from './loginStore';
 
 interface TokenState {
   accessToken: string;
@@ -22,7 +22,6 @@ const saveToken = (accessToken: string) => {
 };
 
 const reloadAccesToken = async (navigate: any) => {
-  const store = useTokenStore.getState();
   //const { logout } = useLoginStore();
   try {
     const response = await axios.post('/api/auth/refresh', null, {
@@ -80,7 +79,6 @@ const ensureAccessToken = async (navigate: any) => {
 const apiGet = async (url: string, navigate: any) => {
   try {
     const accessToken = await ensureAccessToken(navigate); // 토큰 확인 및 재발급
-    const store = useTokenStore.getState();
     const response = await axios.get(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -97,7 +95,6 @@ const apiGet = async (url: string, navigate: any) => {
 const apiPost = async (url: string, data: any, navigate: any) => {
   try {
     const accessToken = await ensureAccessToken(navigate); // 토큰 확인 및 재발급
-    const store = useTokenStore.getState();
     const response = await axios.post(url, data, {
       headers: {
         'Content-Type': 'application/json',

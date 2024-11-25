@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { basketType } from '../types/basket.type';
-import { filteredUserPlaceType, tripDate, userPlaceType } from '../types/tripPlan.type';
+import { tripDate, userPlaceType } from '../types/tripPlan.type';
 import { apiPost } from '../zustand/tokenStore';
 
-const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_PLACE_API;
+const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 export const getLocation = async (spot: string) => {
   try {

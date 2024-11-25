@@ -33,7 +33,6 @@ export default function CardModal({
   needToLoginAlarm,
 }: CardModalProps) {
   const [isSaved, setIsSaved] = useState<boolean>(false);
-  const [isLogin, setIsLogin] = useState<boolean>(false); // notiflix 테스트용
   const { isLoggedIn } = useLoginStore();
   const addSpot = useBasketStore((state) => state.addSpot);
 

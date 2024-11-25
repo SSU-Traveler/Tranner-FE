@@ -1,9 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import TripPlanBox from './TripPlanBox';
-import changeDateFormat from '../../utils/changeDateFormat';
 import { tripDate, userPlaceType } from '../../types/tripPlan.type';
 import dateWithDays from '../../utils/dateWithDay';
-import { isEmpty } from '../../utils/checkObjectEmpty';
 import { makePlanApi } from '../../api/tripPlan.api';
 import { useNavigate } from 'react-router-dom';
 
@@ -115,7 +113,7 @@ const TripPlanInfo = ({
           </button>
         </div>
       </div>
-      <TripPlanBox tripDate={tripDate} elementObj={elementObj} handleDelete={handleDelete} dateList={dateList} />
+      <TripPlanBox elementObj={elementObj} handleDelete={handleDelete} dateList={dateList} />
       <button
         type="button"
         disabled={Array.isArray(elementObj) && elementObj.length === 0}
