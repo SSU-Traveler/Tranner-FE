@@ -1,7 +1,5 @@
-import { useState } from 'react';
-
 export default function SurveyResultCard() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  // const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const truncateWord = (placeName: string) => {
     if (placeName.length > 14) {
@@ -14,7 +12,7 @@ export default function SurveyResultCard() {
     <>
       <div
         className="w-[220px] h-[264px] bg-white rounded-[16px] border border-[#B2B9C0] hover:cursor-pointer flex flex-col gap-[5px] items-center p-[10px]"
-        onClick={() => setIsOpen(true)}
+        // onClick={() => setIsOpen(true)}
       >
         <img
           src="/images/place/서울.jpg"
