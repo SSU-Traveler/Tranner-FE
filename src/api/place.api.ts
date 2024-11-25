@@ -2,7 +2,7 @@ import axios from 'axios';
 import { CITY_INDICATORS } from '../constants/indicators';
 import { Place, SummaryOfPlaceInfo } from '../types/place.type';
 
-const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_PLACE_API;
+const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 // 장소 사진 가져오는 함수
 async function getPlacePhotos(placeId: string) {

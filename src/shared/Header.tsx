@@ -59,9 +59,9 @@ export default function Header() {
             <button className={buttonStyle} onClick={logoutHandler}>
               로그아웃
             </button>
-            <Link to={'/my'}>
+            {/* <Link to={'/my'}>
               <i className="xi-profile xi-3x"></i>
-            </Link>
+            </Link> */}
           </nav>
         )}
       </div>

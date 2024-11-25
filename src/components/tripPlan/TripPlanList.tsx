@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import changeDateFormat from '../../utils/changeDateFormat';
 import TripPlanListElement from './TripPlanListElement';
 import { userPlaceType } from '../../types/tripPlan.type';
 import dateWithDays from '../../utils/dateWithDay';
@@ -18,8 +17,6 @@ const TripPlanList = ({ dateIndex, date, elementObj, handleDelete }: Props) => {
   const handleShow = () => {
     setVisible(!visible);
   };
-
-  const handleElementObj = () => {};
 
   return (
     <div className="scroll overflow-auto px-1">

@@ -1,5 +1,4 @@
 // src/components/SignUpForm.js
-import { useEffect } from 'react';
 import { UserInfoElement } from '../../types/signup.type';
 import { isEmpty } from '../../utils/checkObjectEmpty';
 import UserInput from '../input/UserInput';
@@ -23,9 +22,7 @@ interface Props {
   signUpData: SignUpUserElement;
   handleChange?: (field: string) => (value: string) => void;
   sendEmail(): void;
-
   confirmVerificationCode(email: string, authCode: string): void;
-
   isVisible: boolean;
   emailChecked: boolean;
   idChecked: boolean;
@@ -43,7 +40,7 @@ const SignUpForm = ({
   signUpData,
   handleChange,
   sendEmail,
-  confirmauthCode,
+  confirmVerificationCode,
   isVisible,
   emailChecked,
   idChecked,
@@ -102,9 +99,7 @@ const SignUpForm = ({
               type="button"
               onClick={() => {
                 console.log('버튼 클릭됨');
-
                 confirmVerificationCode(signUpData.email, signUpData.authCode);
-
               }}
               disabled={timeLeft <= 0}
               className={`border w-[80px] h-[40px] rounded-[10px] ml-5 ${
@@ -142,7 +137,6 @@ const SignUpForm = ({
           </button>
         </div>
         {errMsg.username && <p className="text-red-500 text-xs">{errMsg.username}</p>}
-
       </div>
 
       <div className="m-10">
@@ -154,7 +148,6 @@ const SignUpForm = ({
           placeholder="닉네임 입력"
           box_width="input2"
         />
-
       </div>
 
       {/* 비밀번호 입력 */}

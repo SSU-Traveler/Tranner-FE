@@ -1,15 +1,13 @@
-import { useState } from 'react';
 import TripPlanList from './TripPlanList';
-import { tripDate, userPlaceType } from '../../types/tripPlan.type';
+import { userPlaceType } from '../../types/tripPlan.type';
 
 interface Props {
-  tripDate: tripDate;
   elementObj: userPlaceType[];
   handleDelete: (elementObj: userPlaceType) => void;
   dateList: Date[];
 }
 
-const TripPlanBox = ({ tripDate, elementObj, handleDelete, dateList }: Props) => {
+const TripPlanBox = ({ elementObj, handleDelete, dateList }: Props) => {
   const handleOrder = () => {};
 
   return (

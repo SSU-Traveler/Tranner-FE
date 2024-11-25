@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
-import { placeDetailType, placeObjType } from '../../types/tripPlan.type';
+import { placeObjType } from '../../types/tripPlan.type';
 import PlaceElement from './PlaceElement';
-import DetailCardModal from '../modal/DetailCardModal';
 
 interface Props {
   placeObjList: placeObjType[];
