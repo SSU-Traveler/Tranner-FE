@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080', // Spring Boot 서버 URL
+        target: 'https://api.tranner.com', // Spring Boot 서버 URL
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''), // '/api' 경로를 제거,
         secure: false,
