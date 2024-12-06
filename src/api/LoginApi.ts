@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { UserInfoElement } from '../types/signup.type';
-const SIGNUP_API_BASE_URL = '/api';
+const SIGNUP_API_BASE_URL = import.meta.env.VITE_SERVER_URL;
 //const SIGNUP_API_BASE_URL = 'https://api.tranner.com';
 
 //로그인
@@ -32,7 +32,7 @@ export const KakaoLogin = async (CODE: string) => {
     console.log(response);
     const data = response.data;
     console.log(data);
-    
+
     return data;
   } catch (error) {
     console.error('Error fetching boards:', error);

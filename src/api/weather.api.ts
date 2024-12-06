@@ -1,11 +1,13 @@
 import { CurrentWeather, FutureWeather } from '../types/weather.type';
 
 const WEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+const WEATHER_URL = import.meta.env.VITE_WEATHER_API_URL;
+const OPENWEATHER_URL = import.meta.env.VITE_OPENWEATHER_API_URL;
 
 export async function getCurrentWeather(lat: number, lon: number): Promise<CurrentWeather | undefined> {
   try {
     const response = await fetch(
-      `/openweather-api/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${WEATHER_API_KEY}`
+      `${OPENWEATHER_URL}/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${WEATHER_API_KEY}`
     );
     const data = await response.json();
     console.log(data);
@@ -18,7 +20,7 @@ export async function getCurrentWeather(lat: number, lon: number): Promise<Curre
 export async function getFutureWeather(lat: number, lon: number): Promise<FutureWeather | undefined> {
   try {
     const response = await fetch(
-      `/openweather-api/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${WEATHER_API_KEY}`
+      `${OPENWEATHER_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${WEATHER_API_KEY}`
     );
     const data: FutureWeather = await response.json();
     return data;
@@ -32,7 +34,7 @@ const WEATHER_AUTH_KEY = import.meta.env.VITE_WEATHER_AUTH_KEY;
 export async function getWeatherApi() {
   try {
     const textResponse = await fetch(
-      `/weather-api/api/typ01/url/kma_sfctm2.php?tm=202211300900&stn=0&authKey=${WEATHER_AUTH_KEY}`
+      `${WEATHER_URL}/api/typ01/url/kma_sfctm2.php?tm=202211300900&stn=0&authKey=${WEATHER_AUTH_KEY}`
     );
     const textData = await textResponse.text();
     console.log(textData);
