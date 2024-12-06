@@ -51,7 +51,7 @@ export default function SpotCard({
 
   return (
     <div
-      className="w-[250px] h-[300px] bg-white rounded-[16px] border border-[#B2B9C0] hover:cursor-pointer flex flex-col gap-[5px] items-center p-[10px]"
+      className="w-[230px] h-[315px] bg-white rounded-[16px] border border-[#B2B9C0] hover:cursor-pointer flex flex-col gap-[5px] items-center p-[10px]"
       onClick={openCardModal}
     >
       <img src={imgPath} alt={spotName} className="w-[230px] h-[260px] rounded-[16px] object-cover" />

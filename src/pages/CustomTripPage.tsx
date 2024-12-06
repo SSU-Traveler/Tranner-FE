@@ -1,9 +1,12 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { getPlacesBasedOnTheme } from '../api/place.api';
 import SpotCard from '../components/card/SpotCard';
 import DataLoading from '../components/common/DataLoading';
 import FilterButton from '../components/common/FilterButton';
 import FirstQuestion from '../components/modal/survey/FirstQuestion';
+import { CITY_INDICATORS } from '../constants/indicators';
 import { THEME_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useModal } from '../hooks/useModal';
@@ -13,14 +16,12 @@ import useLoginStore from '../zustand/loginStore';
 
 export default function CustomTripPage() {
   const { isLoggedIn } = useLoginStore();
-  const [places, setPlaces] = useState<SummaryOfPlaceInfo[]>([]);
   const { isModalOpen, openModal, closeModal } = useModal();
   const { needToLoginAlarm } = useAlarm();
 
   // useChainOption
   const [primaryOption, setPrimaryOption] = useState<string>(Object.keys(THEME_OPTIONS)[0]);
 
-  console.log(THEME_OPTIONS[primaryOption]);
   const arrayOnlyKorname = THEME_OPTIONS[primaryOption].map((item) => item.korName);
 
   const [secondaryOptions, setSecondaryOptions] = useState<string[]>(arrayOnlyKorname);
@@ -34,25 +35,57 @@ export default function CustomTripPage() {
   };
 
   const handleOpenModal = () => {
-    if (!isLoggedIn) needToLoginAlarm();
+    if (isLoggedIn) needToLoginAlarm();
     else openModal(<FirstQuestion />);
   };
 
-  // const {data: themePlaces} = useQuery({
-  //   queryKey: ["theme places"]
-  // })
+  const { ref } = useInView({
+    threshold: 1,
+    onChange: (inView) => {
+      if (inView && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+  });
 
-  useEffect(() => {
-    async function fetchPlacesBasedOnTheme() {
+  // 1. queryFn() 함수는 서버에서 데이터를 요청하고 그 데이터를 useInfiniteQuery에 전달함
+  // 2. queryFn() 함수의 리턴값은 getNextPageParam의 lastPage로 전달됨
+  // 3. getNextPageParam() 함수는 lastPage의 데이터를 기반으로 다음 페이지를 요청할 pageParam을 계산함
+  // 4. getNextPageParam() 함수의 리턴값은 fetchNextPage() 함수가 다음 페이지를 요청할 때 pageParam으로 전달됨
+  // 5. fetchNextPage() 함수는 이 값을 다시 queryFn에 전달하여 새로운 데이터를 가져옴
+  const NUMBER_OF_CITY = CITY_INDICATORS.length;
+
+  const {
+    data: places,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<
+    { placesWithDetails: SummaryOfPlaceInfo[]; nextPageToken: string | null },
+    Error,
+    SummaryOfPlaceInfo[],
+    string[],
+    { token: string | null; city: number }
+  >({
+    queryKey: ['theme places', primaryOption, selectedOption],
+    initialPageParam: { token: null, city: 0 },
+    queryFn: async ({ pageParam }) => {
       const { korName, engName } = THEME_OPTIONS[primaryOption].filter(
         (option) => option.korName === selectedOption
       )[0];
-      const result: SummaryOfPlaceInfo[] = await getPlacesBasedOnTheme(korName, engName);
-      console.log(result);
-      setPlaces(result);
-    }
-    fetchPlacesBasedOnTheme();
-  }, [primaryOption, selectedOption]);
+      const lat = CITY_INDICATORS[pageParam.city].lat;
+      const lng = CITY_INDICATORS[pageParam.city].lng;
+      return await getPlacesBasedOnTheme(korName, engName, lat, lng, pageParam.token);
+    },
+    getNextPageParam: (lastPage, _, lastPageParam) => {
+      let cityNum: number = lastPageParam.city;
+      cityNum = lastPageParam.token === null ? ++cityNum : cityNum;
+      if (cityNum >= NUMBER_OF_CITY) return null;
+      return { token: lastPage.nextPageToken || null, city: cityNum };
+    },
+    select: ({ pages }) => pages.flatMap((page) => page.placesWithDetails),
+    staleTime: 600000,
+  });
 
   useEffect(() => {
     const modal = document.getElementById('modal-by-hj');
@@ -78,16 +111,15 @@ export default function CustomTripPage() {
     localStorage.removeItem('lat');
     localStorage.removeItem('lng');
     localStorage.removeItem('type');
-    localStorage.removeItem('types');
   }, []);
 
   return (
     <>
       <section
         style={{ backgroundImage: `url("images/theme/history-study.jpg")` }}
-        className="absolute top-0 left-0 w-full h-[400px] bg-cover bg-center flex items-center"
+        className="relative top-0 left-0 w-full h-[400px] bg-cover bg-center flex items-center"
       >
-        <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div className="absolute w-full h-full bg-black opacity-40"></div>
         <div className="relative z-10 text-white pl-[120px]">
           <p className="font-bold text-[50px] mb-[20px]">당신의 꿈의 여행을 찾아드립니다!</p>
           <div className="mb-[20px] text-[17px]">
@@ -100,7 +132,7 @@ export default function CustomTripPage() {
           </button>
         </div>
       </section>
-      <section className="absolute mt-[420px] pr-[120px] lg:w-[1568px]">
+      <section className="my-[20px] px-[120px]">
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] bg-white">
           <nav className="flex flex-col gap-y-[20px] mb-[20px]">
             <div className="flex flex-wrap gap-[8px]">
@@ -124,13 +156,13 @@ export default function CustomTripPage() {
               ))}
             </div>
           </nav>
-          <div className="flex flex-wrap justify-center gap-x-[39px] gap-y-[20px]">
-            {places.length > 0 && places[0] ? (
+          <div className="flex flex-wrap justify-start gap-x-[21.9px] gap-y-[20px]">
+            {places && places.length > 0 ? (
               places.map((place, index) => (
                 <SpotCard
                   key={`${place.name}${index}`}
                   imgPath={place.photos[0] || '/images/default.jpg'}
-                  spotName={place.name}
+                  spotName={place.name!}
                   spotAddress={place?.formatted_address || ''}
                   spotDescription={place.description}
                   needToLoginAlarm={needToLoginAlarm}
@@ -140,6 +172,11 @@ export default function CustomTripPage() {
               <DataLoading />
             )}
           </div>
+          {hasNextPage && (
+            <div ref={ref}>
+              <DataLoading />
+            </div>
+          )}
         </div>
       </section>
     </>
