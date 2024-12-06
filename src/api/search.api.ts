@@ -1,11 +1,12 @@
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const SEARCH_ENGINE_ID = import.meta.env.VITE_GOOGLE_SEARCH_ENGINE_ID;
+const MAP_URL = import.meta.env.VITE_MAPS_API_URL;
 
 export async function getPlaceSearchResult() {
   const query = '단원구'; // 후에 매개변수로 받을 것임!
   // searchEngineID 생성해야 함
   try {
-    const url = `/customsearch/v1?q=${encodeURIComponent(
+    const url = `${MAP_URL}/maps/api/place/v1?q=${encodeURIComponent(
       query
     )}&cx=${SEARCH_ENGINE_ID}&key=${GOOGLE_API_KEY}&searchType=image`;
 

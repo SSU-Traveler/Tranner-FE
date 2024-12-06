@@ -4,6 +4,8 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: '0.0.0.0',
+    port: 7171,
     proxy: {
       '/api': {
         target: 'https://api.tranner.com', // Spring Boot 서버 URL
