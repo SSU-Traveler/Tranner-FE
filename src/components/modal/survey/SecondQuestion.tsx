@@ -16,7 +16,6 @@ export default function SecondQuestion() {
     localStorage.removeItem('lat');
     localStorage.removeItem('lng');
     localStorage.removeItem('type');
-    localStorage.removeItem('types');
     closeModal();
   };
 

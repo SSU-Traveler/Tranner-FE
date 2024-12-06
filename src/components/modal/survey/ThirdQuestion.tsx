@@ -26,14 +26,12 @@ export default function ThirdQuestion({ themeOption }: { themeOption: string }) 
     localStorage.removeItem('lat');
     localStorage.removeItem('lng');
     localStorage.removeItem('type');
-    localStorage.removeItem('types');
     closeModal();
   };
 
   const handleClickOption = (key: string, value: string | string[]) => {
     localStorage.setItem('survey_third', key);
-    if (typeof value === 'string') localStorage.setItem('type', value);
-    else localStorage.setItem('types', JSON.stringify(value));
+    localStorage.setItem('type', JSON.stringify(value));
     setSelectedOption(key);
   };
 
