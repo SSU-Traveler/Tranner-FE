@@ -3,13 +3,14 @@ import { PageData, WikipediaApiResponse } from '../types/pageData.type';
 import { Place, PlaceInfoWithPhotos, PlaceResponse, SummaryOfPlaceInfo } from '../types/place.type';
 
 const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const MAP_URL = import.meta.env.VITE_MAPS_API_URL;
+const WIKIPEDIA_URL = import.meta.env.VITE_WIKIPEDIA_API_URL;
 
 // 장소 사진 가져오는 함수
 // 장소 사진을 가져오기 위해서는 장소 세부정보 요청을 해서 photo_reference 값을 가져와야 함
 async function getPlacePhotos(placeId: string): Promise<string[]> {
   try {
-    // 장소 세부정보 요청
-    const url = `/maps/api/place/details/json?place_id=${placeId}&fields=photo&key=${GOOGLE_MAP_API_KEY}`;
+    const url = `${MAP_URL}/maps/api/place/details/json?place_id=${placeId}&fields=name,rating,formatted_address,photo,geometry&key=${GOOGLE_MAP_API_KEY}`;
     const response = await axios.get(url);
     const details: PlaceInfoWithPhotos = response.data.result;
 
@@ -17,7 +18,7 @@ async function getPlacePhotos(placeId: string): Promise<string[]> {
     const photos: string[] = details?.photos
       ? details.photos.map(
           (photo) =>
-            `/maps/api/place/photo?maxheight=1600&photo_reference=${photo.photo_reference}&key=${GOOGLE_MAP_API_KEY}`
+            `${MAP_URL}/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${GOOGLE_MAP_API_KEY}`
         )
       : [];
     return photos;
@@ -30,7 +31,7 @@ async function getPlacePhotos(placeId: string): Promise<string[]> {
 // 장소 설명 가져오는 함수 (by 위키피디아)
 async function getPlaceDescription(placeName: string): Promise<string> {
   try {
-    const url = `/wikipedia-api/api/rest_v1/page/summary/${encodeURIComponent(placeName)}`;
+    const url = `${WIKIPEDIA_URL}/api/rest_v1/page/summary/${encodeURIComponent(placeName)}`;
     const response = await axios.get(url);
     return response.data.extract; // 장소에 대한 요약 설명 반환
   } catch (error) {
@@ -50,7 +51,7 @@ async function getPlaceDescription(placeName: string): Promise<string> {
 
 // 지역 사진 및 설명 가져오는 함수 (by 위키피디아)
 export async function getLocationDetails(neighborhood: string, district: string, city: string) {
-  const url = '/wikipedia-api/w/api.php';
+  const url = `${WIKIPEDIA_URL}/w/api.php`;
 
   // 지역 정보 배열 (우선순위)
   let searchQueries: string[] = [''];
@@ -176,7 +177,7 @@ export async function getLocationDetails(neighborhood: string, district: string,
 // 특정 지역(또는 대한민국 전체)에 대한 장소 목록 가져오는 함수
 export async function getPlaces(location: string): Promise<SummaryOfPlaceInfo[]> {
   const query = `${location} 인기 명소`;
-  const url = `/maps/api/place/textsearch/json?query=${encodeURIComponent(
+  const url = `${MAP_URL}/maps/api/place/textsearch/json?query=${encodeURIComponent(
     query
   )}&radius=50000&region=kr&key=${GOOGLE_MAP_API_KEY}`;
 
@@ -211,7 +212,7 @@ export async function getPlacesMore(
   nextPageToken: string | null = null
 ): Promise<{ placesWithDetails: SummaryOfPlaceInfo[]; nextPageToken: string | null }> {
   const query = `${location} 인기 명소`;
-  const baseUrl = `/maps/api/place/textsearch/json?query=${encodeURIComponent(
+  const baseUrl = `${MAP_URL}/maps/api/place/textsearch/json?query=${encodeURIComponent(
     query
   )}&radius=50000&region=kr&key=${GOOGLE_MAP_API_KEY}`;
 
@@ -286,7 +287,7 @@ export async function getPlacesBasedOnTheme(
   lng: number,
   nextPageToken: string | null = null
 ): Promise<{ placesWithDetails: SummaryOfPlaceInfo[]; nextPageToken: string | null }> {
-  const baseUrl = `/maps/api/place/textsearch/json?query=${encodeURIComponent(
+  const baseUrl = `${MAP_URL}/maps/api/place/textsearch/json?query=${encodeURIComponent(
     korName
   )}&location=${lat},${lng}&radius=5000&type=${engName}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
 
@@ -332,7 +333,7 @@ export async function getRecommendPlaces(
 
   try {
     if (typeof theme === 'string') {
-      url = `/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${theme}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
+      url = `${MAP_URL}/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${theme}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
       const response = await fetch(url);
       const data: PlaceResponse = await response.json();
       places = data.results;
@@ -340,7 +341,7 @@ export async function getRecommendPlaces(
       // 배열로 들어온 theme마다 요청을 보내고 그 결과를 처리
       const requests = theme.map((t) => {
         return fetch(
-          `/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${t}&region=kr&key=${GOOGLE_MAP_API_KEY}`
+          `${MAP_URL}/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${t}&region=kr&key=${GOOGLE_MAP_API_KEY}`
         )
           .then((res) => res.json())
           .then((data) => data.results); // results만 추출해서 반환

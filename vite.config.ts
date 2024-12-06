@@ -4,9 +4,11 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: '0.0.0.0',
+    port: 7171,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080', // Spring Boot 서버 URL
+        target: 'https://api.tranner.com', // Spring Boot 서버 URL
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''), // '/api' 경로를 제거,
         secure: false,
