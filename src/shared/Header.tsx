@@ -16,12 +16,12 @@ export default function Header() {
   };
 
   return (
-    <header className="min-w-[900px] h-[75px] border border-b-[#495057] px-[120px] flex justify-between">
+    <header className="min-w-[900px] h-[65px] border border-b-[#495057] px-[120px] flex justify-between">
       <div className="flex justify-center items-center lg:gap-[50px] md:gap-[40px]">
         <Link to="/" className="text-[35px] font-extrabold hover:text-button-hover whitespace-nowrap">
           🚄Tranner🏕️
         </Link>
-        <nav className="flex gap-[20px] text-[17px]">
+        <nav className="flex gap-[20px]">
           <Link
             to="/local-view"
             className={clsx(pathname === '/local-view' ? selectedTabStyle : tabStyle, 'whitespace-nowrap')}
