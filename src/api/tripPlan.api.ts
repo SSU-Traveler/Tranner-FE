@@ -4,7 +4,7 @@ import { tripDate, userPlaceType } from '../types/tripPlan.type';
 import { apiPost } from '../zustand/tokenStore';
 
 const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-const MAP_URL = import.meta.env.VITE_MAPS_API_URL;
+//const MAP_URL = import.meta.env.VITE_MAPS_API_URL;
 
 export const getLocation = async (spot: string) => {
   try {
@@ -71,7 +71,7 @@ export const fetchPlacesNearby = async (
   nextPageToken: string
 ): Promise<{ placesDetail: any[]; nextPageToken: string } | null> => {
   const radius = 10000;
-  const nearbySearchUrl = `${MAP_URL}/maps/api/place/nearbysearch/json?key=${GOOGLE_MAP_API_KEY}&location=${
+  const nearbySearchUrl = `/maps/api/place/nearbysearch/json?key=${GOOGLE_MAP_API_KEY}&location=${
     currSelectedSpot.location.latitude
   },${currSelectedSpot.location.longitude}&radius=${radius}&rankby=prominence&${
     nextPageToken ? `&pagetoken=${nextPageToken}` : ''
@@ -93,7 +93,7 @@ export const fetchPlacesNearby = async (
 
 export const getPlacesDetail = async (place_id: string) => {
   try {
-    const url = `${MAP_URL}/maps/api/place/details/json?place_id=${place_id}&fields=rating,types,opening_hours,formatted_phone_number,url&key=${GOOGLE_MAP_API_KEY}`;
+    const url = `/maps/api/place/details/json?place_id=${place_id}&fields=rating,types,opening_hours,formatted_phone_number,url&key=${GOOGLE_MAP_API_KEY}`;
     const response = await axios.get(url);
     const details = response.data.result;
     return { ...details };
@@ -105,13 +105,13 @@ export const getPlacesDetail = async (place_id: string) => {
 
 export const getPlacesInfo = async (place_id: string) => {
   try {
-    const url = `${MAP_URL}/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,photo,geometry&key=${GOOGLE_MAP_API_KEY}`;
+    const url = `/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address,photo,geometry&key=${GOOGLE_MAP_API_KEY}`;
     const response = await axios.get(url);
     const details = response.data.result;
 
     // 사진 URL 생성
     const photoUrl = details.photos
-      ? `${MAP_URL}/maps/api/place/photo?maxwidth=400&photoreference=${details.photos[0].photo_reference}&key=${GOOGLE_MAP_API_KEY}`
+      ? `/maps/api/place/photo?maxwidth=400&photoreference=${details.photos[0].photo_reference}&key=${GOOGLE_MAP_API_KEY}`
       : '';
 
     return { ...details, placeId: place_id, photoUrl: photoUrl };
@@ -123,13 +123,13 @@ export const getPlacesInfo = async (place_id: string) => {
 
 export const getPhotoUrl = async (place_id: string) => {
   try {
-    const url = `${MAP_URL}/maps/api/place/details/json?place_id=${place_id}&fields=photo&key=${GOOGLE_MAP_API_KEY}`;
+    const url = `/maps/api/place/details/json?place_id=${place_id}&fields=photo&key=${GOOGLE_MAP_API_KEY}`;
     const response = await axios.get(url);
     const details = response.data.result;
 
     // 사진 URL 생성
     const photoUrl = details.photos
-      ? `${MAP_URL}/maps/api/place/photo?maxwidth=400&photoreference=${details.photos[0].photo_reference}&key=${GOOGLE_MAP_API_KEY}`
+      ? `/maps/api/place/photo?maxwidth=400&photoreference=${details.photos[0].photo_reference}&key=${GOOGLE_MAP_API_KEY}`
       : '';
 
     return { photoUrl };
@@ -141,7 +141,7 @@ export const getPhotoUrl = async (place_id: string) => {
 
 export const getBmkInfoById = async (place_id: string) => {
   try {
-    const url = `${MAP_URL}/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address&key=${GOOGLE_MAP_API_KEY}`;
+    const url = `/maps/api/place/details/json?place_id=${place_id}&fields=name,formatted_address&key=${GOOGLE_MAP_API_KEY}`;
     const response = await axios.get(url);
     const details = response.data.result;
 

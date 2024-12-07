@@ -4,13 +4,14 @@ import { PageData, WikipediaApiResponse } from '../types/pageData.type';
 import { NewPlaceInfoWithPhotos, Place, PlaceInfoWithRatingAndPhotos, SummaryOfPlaceInfo } from '../types/place.type';
 
 const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-const MAP_URL = import.meta.env.VITE_MAPS_API_URL;
-const WIKIPEDIA_URL = import.meta.env.VITE_WIKIPEDIA_API_URL;
+//const MAP_URL = import.meta.env.VITE_MAPS_API_URL;
+//const WIKIPEDIA_URL = import.meta.env.VITE_WIKIPEDIA_API_URL;
+const WIKIPEDIA_URL = '/wikipedia-api';
 
 // 장소 사진 가져오는 함수
 async function getPlacePhotos(placeId: string): Promise<NewPlaceInfoWithPhotos | null> {
   try {
-    const url = `${MAP_URL}/maps/api/place/details/json?place_id=${placeId}&fields=name,rating,formatted_address,photo,geometry&key=${GOOGLE_MAP_API_KEY}`;
+    const url = `/maps/api/place/details/json?place_id=${placeId}&fields=name,rating,formatted_address,photo,geometry&key=${GOOGLE_MAP_API_KEY}`;
     const response = await axios.get(url);
     const details: PlaceInfoWithRatingAndPhotos = response.data.result;
 
@@ -18,7 +19,7 @@ async function getPlacePhotos(placeId: string): Promise<NewPlaceInfoWithPhotos |
     const photos = details?.photos
       ? details.photos.map(
           (photo) =>
-            `${MAP_URL}/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${GOOGLE_MAP_API_KEY}`
+            `/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${GOOGLE_MAP_API_KEY}`
         )
       : [];
     return { ...details, photos };
@@ -176,7 +177,7 @@ export async function getLocationDetails(neighborhood: string, district: string,
 // 특정 지역에 대한 장소 목록 가져오는 함수
 export async function getPlaces(location: string): Promise<SummaryOfPlaceInfo[]> {
   const textSearchQuery = `${location} 인기 명소`;
-  const textSearchUrl = `${MAP_URL}/maps/api/place/textsearch/json?query=${encodeURIComponent(
+  const textSearchUrl = `/maps/api/place/textsearch/json?query=${encodeURIComponent(
     textSearchQuery
   )}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
 
@@ -220,7 +221,7 @@ export async function getPlaces(location: string): Promise<SummaryOfPlaceInfo[]>
 // 대한민국 인기 여행지 가져오는 함수
 export async function getPopularPlaces(): Promise<SummaryOfPlaceInfo[]> {
   const textSearchQuery = '대한민국 인기 명소';
-  const textSearchUrl = `${MAP_URL}/maps/api/place/textsearch/json?query=${encodeURIComponent(
+  const textSearchUrl = `/maps/api/place/textsearch/json?query=${encodeURIComponent(
     textSearchQuery
   )}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
 
@@ -274,7 +275,7 @@ export async function getPlacesBasedOnTheme(korName: string, engName: string): P
 
   do {
     try {
-      const url = `${MAP_URL}/maps/api/place/textsearch/json?query=${encodeURIComponent(korName)}&location=${
+      const url = `/maps/api/place/textsearch/json?query=${encodeURIComponent(korName)}&location=${
         CITY_INDICATORS[4].lat
       },${CITY_INDICATORS[4].lng}&radius=10000&type=${engName}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
 
@@ -336,7 +337,7 @@ export async function getRecommendPlaces(
 
   try {
     if (typeof theme === 'string') {
-      url = `${MAP_URL}/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${theme}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
+      url = `/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${theme}&region=kr&key=${GOOGLE_MAP_API_KEY}`;
       const response = await fetch(url);
       const data = await response.json();
       console.log(data);
@@ -344,7 +345,7 @@ export async function getRecommendPlaces(
       console.log(result);
     } else {
       const requests = theme.map((t) => {
-        return (url = `${MAP_URL}/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${t}&region=kr&key=${GOOGLE_MAP_API_KEY}`);
+        return (url = `/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=10000&type=${t}&region=kr&key=${GOOGLE_MAP_API_KEY}`);
       });
       const data = await Promise.all(requests.map((url) => fetch(url).then((response) => response.json())));
       console.log(data);

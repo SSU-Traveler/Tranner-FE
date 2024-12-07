@@ -1,8 +1,10 @@
 import { CurrentWeather, FutureWeather } from '../types/weather.type';
 
 const WEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
-const WEATHER_URL = import.meta.env.VITE_WEATHER_API_URL;
-const OPENWEATHER_URL = import.meta.env.VITE_OPENWEATHER_API_URL;
+//const WEATHER_URL = import.meta.env.VITE_WEATHER_API_URL;
+const WEATHER_URL = '/weather-api';
+//const OPENWEATHER_URL = import.meta.env.VITE_OPENWEATHER_API_URL;
+const OPENWEATHER_URL = '/openweather-api';
 
 export async function getCurrentWeather(lat: number, lon: number): Promise<CurrentWeather | undefined> {
   try {
