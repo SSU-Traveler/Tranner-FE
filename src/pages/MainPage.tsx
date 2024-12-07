@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
-import { getPlaces, getPopularPlaces } from '../api/place.api';
+import { getPlaces, getPlacesMore } from '../api/place.api';
 import { CustomNextArrow, CustomPrevArrow } from '../components/arrow/CustomArrow';
 import SpotCard from '../components/card/SpotCard';
 import DataLoading from '../components/common/DataLoading';
@@ -11,38 +11,163 @@ import { CITY_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useChainOption } from '../hooks/useChainOption';
 import { useModal } from '../hooks/useModal';
+import { SummaryOfPlaceInfo } from '../types/place.type';
 
 const h1Style = 'font-bold text-[24px]';
 const sectionStyle = 'my-[20px] flex flex-col gap-[10px]';
 
+// // 수동 캐싱
+// const placesCache = new Map<string, SummaryOfPlaceInfo[]>();
+
+// const CACHE_TIMEOUT = 10 * 60 * 1000; // 10분
+
 export default function MainPage() {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
-  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
   const sliderRef = useRef<null | Slider>(null);
   const { needToLoginAlarm } = useAlarm();
   const { isModalOpen, closeModal } = useModal();
   const { primaryOption, secondaryOptions, selectedOption, handleChangeOption, handleChangeSecondaryButton } =
     useChainOption();
 
-  const { data: popularPlaces } = useQuery({
+  // 수정
+  // useQuery는 데이터를 모두 받아온 뒤에 UI를 렌더링함 -> 데이터 20개를 받은 후에 장소 카드가 나와서 UI가 늦게 나옴
+  // 따라서 useState, useEffect를 사용해서 하나의 데이터가 도착하면 바로 UI에 반영되도록 함
+  // const [popularPlaces, setPopularPlaces] = useState<SummaryOfPlaceInfo[]>([]);
+  // const [places, setPlaces] = useState<SummaryOfPlaceInfo[]>([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // let currentAbortController: AbortController | null = null;
+  // let currentRequestId = 0; // 고유 요청 ID
+
+  // const fetchPlaces = (location: string) => {
+  //   setIsLoading(true); // 로딩 시작
+  //   setPlaces([]);
+
+  //   if (location === '대한민국') {
+  //     getPlaces(location, (place) => {
+  //       setPopularPlaces((prevPlaces) => [...prevPlaces, place]);
+  //     }).catch((err) => console.error(err));
+  //   } else {
+  //     // 이전 요청 중단
+  //     if (currentAbortController) {
+  //       currentAbortController.abort();
+  //     }
+  //     // 새로운 AbortController 생성
+  //     currentAbortController = new AbortController();
+  //     const signal = currentAbortController.signal;
+
+  //     // 고유 요청 ID 생성
+  //     const requestId = ++currentRequestId;
+
+  //     // 캐시에서 해당 location의 데이터가 있으면 바로 사용
+  //     console.log(placesCache);
+  //     if (placesCache.has(location)) {
+  //       if (requestId === currentRequestId) {
+  //         setPlaces(placesCache.get(location)!);
+  //         setIsLoading(false); // 캐시에서 데이터를 바로 사용하므로 로딩 종료
+  //       }
+  //       return;
+  //     }
+  //     // if (placesCache.has(location)) {
+  //     //   const cachedData = placesCache.get(location);
+  //     //   if (cachedData && (Date.now() - cachedData.timestamp < CACHE_TIMEOUT)) {
+  //     //     setPlaces(cachedData.data);
+  //     //     setIsLoading(false);
+  //     //     return;
+  //     //   }
+  //     // }
+
+  //     // 새 데이터를 받아오는 로직
+  //     const tempPlaces: SummaryOfPlaceInfo[] = [];
+  //     getPlaces(
+  //       location,
+  //       (place) => {
+  //         if (requestId === currentRequestId) {
+  //           setPlaces((prevPlaces) => {
+  //             const isDuplicate = prevPlaces.some(
+  //               (p) => p.formatted_address === place.formatted_address && p.name === place.name
+  //             );
+  //             if (!isDuplicate) {
+  //               const updatedPlaces = [...prevPlaces, place];
+  //               tempPlaces.push(place);
+  //               return updatedPlaces;
+  //             }
+  //             return prevPlaces;
+  //           });
+  //         }
+  //       },
+  //       signal
+  //     )
+  //       .then(() => {
+  //         if (requestId === currentRequestId) {
+  //           placesCache.set(location, tempPlaces);
+  //         }
+  //         setIsLoading(false); // 로딩 종료
+  //       })
+  //       .catch((err) => {
+  //         if (err.name === 'AbortError') console.log('요청 중단됨');
+  //         else console.error(err);
+  //         setIsLoading(false); // 오류가 발생해도 로딩 상태를 종료
+  //       });
+  //   }
+  // };
+
+  // const handleFetchFirstOption = (primaryOption: string) => {
+  //   handleChangeSecondaryButton(primaryOption);
+  //   fetchPlaces(`${primaryOption} ${selectedOption}`);
+  // };
+
+  // const handleFetchSecondOption = (primaryOption: string, secondaryOption: string) => {
+  //   handleChangeOption(secondaryOption);
+  //   fetchPlaces(`${primaryOption} ${secondaryOption}`);
+  // };
+
+  // useEffect(() => {
+  //   fetchPlaces(`${primaryOption} ${selectedOption}`);
+  //   fetchPlaces('대한민국');
+  // }, []);
+
+  // useEffect(() => {
+  //   return () => {
+  //     // 컴포넌트 언마운트 시 데이터 초기화
+  //     setPlaces([]);
+  //     setPopularPlaces([]);
+  //   };
+  // }, []);
+
+  // 여기부터
+  const { data: popularPlaces } = useQuery<SummaryOfPlaceInfo[], Error, SummaryOfPlaceInfo[], string[]>({
     queryKey: ['popular places'],
-    queryFn: () => getPopularPlaces(),
+    queryFn: async () => await getPlaces('대한민국'),
     staleTime: 600000, // 데이터가 10분 동안 신선
     refetchInterval: 600000, // 데이터를 다시 불러오는 간격
     refetchOnWindowFocus: false, // 다른 창을 봤다가 다시 현재 브라우저에 포커스 했을 때 리페칭을 막음
   });
 
-  const { data: places, isSuccess } = useQuery({
-    queryKey: ['places', selectedOption],
-    queryFn: () => getPlaces(`${primaryOption} ${selectedOption}`),
+  const {
+    data: places,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<
+    { placesWithDetails: SummaryOfPlaceInfo[]; nextPageToken: string | null },
+    Error,
+    SummaryOfPlaceInfo[],
+    string[],
+    string | null
+  >({
+    queryKey: ['places', `${primaryOption} ${selectedOption}`],
+    initialPageParam: null,
+    queryFn: async ({ pageParam }) => await getPlacesMore(`${primaryOption} ${selectedOption}`, pageParam),
+    getNextPageParam: (lastPage) => lastPage.nextPageToken,
+    select: ({ pages }) => pages.flatMap((page) => page.placesWithDetails),
     staleTime: 600000, // 데이터가 10분 동안 신선
-    refetchInterval: 600000, // 데이터를 다시 불러오는 간격
-    refetchOnWindowFocus: false, // 다른 창을 봤다가 다시 현재 브라우저에 포커스 했을 때 리페칭을 막음
   });
 
-  if (isSuccess && places && places.length >= 1 && !isDataLoaded) {
-    setIsDataLoaded(true);
-  }
+  useEffect(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const playSlider = () => {
     if (sliderRef.current) sliderRef.current.slickPlay();
@@ -94,9 +219,9 @@ export default function MainPage() {
               popularPlaces.map((place) => (
                 <div className="flex justify-end">
                   <SpotCard
-                    key={place.name}
+                    key={place.formatted_address}
                     imgPath={place?.photos[0] || '/images/default.jpg'}
-                    spotName={place.name}
+                    spotName={place.name!}
                     spotAddress={place.formatted_address!}
                     spotDescription={place.description}
                     needToLoginAlarm={needToLoginAlarm}
@@ -148,18 +273,18 @@ export default function MainPage() {
                   key={option}
                   buttonName={option}
                   selectedOption={selectedOption}
-                  onClick={handleChangeOption}
+                  onClick={() => handleChangeOption(option)}
                 />
               ))}
             </div>
           </nav>
-          <div className="flex flex-wrap justify-center gap-x-[39px] gap-y-[20px]">
+          <div className="flex flex-wrap justify-start gap-x-[21.9px] gap-y-[20px]">
             {places ? (
-              places.map((place) => (
+              places.map((place, index) => (
                 <SpotCard
-                  key={place.name}
+                  key={`${place.name}${index}`}
                   imgPath={place?.photos[0] || '/images/default.jpg'}
-                  spotName={place.name}
+                  spotName={place.name!}
                   spotAddress={place.formatted_address!}
                   spotDescription={place.description}
                   needToLoginAlarm={needToLoginAlarm}
@@ -168,6 +293,7 @@ export default function MainPage() {
             ) : (
               <DataLoading />
             )}
+            {hasNextPage && <DataLoading />}
           </div>
         </div>
       </section>

@@ -30,7 +30,7 @@ export default function LocalCard({ imgPath, localName, localDescription, needTo
   return (
     <div
       style={{ backgroundImage: `url(${imgPath})` }}
-      className="w-[250px] h-[300px] rounded-[16px] border border-[#B2B9C0] bg-cover bg-center hover:cursor-pointer flex items-end"
+      className="w-[230px] h-[315px] rounded-[16px] border border-[#B2B9C0] bg-cover bg-center hover:cursor-pointer flex items-end"
       onClick={openCardModal}
     >
       <div className="rounded-bl-[16px] px-[10px] py-[3px] bg-black">

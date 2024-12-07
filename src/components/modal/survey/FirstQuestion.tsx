@@ -15,7 +15,6 @@ export default function FirstQuestion() {
     localStorage.removeItem('lat');
     localStorage.removeItem('lng');
     localStorage.removeItem('type');
-    localStorage.removeItem('types');
     closeModal();
   };
 

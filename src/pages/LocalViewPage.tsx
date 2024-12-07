@@ -63,7 +63,7 @@ export default function LocalViewPage() {
     <>
       <section
         style={{ backgroundImage: `url(${backgroundImg})` }}
-        className="absolute top-0 left-0 w-full h-[400px] bg-cover bg-center flex justify-center items-center"
+        className="top-0 left-0 w-full h-[400px] bg-cover bg-center flex justify-center items-center"
       >
         <PlaceInput
           searchObj="원하는 여행 지역을"
@@ -72,7 +72,7 @@ export default function LocalViewPage() {
         />
       </section>
 
-      <section className="absolute mt-[420px] pr-[120px]">
+      <section className="my-[20px] px-[120px]">
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] bg-white">
           {/* <FilterButtonFormat /> */}
           <nav className="flex flex-col gap-y-[20px] mb-[30px]">
@@ -97,7 +97,7 @@ export default function LocalViewPage() {
               ))}
             </div>
           </nav>
-          <div className="flex flex-wrap justify-start gap-x-[39px] gap-y-[20px]">
+          <div className="flex flex-wrap justify-start gap-x-[21.9px] gap-y-[20px]">
             {LOCAL_CITY_OPTIONS[primaryOption][selectedOption].map((location) => (
               <LocalCard
                 key={location}

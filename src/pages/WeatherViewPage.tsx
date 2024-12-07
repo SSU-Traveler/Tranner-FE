@@ -32,6 +32,8 @@ export default function WeatherViewPage() {
   const [weatherEmoji, ...weatherContent] = weatherDescription ? weatherDescription.split(' ') : [];
   const weatherStr = weatherContent.join(' ');
 
+  const currentTime = new Date().getTime();
+
   useEffect(() => {
     const selectedEle = KOREA_DISTRICT_INDICATORS[primaryOption].filter((e) => e.name === selectedOption);
     const lat = selectedEle[0].lat;
@@ -69,7 +71,7 @@ export default function WeatherViewPage() {
     <div>
       <section
         style={{ backgroundImage: `url(${backgroundImg})` }}
-        className="absolute top-0 left-0 w-full h-[400px] bg-cover bg-center flex justify-center items-center"
+        className="top-0 left-0 w-full h-[400px] bg-cover bg-center flex justify-center items-center"
       >
         <PlaceInput
           searchObj="날씨를"
@@ -77,7 +79,7 @@ export default function WeatherViewPage() {
           handleChangeCountry={handleChangeOption}
         />
       </section>
-      <section className={`absolute mt-[420px] mr-[120px] lg:w-[1448px]`}>
+      <section className="my-[20px] px-[120px]">
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] bg-white">
           {/* <FilterButtonFormat /> */}
           <nav className="flex flex-col gap-y-[20px] mb-[30px]">
@@ -125,16 +127,38 @@ export default function WeatherViewPage() {
                       <span className="text-gray-500">{getWindDirection(todayWeather.wind.deg)}</span>{' '}
                       <span className="font-bold">{todayWeather.wind.speed}m/s</span>
                     </p>{' '}
-                    <p>
-                      <span className="text-gray-500">일몰</span>{' '}
-                      <span className="font-bold">
-                        {convertUnixToKST(todayWeather.sys.sunset).split('T')[1].slice(0, 5)}
-                      </span>
-                    </p>
+                    {currentTime < todayWeather.sys.sunrise * 1000 && (
+                      <p>
+                        <span className="text-gray-500">일출</span>{' '}
+                        <span className="font-bold">
+                          {convertUnixToKST(todayWeather.sys.sunrise).split('T')[1].slice(0, 5)}
+                        </span>
+                      </p>
+                    )}
+                    {currentTime > todayWeather.sys.sunrise * 1000 && currentTime < todayWeather.sys.sunset * 1000 && (
+                      <p>
+                        <span className="text-gray-500">일몰</span>{' '}
+                        <span className="font-bold">
+                          {convertUnixToKST(todayWeather.sys.sunset).split('T')[1].slice(0, 5)}
+                        </span>
+                      </p>
+                    )}
                     <p>
                       <span className="text-gray-500">흐림 정도</span>{' '}
                       <span className="font-bold">{todayWeather.clouds.all}%</span>
                     </p>
+                    {todayWeather.rain && (
+                      <p>
+                        <span className="text-blue-400">강수</span>{' '}
+                        <span className="font-bold">{todayWeather.rain['1h']}mm</span>
+                      </p>
+                    )}
+                    {todayWeather.snow && (
+                      <p>
+                        <span className="text-blue-400">강설</span>{' '}
+                        <span className="font-bold">{todayWeather.snow['1h']}mm</span>
+                      </p>
+                    )}
                   </div>
                   <div className="flex justify-center items-center gap-[10px] text-[18px] mb-[20px]">
                     <div className="flex flex-col items-center rounded-[10px] bg-blue-300 p-[7px] w-[100px]">
