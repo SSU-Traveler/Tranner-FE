@@ -248,9 +248,9 @@ export default function SignUpPage() {
 
   return (
     <div className="flex">
-      <div className="container w-full flex flex-col justify-center items-center">
-        <h2>회원가입</h2>
-        <h4>회원가입을 위한 정보를 입력해주세요.</h4>
+      <div className="mt-10 container w-full flex flex-col justify-center items-center">
+        <p className="text-[22px] font-bold">회원가입</p>
+        <p className="text-[15px] mt-2">회원가입을 위한 정보를 입력해주세요.</p>
         <SignUpForm
           signUpData={signUpData}
           handleChange={handleChange}

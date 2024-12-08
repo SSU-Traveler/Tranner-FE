@@ -3,9 +3,11 @@ import { getRecommendPlaces } from '../../../api/place.api';
 import { useModal } from '../../../hooks/useModal';
 import SurveyResultCard from '../../card/SurveyResultCard';
 import DataLoading from '../../common/DataLoading';
+import useUserDataStore from '../../../zustand/userDataStore';
 
 export default function Result() {
   const { closeModal } = useModal();
+  //const { nickname } = useUserDataStore();
 
   const handleCloseModal = () => {
     localStorage.removeItem('survey_first');
@@ -36,7 +38,7 @@ export default function Result() {
         className="absolute w-[12px] h-[12px] hover:cursor-pointer right-[20px]"
         onClick={handleCloseModal}
       />
-      <h1 className="font-bold text-[20px] text-center mt-[20px]">(닉네임)님에게 추천하는 여행지</h1>
+      <h1 className="font-bold text-[20px] text-center mt-[20px]">추천 여행지</h1>
       <section className="flex flex-wrap justify-center gap-[15px] mt-[30px] px-[20px]">
         {isFetching ? (
           <DataLoading />

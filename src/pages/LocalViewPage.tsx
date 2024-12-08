@@ -10,6 +10,9 @@ import { CITY_OPTIONS } from '../constants/options';
 import { useAlarm } from '../hooks/useAlarm';
 import { useChainOption } from '../hooks/useChainOption';
 import { useModal } from '../hooks/useModal';
+import { basketType } from '../types/basket.type';
+import useBasketStore from '../zustand/basketStore';
+import Basket from '../components/common/Basket';
 
 export default function LocalViewPage() {
   const { needToLoginAlarm } = useAlarm();
@@ -59,6 +62,14 @@ export default function LocalViewPage() {
     fetchPlaceSearchResult();
   }, []);
 
+  //장바구니 관련
+  const [selectedSpots, setSelectedSpots] = useState<basketType[]>([]);
+  const { basket } = useBasketStore();
+
+  useEffect(() => {
+    setSelectedSpots(basket);
+  }, [basket]); // basket이 변경될 때마다 실행
+
   return (
     <>
       <section
@@ -74,6 +85,7 @@ export default function LocalViewPage() {
 
       <section className="my-[20px] px-[120px]">
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px] bg-white">
+          <Basket basketSpots={selectedSpots} />
           {/* <FilterButtonFormat /> */}
           <nav className="flex flex-col gap-y-[20px] mb-[30px]">
             <div className="flex flex-wrap gap-[8px]">

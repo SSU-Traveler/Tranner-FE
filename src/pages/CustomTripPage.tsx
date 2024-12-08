@@ -35,7 +35,7 @@ export default function CustomTripPage() {
   };
 
   const handleOpenModal = () => {
-    if (isLoggedIn) needToLoginAlarm();
+    if (!isLoggedIn) needToLoginAlarm();
     else openModal(<FirstQuestion />);
   };
 
