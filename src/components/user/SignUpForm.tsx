@@ -54,9 +54,9 @@ const SignUpForm = ({
   signUpHandler,
 }: Props) => {
   return (
-    <form onSubmit={signUpHandler}>
+    <form onSubmit={signUpHandler} className="flex flex-col items-center mt-5">
       {/* 이메일 입력 */}
-      <div className="m-10">
+      <div className="">
         <div className="flex items-end">
           <UserInput
             label="이메일"
@@ -86,7 +86,7 @@ const SignUpForm = ({
 
       {/* 인증 코드 입력 */}
       {isVisible && (
-        <div className="m-10">
+        <div className="mt-3">
           <div className="flex items-end">
             <UserInput
               label="이메일 인증 코드"
@@ -115,7 +115,7 @@ const SignUpForm = ({
       )}
 
       {/* 아이디 입력 */}
-      <div className="m-10">
+      <div className="mt-3">
         <div className="flex items-end">
           <UserInput
             label="아이디"
@@ -139,7 +139,7 @@ const SignUpForm = ({
         {errMsg.username && <p className="text-red-500 text-xs">{errMsg.username}</p>}
       </div>
 
-      <div className="m-10">
+      <div className="mt-3">
         <UserInput
           label="닉네임"
           type="text"
@@ -151,7 +151,7 @@ const SignUpForm = ({
       </div>
 
       {/* 비밀번호 입력 */}
-      <div className="m-10">
+      <div className="mt-3">
         <UserInput
           label="비밀번호"
           type="password"
@@ -162,7 +162,7 @@ const SignUpForm = ({
         />
         {errMsg.password && <p className="text-red-500 text-xs">{errMsg.password}</p>}
       </div>
-      <div className="m-10">
+      <div className="mt-3">
         <UserInput
           label="비밀번호 확인"
           type="password"
@@ -176,7 +176,7 @@ const SignUpForm = ({
       <button
         type="submit"
         disabled={isEmpty(signUpData) || !emailChecked || !idChecked || !pwdChecked || !pwdConfirmChecked}
-        className={`border rounded-[10px] w-[400px] h-[40px] ${
+        className={`border rounded-[10px] w-[400px] h-[40px] m-10 ${
           !isEmpty(signUpData) && emailChecked && idChecked && pwdChecked && pwdConfirmChecked
             ? 'bg-button-basic hover:bg-button-hover'
             : 'bg-[#d9d9d9]'

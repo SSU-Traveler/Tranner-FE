@@ -12,6 +12,9 @@ import { useAlarm } from '../hooks/useAlarm';
 import { useChainOption } from '../hooks/useChainOption';
 import { useModal } from '../hooks/useModal';
 import { SummaryOfPlaceInfo } from '../types/place.type';
+import useBasketStore from '../zustand/basketStore';
+import Basket from '../components/common/Basket';
+import { basketType } from '../types/basket.type';
 
 const h1Style = 'font-bold text-[24px]';
 const sectionStyle = 'my-[20px] flex flex-col gap-[10px]';
@@ -209,6 +212,20 @@ export default function MainPage() {
     };
   }, [isModalOpen, closeModal]);
 
+  // //사용자가 장바구니에 담은 요소들
+  // const selectedSpots: basketType[] = [];
+  // useEffect(() => {
+  //   // 장바구니가 변경될 때마다 로컬 스토리지에서 값을 가져옴
+  //   selectedSpots.push(...basket);
+  // });
+  //장바구니 관련
+  const [selectedSpots, setSelectedSpots] = useState<basketType[]>([]);
+  const { basket } = useBasketStore();
+
+  useEffect(() => {
+    setSelectedSpots(basket);
+  }, [basket]); // basket이 변경될 때마다 실행
+
   return (
     <>
       <section className={sectionStyle}>
@@ -255,6 +272,7 @@ export default function MainPage() {
           />
         </div>
         <div className="border border-[#B2B9C0] p-[20px] rounded-[8px]">
+          <Basket basketSpots={selectedSpots} />
           {/* <FilterButtonFormat /> */}
           <nav className="flex flex-col gap-y-[20px] mb-[30px]">
             <div className="flex flex-wrap gap-[8px]">

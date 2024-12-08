@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { UserInfoElement } from '../types/signup.type';
 //const SIGNUP_API_BASE_URL = import.meta.env.VITE_SERVER_URL;
 //const SIGNUP_API_BASE_URL = 'https://api.tranner.com';
-const SIGNUP_API_BASE_URL = '/api';
+const SIGNUP_API_BASE_URL = 'http://localhost:8080';
 
 //로그인
 export const LoginApi = async (data: Omit<UserInfoElement, 'email' | 'nickname'>): Promise<AxiosResponse | null> => {
@@ -12,8 +12,6 @@ export const LoginApi = async (data: Omit<UserInfoElement, 'email' | 'nickname'>
         'Content-Type': 'application/json',
       },
     });
-    console.log(response);
-    alert('로그인 성공');
     return response;
   } catch (error) {
     console.error('Error fetching boards:', error);
@@ -23,7 +21,7 @@ export const LoginApi = async (data: Omit<UserInfoElement, 'email' | 'nickname'>
 };
 
 //서버에 인가코드 넘겨주고 로그인.
-export const KakaoLogin = async (CODE: string) => {
+export const KakaoLogin = async (CODE: string): Promise<AxiosResponse | null> => {
   try {
     const response = await axios.post(
       `${SIGNUP_API_BASE_URL}/kakaoLogin`,
@@ -37,6 +35,6 @@ export const KakaoLogin = async (CODE: string) => {
     return data;
   } catch (error) {
     console.error('Error fetching boards:', error);
-    return []; // 에러 발생 시 빈 배열 반환
+    return null; // 에러 발생 시 빈 배열 반환
   }
 };

@@ -74,7 +74,6 @@ export default function LoginPage() {
       <Link to="/trip-plan">
         <p>여행 계획</p>
       </Link>
-      <h2>로그인</h2>
       <LoginForm loginData={loginData} handleChange={handleChange} loginHandler={loginHandler} />
 
       <p className="text-xs m-5">
