@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { UserInfoElement } from '../types/signup.type';
-//const SIGNUP_API_BASE_URL = import.meta.env.VITE_SERVER_URL;
+const SIGNUP_API_BASE_URL = import.meta.env.VITE_SERVER_URL;
 //const SIGNUP_API_BASE_URL = 'https://api.tranner.com';
-const SIGNUP_API_BASE_URL = 'http://localhost:8080';
+//const SIGNUP_API_BASE_URL = 'http://localhost:8080';
 
 //로그인
 export const LoginApi = async (data: Omit<UserInfoElement, 'email' | 'nickname'>): Promise<AxiosResponse | null> => {

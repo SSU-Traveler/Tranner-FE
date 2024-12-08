@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { UserInfoElement } from '../types/signup.type';
-//const SIGNUP_API_BASE_URL = '/api/member';
-const SIGNUP_API_BASE_URL = 'http://localhost:8080/member';
+const SIGNUP_API_BASE_URL = '/api/member';
+//const SIGNUP_API_BASE_URL = 'http://localhost:8080/member';
 
 //회원 가입
 export const SignUpApi = async (prop: UserInfoElement) => {
