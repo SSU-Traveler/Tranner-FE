@@ -14,5 +14,11 @@ export const useChainOption = () => {
     setSelectedOption(CITY_OPTIONS[option][0]);
   };
 
-  return { primaryOption, secondaryOptions, selectedOption, handleChangeOption, handleChangeSecondaryButton };
+  return {
+    primaryOption,
+    secondaryOptions,
+    selectedOption,
+    handleChangeOption,
+    handleChangeSecondaryButton,
+  };
 };

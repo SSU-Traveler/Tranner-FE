@@ -4,19 +4,19 @@ import { UserInfoElement } from '../../types/signup.type';
 import { isEmpty } from '../../utils/checkObjectEmpty';
 import UserInput from '../input/UserInput';
 
-type LoginInfoElement = Omit<UserInfoElement, 'email' | 'nickName'>;
+type LoginInfoElement = Omit<UserInfoElement, 'email' | 'nickname'>;
 
 interface Props {
   loginData: LoginInfoElement;
   handleChange?: (field: string) => (value: string) => void;
-  loginHandler(): void;
+  loginHandler(event: React.FormEvent<HTMLFormElement>): void;
 }
 
 const LoginForm = ({ loginData, handleChange, loginHandler }: Props) => {
   return (
-    <form onSubmit={loginHandler}>
+    <form onSubmit={loginHandler} className="flex flex-col items-center mt-10">
       {/* 아이디 입력 */}
-      <div className="m-8">
+      <div className="mt-10">
         <div className="flex items-end">
           <UserInput
             label="아이디"
@@ -28,7 +28,7 @@ const LoginForm = ({ loginData, handleChange, loginHandler }: Props) => {
         </div>
       </div>
       {/* 비밀번호 입력 */}
-      <div className="m-8">
+      <div className="m-4">
         <UserInput
           label="비밀번호"
           type="password"

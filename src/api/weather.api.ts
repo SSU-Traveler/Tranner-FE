@@ -1,18 +1,31 @@
-export default function getWeatherApi(url: string) {
-  // Text API 호출 함수
-  fetch(url) // fetch를 통해 API 호출
-    .then((response) => response.json()) // 응답을 JSON으로 변환
-    .then((data) => {
-      console.log(data); // 데이터 출력
-      // saveFilePath를 사용하여 데이터를 저장하거나 추가적인 처리를 수행할 수 있습니다.
-    })
-    .catch((error) => {
-      console.error('API 호출 중 오류가 발생했습니다:', error);
-      // 오류 처리를 수행할 수 있습니다.
-    });
+import { CurrentWeather, FutureWeather } from '../types/weather.type';
+
+const WEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+//const WEATHER_URL = import.meta.env.VITE_WEATHER_API_URL;
+//const WEATHER_URL = '/weather-api';
+//const OPENWEATHER_URL = import.meta.env.VITE_OPENWEATHER_API_URL;
+const OPENWEATHER_URL = '/openweather-api';
+
+export async function getCurrentWeather(lat: number, lon: number): Promise<CurrentWeather | undefined> {
+  try {
+    const response = await fetch(
+      `${OPENWEATHER_URL}/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${WEATHER_API_KEY}`
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Current Weather API 오류: ', error);
+  }
 }
 
-// // 사용 예시
-// const apiUrl = 'https://apihub.kma.go.kr/api/json?authKey=YOUR_AUTH_KEY';
-// // const savePath = "/path/to/save/file.json";
-// callJsonApi(apiUrl);
+export async function getFutureWeather(lat: number, lon: number): Promise<FutureWeather | undefined> {
+  try {
+    const response = await fetch(
+      `${OPENWEATHER_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${WEATHER_API_KEY}`
+    );
+    const data: FutureWeather = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Future Weather API 오류: ', error);
+  }
+}

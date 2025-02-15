@@ -6,7 +6,7 @@ import FindPwPage from '../pages/FindPwPage';
 import LocalViewPage from '../pages/LocalViewPage';
 import LoginPage from '../pages/LoginPage';
 import MainPage from '../pages/MainPage';
-import MyPage from '../pages/MyPage';
+//import MyPage from '../pages/MyPage';
 import SignUpPage from '../pages/SignUpPage';
 import TripPlanPage from '../pages/TripPlanPage';
 import WeatherViewPage from '../pages/WeatherViewPage';
@@ -62,10 +62,10 @@ const router = createBrowserRouter([
         element: <WelcomePage />,
       },
       // 마이페이지
-      {
-        path: '/my/:username',
-        element: <MyPage />,
-      },
+      // {
+      //   path: '/my',
+      //   element: <MyPage />,
+      // },
 
       //kakao 로그인 callback URI
       {

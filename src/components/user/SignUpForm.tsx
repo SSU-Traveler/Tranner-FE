@@ -8,7 +8,7 @@ interface SignUpUserElement extends UserInfoElement {
   passwordConfirm: string;
 }
 
-type ErrMsg = Omit<SignUpUserElement, 'nickName'>;
+type ErrMsg = Omit<SignUpUserElement, 'nickname'>;
 
 interface IsValid {
   email: boolean;
@@ -22,26 +22,30 @@ interface Props {
   signUpData: SignUpUserElement;
   handleChange?: (field: string) => (value: string) => void;
   sendEmail(): void;
-  confirmauthCode(email: string, authCode: string): void;
+  confirmVerificationCode(email: string, authCode: string): void;
   isVisible: boolean;
   emailChecked: boolean;
   idChecked: boolean;
+  pwdChecked: boolean;
+  pwdConfirmChecked: boolean;
   timeLeft: number;
   formatTimeLeft(seconds: number): string;
   errMsg: ErrMsg;
   isValid: IsValid;
   idDuplicatedCheck(): void;
-  signUpHandler(): void;
+  signUpHandler(event: React.FormEvent<HTMLFormElement>): void;
 }
 
 const SignUpForm = ({
   signUpData,
   handleChange,
   sendEmail,
-  confirmauthCode,
+  confirmVerificationCode,
   isVisible,
   emailChecked,
   idChecked,
+  pwdChecked,
+  pwdConfirmChecked,
   timeLeft,
   formatTimeLeft,
   errMsg,
@@ -50,9 +54,9 @@ const SignUpForm = ({
   signUpHandler,
 }: Props) => {
   return (
-    <form onSubmit={signUpHandler}>
+    <form onSubmit={signUpHandler} className="flex flex-col items-center mt-5">
       {/* 이메일 입력 */}
-      <div className="m-10">
+      <div className="">
         <div className="flex items-end">
           <UserInput
             label="이메일"
@@ -61,6 +65,7 @@ const SignUpForm = ({
             onChange={handleChange?.('email')}
             placeholder="이메일을 입력해주세요."
             box_width="input1"
+            disabled={emailChecked}
           />
           <button
             type="button"
@@ -81,7 +86,7 @@ const SignUpForm = ({
 
       {/* 인증 코드 입력 */}
       {isVisible && (
-        <div className="m-10">
+        <div className="mt-3">
           <div className="flex items-end">
             <UserInput
               label="이메일 인증 코드"
@@ -94,7 +99,7 @@ const SignUpForm = ({
               type="button"
               onClick={() => {
                 console.log('버튼 클릭됨');
-                confirmauthCode(signUpData.email, signUpData.authCode);
+                confirmVerificationCode(signUpData.email, signUpData.authCode);
               }}
               disabled={timeLeft <= 0}
               className={`border w-[80px] h-[40px] rounded-[10px] ml-5 ${
@@ -110,7 +115,7 @@ const SignUpForm = ({
       )}
 
       {/* 아이디 입력 */}
-      <div className="m-10">
+      <div className="mt-3">
         <div className="flex items-end">
           <UserInput
             label="아이디"
@@ -118,6 +123,7 @@ const SignUpForm = ({
             onChange={handleChange?.('username')}
             placeholder="아이디 입력(영문자 또는 숫자 6~20자)"
             box_width="input1"
+            disabled={idChecked}
           />
           <button
             type="button"
@@ -133,8 +139,19 @@ const SignUpForm = ({
         {errMsg.username && <p className="text-red-500 text-xs">{errMsg.username}</p>}
       </div>
 
+      <div className="mt-3">
+        <UserInput
+          label="닉네임"
+          type="text"
+          value={signUpData.nickname}
+          onChange={handleChange?.('nickname')}
+          placeholder="닉네임 입력"
+          box_width="input2"
+        />
+      </div>
+
       {/* 비밀번호 입력 */}
-      <div className="m-10">
+      <div className="mt-3">
         <UserInput
           label="비밀번호"
           type="password"
@@ -145,7 +162,7 @@ const SignUpForm = ({
         />
         {errMsg.password && <p className="text-red-500 text-xs">{errMsg.password}</p>}
       </div>
-      <div className="m-10">
+      <div className="mt-3">
         <UserInput
           label="비밀번호 확인"
           type="password"
@@ -158,9 +175,11 @@ const SignUpForm = ({
       </div>
       <button
         type="submit"
-        disabled={!isEmpty(signUpData) || emailChecked || idChecked}
-        className={`border rounded-[10px] w-[400px] h-[40px] ${
-          !isEmpty(signUpData) && emailChecked && idChecked ? 'bg-button-basic hover:bg-button-hover' : 'bg-[#d9d9d9]'
+        disabled={isEmpty(signUpData) || !emailChecked || !idChecked || !pwdChecked || !pwdConfirmChecked}
+        className={`border rounded-[10px] w-[400px] h-[40px] m-10 ${
+          !isEmpty(signUpData) && emailChecked && idChecked && pwdChecked && pwdConfirmChecked
+            ? 'bg-button-basic hover:bg-button-hover'
+            : 'bg-[#d9d9d9]'
         }`}
       >
         회원가입

@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface Props {
   dropDownItemList: any[];
   selectedIndex: number; //1~

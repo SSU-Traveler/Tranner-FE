@@ -47,7 +47,7 @@ export function ModalProvider({ children }: ModalProviderProp) {
     <ModalContext.Provider value={value}>
       {children}
       {modalElement && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" id="modal">
+        <div className="fixed inset-0 z-50 flex items-center justify-center" id="modal-by-hj">
           {modalElement}
         </div>
       )}

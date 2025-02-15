@@ -16,7 +16,7 @@ interface SpotCardProps {
   spotEngName?: string;
   spotDescription: string;
   spotAddress: string;
-  needToLoginAlarm: () => void;
+  needToLoginAlarm?: () => void;
 }
 
 export default function SpotCard({
@@ -29,6 +29,13 @@ export default function SpotCard({
 }: SpotCardProps) {
   const { openModal } = useModal();
 
+  const truncateWord = (placeName: string) => {
+    if (placeName.length > 13) {
+      return placeName.slice(0, 12) + '...';
+    }
+    return placeName;
+  };
+
   const openCardModal = () => {
     openModal(
       <CardModal
@@ -37,18 +44,18 @@ export default function SpotCard({
         placeEngName={spotEngName}
         placeAddress={spotAddress}
         placeDescription={spotDescription}
-        needToLoginAlarm={needToLoginAlarm}
+        needToLoginAlarm={needToLoginAlarm!}
       />
     );
   };
 
   return (
     <div
-      className="w-[250px] h-[300px] bg-white rounded-[16px] border border-[#B2B9C0] hover:cursor-pointer flex flex-col gap-[5px] items-center p-[10px]"
+      className="w-[230px] h-[315px] bg-white rounded-[16px] border border-[#B2B9C0] hover:cursor-pointer flex flex-col gap-[5px] items-center p-[10px]"
       onClick={openCardModal}
     >
       <img src={imgPath} alt={spotName} className="w-[230px] h-[260px] rounded-[16px] object-cover" />
-      <p className="text-[#495057] font-bold text-[18px] self-start">{spotName}</p>
+      <p className="text-[#495057] font-bold text-[18px] self-start">{truncateWord(spotName)}</p>
     </div>
   );
 }

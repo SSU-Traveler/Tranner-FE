@@ -20,7 +20,6 @@ export default function RecommendCard({ imgPath, placeName, placeAddress }: Reco
 
   const toggleTripPlan = () => {
     setIsRegistered((prev) => !prev);
-    console.log('장소 추천 카드를 클릭하면 여행 계획 카드에 추가되거나 빠져야 함');
   };
 
   return (

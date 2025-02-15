@@ -1,16 +1,24 @@
 import axios from 'axios';
 import { UserInfoElement } from '../types/signup.type';
-const SIGNUP_API_BASE_URL = '/api/member';
+//const SIGNUP_API_BASE_URL = '/api/member';
+const SIGNUP_API_BASE_URL = 'http://localhost:8080/member';
 
 //회원 가입
-export const SignUpApi = async (data: UserInfoElement) => {
+export const SignUpApi = async (prop: UserInfoElement) => {
   try {
+    const data = {
+      username: prop.username,
+      password: prop.password,
+      memberEmail: prop.email,
+      nickname: prop.nickname,
+    };
     const response = await axios.post(SIGNUP_API_BASE_URL + '/register', data, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
     console.log(response);
+    return response;
   } catch (error) {
     console.error('Error fetching boards:', error);
     alert('회원가입 문제');
@@ -22,7 +30,7 @@ export const SignUpApi = async (data: UserInfoElement) => {
 export const SendEmailApi = async (email: string) => {
   try {
     const data = { email: email };
-    const url = `${SIGNUP_API_BASE_URL}/emails/verification-requests`;
+    const url = `${SIGNUP_API_BASE_URL}/emails/register-requests`;
     const response = await axios.post(url, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +47,7 @@ export const SendEmailApi = async (email: string) => {
 };
 
 //인증번호 검증
-export const ConfirmauthCodeApi = async (email: string, authCode: string) => {
+export const ConfirmVerificationCodeApi = async (email: string, authCode: string) => {
   try {
     const response = await axios.post(
       `${SIGNUP_API_BASE_URL}/emails/verifications`,
@@ -64,7 +72,7 @@ export const ConfirmauthCodeApi = async (email: string, authCode: string) => {
 //아이디 중복 체크
 export const IdDuplicatedCheckApi = async (username: string) => {
   try {
-    const response = await axios.get(`${SIGNUP_API_BASE_URL}/idDuplicatedCheck?username=${username}`);
+    const response = await axios.get(`${SIGNUP_API_BASE_URL}/idDuplicatedCheck?id=${username}`);
     console.log(response);
     return response;
   } catch (error) {
@@ -72,17 +80,3 @@ export const IdDuplicatedCheckApi = async (username: string) => {
     return; // 에러 발생 시 빈 배열 반환
   }
 };
-
-// get 사용법
-// export const SignUpApi = async () => {
-//   try {
-//     const response = await axios.get(SIGNUP_API_BASE_URL);
-//     console.log(response);
-//     console.log(response.data);
-//     const data = response.data;
-//     return data;
-//   } catch (error) {
-//     console.error('Error fetching boards:', error);
-//     return []; // 에러 발생 시 빈 배열 반환
-//   }
-// };

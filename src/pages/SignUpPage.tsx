@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import SignUpForm from '../components/user/SignUpForm';
-import { SignUpApi, SendEmailApi, IdDuplicatedCheckApi, ConfirmauthCodeApi } from '../api/SignUpApi';
-import { isEmpty } from '../utils/checkObjectEmpty';
+
+import { SignUpApi, SendEmailApi, IdDuplicatedCheckApi, ConfirmVerificationCodeApi } from '../api/SignUpApi';
+import { useNavigate } from 'react-router-dom';
+import { Confirm } from 'notiflix';
+import { useModal } from '../hooks/useModal';
 
 export default function SignUpPage() {
   //유효성 검사 정규식
   const REGEX_EMAIL = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-  const REGEX_username = /^[a-z]+[a-z0-9]{5,19}$/g;
+  const REGEX_MEMBERID = /^[a-z]+[a-z0-9]{5,19}$/g;
   const REGEX_PASSWORD = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
 
   //회원가입 정보
@@ -14,7 +17,9 @@ export default function SignUpPage() {
     email: '',
     authCode: '',
     username: '',
-    nickName: '',
+
+    nickname: '',
+
     password: '',
     passwordConfirm: '',
   });
@@ -41,9 +46,15 @@ export default function SignUpPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [emailChecked, setEmailChecked] = useState(false);
   const [idChecked, setIdChecked] = useState(false);
+  const [pwdChecked, setPwdChecked] = useState(false);
+  const [pwdConfirmChecked, setPwdConfirmChecked] = useState(false);
 
   const [timer, setTimer] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState<number>(300); // 5분 (300초)
+
+  //모달 관련
+  const navigate = useNavigate();
+  const { closeModal } = useModal();
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -71,7 +82,7 @@ export default function SignUpPage() {
     }
 
     //onChange와 동시에 유효성 검사
-    if (field !== 'nickName') {
+    if (field !== 'nickname') {
       checkValid(field, value);
     }
   };
@@ -85,14 +96,21 @@ export default function SignUpPage() {
       result = REGEX_EMAIL.test(value);
       message = result ? '' : '이메일 형식이 올바르지 않습니다.';
     } else if (field === 'username') {
-      result = REGEX_username.test(value);
+      result = REGEX_MEMBERID.test(value);
+
       message = result ? '' : '아이디는 영문자 또는 숫자 6~20자여야 합니다.';
     } else if (field === 'password') {
       result = REGEX_PASSWORD.test(value);
       message = result ? '' : '영문, 숫자, 특수문자 포함 8자 이상이어야 합니다.';
+      if (result) {
+        setPwdChecked(true);
+      }
     } else if (field === 'passwordConfirm') {
       result = signUpData.password === value;
       message = result ? '' : '비밀번호가 일치하지 않습니다.';
+      if (result) {
+        setPwdConfirmChecked(true);
+      }
     }
 
     setIsValid((prevData) => ({
@@ -139,9 +157,10 @@ export default function SignUpPage() {
   };
 
   //인증코드 확인 함수
-  const confirmauthCode = async (email: string, authCode: string) => {
+  const confirmVerificationCode = async (email: string, authCode: string) => {
     //1. 인증번호 맞는지 틀린지 확인 - 서버에 email, 인증번호 보내고 코드 검증.
-    const response = await ConfirmauthCodeApi(email, authCode);
+    const response = await ConfirmVerificationCodeApi(email, authCode);
+
     //2-1. 맞으면
     if (response) {
       setIsValid((prevData) => ({
@@ -177,14 +196,18 @@ export default function SignUpPage() {
     try {
       const response = await IdDuplicatedCheckApi(signUpData.username);
       console.log(response);
-      //아이디 중복일 경우
-      if (!response) {
+      //아이디 중복일 경우(true return)
+      if (response !== undefined && response.data) {
         setErrMsg((prevData) => ({
           ...prevData,
           username: '중복된 아이디가 존재합니다.',
         }));
       } else {
         //아이디가 중복이 아닐 경우
+        setErrMsg((prevData) => ({
+          ...prevData,
+          username: '',
+        }));
         setIdChecked(true);
       }
       //아이디 사용 가능할 경우
@@ -193,25 +216,51 @@ export default function SignUpPage() {
     }
   };
   //회원가입 함수
-  const signUpHandler = async () => {
+  const signUpHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const result = await SignUpApi(signUpData);
     //result가 true일 경우 회원가입이 완료되었습니다 모달 띄우기.
     console.log(result);
+    signUpAlarm();
+  };
+
+  //회원 가입 완료 모달
+  const signUpAlarm = () => {
+    Confirm.show(
+      'Tranner',
+      '회원가입이 완료되었습니다.<br>로그인 창으로 이동합니다.',
+      '확인',
+      '취소',
+      () => {
+        closeModal();
+        navigate('/login');
+      },
+      () => {},
+      {
+        width: '360px',
+        messageFontSize: '16px',
+        plainText: false,
+        titleColor: '#0BCDFE',
+        okButtonBackground: '#0BCDFE',
+      }
+    );
   };
 
   return (
     <div className="flex">
-      <div className="container w-full flex flex-col justify-center items-center">
-        <h2>회원가입</h2>
-        <h4>회원가입을 위한 정보를 입력해주세요.</h4>
+      <div className="mt-10 container w-full flex flex-col justify-center items-center">
+        <p className="text-[22px] font-bold">회원가입</p>
+        <p className="text-[15px] mt-2">회원가입을 위한 정보를 입력해주세요.</p>
         <SignUpForm
           signUpData={signUpData}
           handleChange={handleChange}
           sendEmail={sendEmail}
-          confirmauthCode={confirmauthCode}
+          confirmVerificationCode={confirmVerificationCode}
           isVisible={isVisible}
           emailChecked={emailChecked}
           idChecked={idChecked}
+          pwdChecked={pwdChecked}
+          pwdConfirmChecked={pwdConfirmChecked}
           timeLeft={timeLeft}
           formatTimeLeft={formatTimeLeft}
           errMsg={errMsg}
